@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    $username = $_SESSION["username"];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,8 +30,8 @@
 <div class="bg-light border-right" id="sidebar-wrapper">
 <div class="sidebar-heading">Payroll Software </div>
 <div class="list-group list-group-flush">
-<a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-<a href="#" class="list-group-item list-group-item-action bg-light">Maintain Employee</a>
+<a href="dashboard.php" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+<a href="maintainemployee.php" class="list-group-item list-group-item-action bg-light">Maintain Employee</a>
 <a href="#" class="list-group-item list-group-item-action bg-light">New Payroll</a>
 <a href="#" class="list-group-item list-group-item-action bg-light">Reports</a>
 <a href="#" class="list-group-item list-group-item-action bg-light">Tools</a>
@@ -48,10 +52,10 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 <li class="nav-item active">
-<a class="nav-link" href="#">Admin <span class="sr-only">(current)</span></a>
+<a class="nav-link" href="#"><?php echo $username; ?><span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item">
-<a class="nav-link" href="#">Link</a>
+<a class="nav-link" href="logout.php" onclick="return confirm('Are you sure?');">Logout</a>
 </li>
 <li class="nav-item dropdown">
 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
