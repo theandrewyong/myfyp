@@ -39,13 +39,32 @@
 <?php include "navbar.php"; ?>
     
 <div class="container-fluid">
-<h1 class="mt-4">Dashboard</h1>
-<hr>
+<h1 class="mt-4">New Payroll</h1>
 <!-- dashboard conten here -->
+<hr>
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label for="trans_year">Year</label>
+                <input type="text" name="trans_year" class="form-control">
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label for="trans_year">Year</label>
+                <input type="text" name="trans_year" class="form-control">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+
+            </div>
+        </div>
+    </div>
+
 </div>
 </div>
 <!-- /#page-content-wrapper -->
-
 </div>
 <!-- /#wrapper -->
 
