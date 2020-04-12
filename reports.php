@@ -23,6 +23,34 @@
 <!-- Custom styles for this template -->
 <link href="css/simple-sidebar.css" rel="stylesheet">
 
+    <style>
+div.gallery {
+    
+  margin: 5px;
+  border: 1px solid #ccc;
+  float: left;
+  width: 200px;
+    height: 250px;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+min-height: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    
+}
+
+div.desc {
+    overflow: hidden;
+  padding: 15px;
+  text-align: center;
+}    
+    </style>
+    
 </head>
 
 <body>
@@ -42,13 +70,62 @@
 <h1 class="mt-4">Reports</h1>
 <hr>
 <!-- dashboard conten here -->
+<div class="gallery">
+  <a target="_blank" href="img_5terre.jpg" >
+    <img src="img/download.png" alt="Cinque Terre" width="100%;">
+  <div class="desc">Payslip</div></a>
 </div>
+
+<div class="gallery">
+  <a target="_blank" href="img_forest.jpg">
+    <img src="img/gg.jpg" alt="Forest" width="100%;">
+  <div class="desc">Payroll Summary</div></a>
+</div>
+    
+<div class="gallery">
+  <a target="_blank" href="img_5terre.jpg" >
+    <img src="img/download.png" alt="Cinque Terre" width="100%;">
+  <div class="desc">EPF</div></a>
+</div>
+
+<div class="gallery">
+  <a target="_blank" href="img_forest.jpg">
+    <img src="img/gg.jpg" alt="Forest" width="100%;">
+  <div class="desc">SOCSO</div></a>
+</div>
+
+    
+<div class="gallery">
+  <a target="_blank" href="img_5terre.jpg" >
+    <img src="img/download.png" alt="Cinque Terre" width="100%;">
+  <div class="desc">EIS</div></a>
+</div>
+
+<div class="gallery">
+  <a target="_blank" href="img_forest.jpg">
+    <img src="img/gg.jpg" alt="Forest" width="100%;">
+  <div class="desc">Yearly Wages</div></a>
+</div>
+
+
+<div class="gallery">
+  <a target="_blank" href="img_5terre.jpg" >
+    <img src="img/download.png" alt="Cinque Terre" width="100%;">
+  <div class="desc">Yearly Individual Wages</div></a>
+</div>
+
+
+
+    
+</div>
+<!-- footer here -->
+<?php include "footer.php"; ?> 
 </div>
 <!-- /#page-content-wrapper -->
 
-</div>
+</div>    
 <!-- /#wrapper -->
-
+ 
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
