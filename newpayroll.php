@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include "conn.php";
     if(empty($_SESSION["username"])){
         header("location:index.php");
     }
@@ -43,28 +44,53 @@
 <!-- dashboard conten here -->
 <hr>
     <p><b>Payroll Transaction</b></p>
-    
     <div class="row">
         <div class="col-md-6 col-12">
-            <form action="#">
+            
+            <?php
+                if(isset($_POST["submit"])){
+                    //get input data
+                $payroll_monthly_id = uniqid();
+                $payroll_monthly_process_date = date("Y/m/d");
+                $payroll_monthly_from = mysqli_escape_string($conn, $_POST["payroll_monthly_from"]);
+                $payroll_monthly_to = mysqli_escape_string($conn, $_POST["payroll_monthly_to"]);
+                $payroll_monthly_desc_1 = mysqli_escape_string($conn, $_POST["payroll_monthly_desc_1"]);
+                $payroll_monthly_desc_2 = mysqli_escape_string($conn, $_POST["payroll_monthly_desc_2"]);
+                $payroll_monthly_ref_1 = mysqli_escape_string($conn, $_POST["payroll_monthly_ref_1"]);
+                $payroll_monthly_ref_2 = mysqli_escape_string($conn, $_POST["payroll_monthly_ref_2"]);
+                    
+                $new_user_sql = "INSERT INTO process_payroll (payroll_monthly_id, payroll_monthly_process_date, payroll_monthly_from, payroll_monthly_to, payroll_monthly_desc_1, payroll_monthly_desc_2, payroll_monthly_ref_1, payroll_monthly_ref_2) VALUES (?,?,?,?,?,?,?,?)";
+                    
+                $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
+                    
+                mysqli_stmt_bind_param($prepared_stmt_insert, 'ssssssss', $payroll_monthly_id, $payroll_monthly_process_date, $payroll_monthly_from, $payroll_monthly_to, $payroll_monthly_desc_1, $payroll_monthly_desc_2, $payroll_monthly_ref_1, $payroll_monthly_ref_2);
+                    
+                    
+                mysqli_stmt_execute($prepared_stmt_insert);
+                mysqli_stmt_close($prepared_stmt_insert);
+                }
+                ?> 
+            
+            
+            <form action="newpayroll.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-6 col-12">
-                    <label for="">Year  </label>
-                    <input type="text" class="form-control">
+                    <label for="">Year</label>
+                    <input type="text" class="form-control" disabled>
                 </div>
                 <div class="col-md-6 col-12">
                     <label for="">Month</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" disabled>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 col-12">
                     <label for="">Process From</label>
-                    <input type="text" class="form-control">
+                    <input type="date" class="form-control" name="payroll_monthly_from" value="<?php echo date('Y-m-01'); ?>">
                 </div>
                 <div class="col-md-6 col-12">
                     <label for="">To</label>
-                    <input type="text" class="form-control">
+                    <input type="date" class="form-control" name="payroll_monthly_to" value="<?php echo date('Y-m-t'); ?>">
                 </div>
             </div>
             <br>
@@ -72,31 +98,31 @@
             <div class="row">
                 <div class="col-12">
                     <label for="">Description 1</label>
-                    <input type="text" class="form-control">                
+                    <input type="text" class="form-control" name="payroll_monthly_desc_1">                
                 </div>    
             </div>
             <div class="row">
                 <div class="col-12">
                     <label for="">Description 2</label>
-                    <input type="text" class="form-control">                
+                    <input type="text" class="form-control" name="payroll_monthly_desc_2">                
                 </div>    
             </div>
             <div class="row">
                 <div class="col-12">
                     <label for="">Reference 1</label>
-                    <input type="text" class="form-control">                
+                    <input type="text" class="form-control" name="payroll_monthly_ref_1">                
                 </div>    
             </div>
             <div class="row">
                 <div class="col-12">
                     <label for="">Reference 2</label>
-                    <input type="text" class="form-control">                
+                    <input type="text" class="form-control" name="payroll_monthly_ref_2">                
                 </div>    
             </div>
             <div class="row">
                 <div class="col-12">
                     <br>
-                    <input type="submit" class="btn btn-success">
+                    <input type="submit" class="btn btn-success" name="submit">
                     
                 </div>    
             </div>

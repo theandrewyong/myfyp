@@ -71,16 +71,14 @@
                     
         if(isset($_POST["submit"])){
             
-        $username = mysqli_escape_string($conn, $_POST["username"]);
-          $password = mysqli_escape_string($conn, $_POST["password"]);
-          $permission = mysqli_escape_string($conn, $_POST["permission"]);
-            
+            $username = mysqli_escape_string($conn, $_POST["username"]);
+            $password = mysqli_escape_string($conn, $_POST["password"]);
+            $permission = mysqli_escape_string($conn, $_POST["permission"]);
             $new_user_sql = "INSERT INTO users (username, password, permission) VALUES (?,?,?)";
             $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
             mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $username, $password, $permission);
             mysqli_stmt_execute($prepared_stmt_insert);
             mysqli_stmt_close($prepared_stmt_insert); 
-            
         }    
                            
                     
