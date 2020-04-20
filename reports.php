@@ -71,7 +71,7 @@ div.desc {
 <hr>
 <!-- dashboard conten here -->
 <div class="gallery">
-  <a target="_blank" href="img_5terre.jpg" >
+  <a href="payslip.php">
     <img src="img/download.png" alt="Cinque Terre" width="100%;">
   <div class="desc">Payslip</div></a>
 </div>
