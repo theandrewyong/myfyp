@@ -20,20 +20,16 @@
 
 <!-- Bootstrap core CSS -->
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- Custom styles for this template -->
 <link href="css/simple-sidebar.css" rel="stylesheet">
 
 </head>
 
 <body>
-
 <div class="d-flex" id="wrapper">
-
 <!-- Sidebar -->
 <?php include "sidebar.php"; ?>
 <!-- /#sidebar-wrapper -->
-
 <!-- Page Content -->
 <div id="page-content-wrapper">
 
@@ -47,31 +43,26 @@
     <div class="row">
         <div class="col-md-6 col-12">
             
-            <?php
-                if(isset($_POST["submit"])){
-                    //get input data
-                $payroll_monthly_id = uniqid();
-                $payroll_monthly_process_date = date("Y/m/d");
-                $payroll_monthly_from = mysqli_escape_string($conn, $_POST["payroll_monthly_from"]);
-                $payroll_monthly_to = mysqli_escape_string($conn, $_POST["payroll_monthly_to"]);
-                $payroll_monthly_desc_1 = mysqli_escape_string($conn, $_POST["payroll_monthly_desc_1"]);
-                $payroll_monthly_desc_2 = mysqli_escape_string($conn, $_POST["payroll_monthly_desc_2"]);
-                $payroll_monthly_ref_1 = mysqli_escape_string($conn, $_POST["payroll_monthly_ref_1"]);
-                $payroll_monthly_ref_2 = mysqli_escape_string($conn, $_POST["payroll_monthly_ref_2"]);
-                    
-                $new_user_sql = "INSERT INTO process_payroll (payroll_monthly_id, payroll_monthly_process_date, payroll_monthly_from, payroll_monthly_to, payroll_monthly_desc_1, payroll_monthly_desc_2, payroll_monthly_ref_1, payroll_monthly_ref_2) VALUES (?,?,?,?,?,?,?,?)";
-                    
-                $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
-                    
-                mysqli_stmt_bind_param($prepared_stmt_insert, 'ssssssss', $payroll_monthly_id, $payroll_monthly_process_date, $payroll_monthly_from, $payroll_monthly_to, $payroll_monthly_desc_1, $payroll_monthly_desc_2, $payroll_monthly_ref_1, $payroll_monthly_ref_2);
-                    
-                    
-                mysqli_stmt_execute($prepared_stmt_insert);
-                mysqli_stmt_close($prepared_stmt_insert);
-                }
-                ?> 
-            
-            
+<?php
+    if(isset($_POST["submit"])){
+    //get input data
+    $payroll_monthly_process_date = date("Y/m/d");
+    $payroll_monthly_from = mysqli_escape_string($conn, $_POST["payroll_monthly_from"]);
+    $payroll_monthly_to = mysqli_escape_string($conn, $_POST["payroll_monthly_to"]);
+    $payroll_monthly_desc_1 = mysqli_escape_string($conn, $_POST["payroll_monthly_desc_1"]);
+    $payroll_monthly_desc_2 = mysqli_escape_string($conn, $_POST["payroll_monthly_desc_2"]);
+    $payroll_monthly_ref_1 = mysqli_escape_string($conn, $_POST["payroll_monthly_ref_1"]);
+    $payroll_monthly_ref_2 = mysqli_escape_string($conn, $_POST["payroll_monthly_ref_2"]);
+
+    $new_user_sql = "INSERT INTO process_payroll (payroll_monthly_process_date, payroll_monthly_from, payroll_monthly_to, payroll_monthly_desc_1, payroll_monthly_desc_2, payroll_monthly_ref_1, payroll_monthly_ref_2) VALUES (?,?,?,?,?,?,?)";
+
+    $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
+    mysqli_stmt_bind_param($prepared_stmt_insert, 'sssssss', $payroll_monthly_process_date, $payroll_monthly_from, $payroll_monthly_to, $payroll_monthly_desc_1, $payroll_monthly_desc_2, $payroll_monthly_ref_1, $payroll_monthly_ref_2);
+    mysqli_stmt_execute($prepared_stmt_insert);
+    mysqli_stmt_close($prepared_stmt_insert);
+    }
+    ?> 
+
             <form action="newpayroll.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-6 col-12">

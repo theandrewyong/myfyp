@@ -30,7 +30,7 @@
             
            // $hash_login_pass = hash("sha256", $login_pass);
             $mypass = $login_pass;
-            $sql_query_string = "SELECT * FROM users WHERE username =?";
+            $sql_query_string = "SELECT * FROM account WHERE username =?";
             $prepared_stmt = mysqli_prepare($conn, $sql_query_string);
             mysqli_stmt_bind_param($prepared_stmt, "s", $login_username);
             mysqli_stmt_execute($prepared_stmt);

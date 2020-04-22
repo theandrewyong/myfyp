@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include "conn.php";
     if(empty($_SESSION["username"])){
         header("location:index.php");
     }
@@ -41,7 +42,49 @@
 <div class="container-fluid">
 <h1 class="mt-4">Tools</h1>
 <hr>
-<!-- dashboard conten here -->
+<!-- dashboard contenT here -->
+    
+    <!-- EPF table -->
+    
+    <?php
+    //insert an id to process payroll
+    //get socso rate from process payroll table
+    
+            $soc_id = 13;
+        $select =  mysqli_query($conn, "SELECT * FROM socso_formula WHERE socso_formula_id = '$soc_id'");
+        
+        while($data = mysqli_fetch_assoc($select)){
+            echo $data["socso_formula_id"];
+            $x = $data["socso_formula_id"];
+        }
+    echo $x;
+    if(isset($_POST["submit"])){
+
+        
+        //$socso_formula_id = 
+        
+        
+        $process_payroll_desc = mysqli_escape_string($conn, $_POST["pp_desc"]);
+        
+        $input_sql = "INSERT INTO process_payroll (socso_formula_id, process_payroll_desc) VALUES (?,?)";
+        $prepared_stmt_insert = mysqli_prepare($conn, $input_sql);
+        mysqli_stmt_bind_param($prepared_stmt_insert, 'ss', $x, $process_payroll_desc);
+        mysqli_stmt_execute($prepared_stmt_insert);
+        mysqli_stmt_close($prepared_stmt_insert);
+    }
+    
+    
+    
+    ?>
+    <form action="tools.php" method="post">
+    <input type="text" name="pp_desc">
+        <input type="submit" name="submit">
+    </form>
+    
+    
+    
+    
+    
 </div>
 </div>
 <!-- /#page-content-wrapper -->
