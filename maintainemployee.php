@@ -47,10 +47,19 @@
 <hr>
 <!-- dashboard content here -->
     <div class="row">
-        <div class="col-12">
+        <div class="col-3">
             <a href="addemployee.php" class="btn btn-success" role="button">Add Employee</a>
         </div>
+		
+		<div class="col-3">
+            <a href="addallowance.php" class="btn btn-success" role="button">Add Allowance</a>
+        </div>
+		
+		<div class="col-3">
+            <a href="adddeduction.php" class="btn btn-success" role="button">Add Deduction</a>
+        </div>
     </div>
+	
     <div class="row">
         <div class="col-12">
         <div class="table-responsive">
