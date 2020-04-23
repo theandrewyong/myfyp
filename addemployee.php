@@ -223,14 +223,18 @@
 									</div>
 									
 									<div class="form-group">
-										<label class="control-label col-sm-6"><h6>Health Status (Optional)</h6></label>
+										<label class="control-label col-sm-3"><h6>Health Status</h6></label>
 										<div class="col-sm-9">
 											<div class="row">
 												<div class="col-sm-3">
-													<label class="checkbox-inline"><input type="checkbox" value="Resident" name="emp_health_status[]">Resident</label>
+													<label class="radio-inline">
+														<input type="radio" id="resident" name="emp_health_status" value="Resident">Resident
+													</label>
 												</div>
-												<div class="col-sm-6">
-													<label class="checkbox-inline"><input type="checkbox" value="Self-Disabled" name="emp_health_status[]">Self-Disabled</label>
+												<div class="col-sm-4">
+													<label class="radio-inline">
+														<input type="radio" id="self-disabled" name="emp_health_status" value="Self-Disabled">Self-Disabled
+													</label>
 												</div>
 											</div>
 										</div>
@@ -265,14 +269,23 @@
 									</div>
 									
 									<div class="form-group">
-										<label class="control-label col-sm-6"><h6>Spouse Status (Optional)</h6></label>
+										<label class="control-label col-sm-3"><h6>Spouse Status</h6></label>
 										<div class="col-sm-9">
 											<div class="row">
 												<div class="col-sm-3">
-													<label class="checkbox-inline"><input type="checkbox" value="Work" name="emp_spouse_status[]">Work</label>
+													<label class="radio-inline">
+														<input type="radio" id="work" name="emp_spouse_status" value="Work">Work
+													</label>
 												</div>
-												<div class="col-sm-6">
-													<label class="checkbox-inline"><input type="checkbox" value="Disabled" name="emp_spouse_status[]">Disabled</label>
+												<div class="col-sm-3">
+													<label class="radio-inline">
+														<input type="radio" id="disabled" name="emp_spouse_status" value="Disabled">Disabled
+													</label>
+												</div>
+												<div class="col-sm-3">
+													<label class="radio-inline">
+														<input type="radio" id="none" name="emp_spouse_status" value="None">None
+													</label>
 												</div>
 											</div>
 										</div>
