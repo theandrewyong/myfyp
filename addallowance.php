@@ -31,51 +31,7 @@
 				
                 <div id="profile1" class="tab-pane fade active show">
                     <div class="row pb-2">
-                        <div class="col-md-12">
-							<div class="container">
-								
-								<?php
-									if(isset($_POST["submit"])){
-										//get input data
-									$allowance_desc = $_POST["allowance_desc"];
-									$allowance_rate = $_POST["allowance_rate"];
 
-									$new_allowance_sql = "INSERT INTO allowance (allowance_desc, allowance_rate) VALUES (?,?)";
-
-									$prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
-
-									mysqli_stmt_bind_param($prepared_stmt_insert, 'ss', $allowance_desc, $allowance_rate);
-
-
-									mysqli_stmt_execute($prepared_stmt_insert);
-									mysqli_stmt_close($prepared_stmt_insert);
-									}
-									?>
-								
-								<form class="form-horizontal" role="form" method="post">
-									<div class="p-5 bg-white rounded shadow mb-5">
-									
-									<div class="form-group">
-										<label for="allowance_desc" class="col-sm-3 control-label"><h6>Item Description</h6></label>
-										<div class="col-sm-9">
-											<input type="text" id="allowance_desc" name="allowance_desc" placeholder="Description Example: Petrol" class="form-control" autofocus>
-										</div>
-									</div>
-									
-									<div class="form-group">
-										<label for="allowance_rate" class="col-sm-5 control-label"><h6>Rate of Item (RM)</h6></label>
-										<div class="col-sm-9">
-											<input type="number" id="allowance_rate" name="allowance_rate" step=".01" placeholder="Rate Example: 100" class="form-control" autofocus>
-										</div>
-									</div>
-									
-									<div class="col-sm-9">
-										<button type="submit" class="btn btn-primary btn-block" name="submit">Add Item</button>
-									</div>
-                                    </div>
-								</form> <!-- /form -->
-							</div>
-						</div>
 					</div>
                 </div>
 				

@@ -25,17 +25,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="p-5 bg-white rounded shadow mb-5">
-            <!-- Rounded tabs -->
-                <ul id="myTab" role="tablist" class="nav nav-tabs nav-pills flex-column flex-sm-row text-center bg-light border-0 rounded-nav">
-                    <li class="nav-item flex-sm-fill">
-                        <a id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">Employee Info</a>
-                    </li>
-                    <li class="nav-item flex-sm-fill">
-                        <a id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Employee Payroll Details</a>
-                    </li>
-                </ul>
-                <div id="myTabContent" class="tab-content">
-                    <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-5 show active">
 								<form class="form-horizontal" role="form" action="addemployee_data.php" method="post">
 									<a id="employee_section"><h1>Employee Main Profile</h1></a> 
 									<div class="col-sm-3"><a href="#payroll_section" class="btn btn-primary btn-block payroll_button">Payroll Details</a></div>
@@ -323,11 +312,6 @@
 									</div>
 									
 								</form> <!-- /form -->
-                    </div>
-                    <div id="profile" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-5">
-                        
-                    </div>
-                </div>
             </div>            
         </div>
 	</div>
