@@ -11,10 +11,10 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <title>Payroll Software - Login</title>
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <?php include "all_css.php"; ?>
     <link href="vendor/bootstrap/js/bootstrap.min.js"/>
     <link href="vendor/jquery/jquery.min.js"/>
-    <link href="css/login.css" rel="stylesheet"/>
+    <link href="vendor/css/login.css" rel="stylesheet"/>
 </head>
 	
 <body>
