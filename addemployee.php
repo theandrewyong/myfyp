@@ -24,23 +24,18 @@
 <section class="container py-4">
     <div class="row">
         <div class="col-md-12">
-            <h2>Tabs</h2>
-            <ul id="tabsJustified" class="nav nav-tabs nav-fill">
-
-                <li class="nav-item"><a href="" data-target="#profile1" data-toggle="tab" class="nav-link small text-uppercase active">Main Profile</a></li>
-                <li class="nav-item"><a href="" data-target="#allowance" data-toggle="tab" class="nav-link small text-uppercase">Allowance</a></li>
-				<li class="nav-item"><a href="" data-target="#deduction" data-toggle="tab" class="nav-link small text-uppercase">Deduction</a></li>
-            </ul>
-            <br>
-
-			<div id="tabsJustifiedContent" class="tab-content">
-				
-                <div id="profile1" class="tab-pane fade active show">
-                    <div class="row pb-2">
-                        <div class="col-md-12">
-							
-							
-							<div class="container">
+            <div class="p-5 bg-white rounded shadow mb-5">
+            <!-- Rounded tabs -->
+                <ul id="myTab" role="tablist" class="nav nav-tabs nav-pills flex-column flex-sm-row text-center bg-light border-0 rounded-nav">
+                    <li class="nav-item flex-sm-fill">
+                        <a id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">Employee Info</a>
+                    </li>
+                    <li class="nav-item flex-sm-fill">
+                        <a id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Employee Payroll Details</a>
+                    </li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-5 show active">
 								<form class="form-horizontal" role="form" action="addemployee_data.php" method="post">
 									<a id="employee_section"><h1>Employee Main Profile</h1></a> 
 									<div class="col-sm-3"><a href="#payroll_section" class="btn btn-primary btn-block payroll_button">Payroll Details</a></div>
@@ -328,32 +323,12 @@
 									</div>
 									
 								</form> <!-- /form -->
-							</div>
-						</div>
-					</div>
+                    </div>
+                    <div id="profile" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-5">
+                        
+                    </div>
                 </div>
-				
-				<div id="allowance" class="tab-pane fade">
-					<div class="row pb-2">
-                        <div class="col-md-12">
-                    		<div class="container">
-								<h1>Assign Allowance</h1>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<div id="deduction" class="tab-pane fade">
-					<div class="row pb-2">
-                        <div class="col-md-12">
-                    		<div class="container">
-								<h1>Assign Dedcution</h1>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-            </div>
+            </div>            
         </div>
 	</div>
 	
