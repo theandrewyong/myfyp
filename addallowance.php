@@ -8,43 +8,19 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
-
 <title>Payroll Software - Add Employee</title>
-
-<!-- Bootstrap core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-
-<!-- Custom styles for this template -->
-<link href="css/simple-sidebar.css" rel="stylesheet">
-<link href="css/addemployee_button.css" rel="stylesheet">
-
 </head>
-
 <body>
-
 <div class="d-flex" id="wrapper">
-
-<!-- Sidebar -->
 <?php include "sidebar.php"; ?>
-<!-- /#sidebar-wrapper -->
-
-<!-- Page Content -->
 <div id="page-content-wrapper">
-
 <?php include "navbar.php"; ?>
-    
 <div class="container-fluid">
 <h1 class="mt-4">Add Allowance Item</h1>
 <hr>
-<!-- dashboard conten here -->
 <section class="container py-4">
     <div class="row">
         <div class="col-md-12">
@@ -105,10 +81,7 @@
             </div>
         </div>
 	</div>
-	
 </section>
-    
-    
 </div>
 </div>
 <!-- /#page-content-wrapper -->

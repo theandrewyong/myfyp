@@ -19,12 +19,7 @@
 
 <title>Payroll Software - Maintain Employee</title>
 
-<!-- Bootstrap core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Custom styles for this template -->
-<link href="css/simple-sidebar.css" rel="stylesheet">
-<link href="css/addemployee_button.css" rel="stylesheet">
+<?php include "all_css.php"; ?>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
@@ -48,21 +43,21 @@
 <div class="container-fluid">
 <h1 class="mt-4">Maintain Employee</h1>
 <hr>
-<!-- dashboard content here -->
-    <div class="row">
-        <div class="col-3">
-            <a href="addemployee.php" class="btn btn-success" role="button">Add Employee</a>
+
+	<div class="p-5 bg-white rounded shadow mb-5">
+        <div class="row">
+            <div class="col-3">
+                <a href="addemployee.php" class="btn btn-success" role="button">Add Employee</a>
+            </div>
+
+            <div class="col-3">
+                <a href="addallowance.php" class="btn btn-success" role="button">Add Allowance</a>
+            </div>
+
+            <div class="col-3">
+                <a href="adddeduction.php" class="btn btn-success" role="button">Add Deduction</a>
+            </div>
         </div>
-		
-		<div class="col-3">
-            <a href="addallowance.php" class="btn btn-success" role="button">Add Allowance</a>
-        </div>
-		
-		<div class="col-3">
-            <a href="adddeduction.php" class="btn btn-success" role="button">Add Deduction</a>
-        </div>
-    </div>
-	
     <div class="row">
         <div class="col-12">
         <div class="table-responsive">
@@ -108,7 +103,7 @@
         </div>        
         </div>
     </div>
-
+    </div>
         
       
    

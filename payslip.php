@@ -18,11 +18,7 @@
 
 <title>Payroll Software - Dashboard</title>
 
-<!-- Bootstrap core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Custom styles for this template -->
-<link href="css/simple-sidebar.css" rel="stylesheet">
+<?php include "all_css.php"; ?>
 
 </head>
 
@@ -43,7 +39,30 @@
 <h1 class="mt-4">Payslip</h1>
 <!-- dashboard conten here -->
 <hr>
+    <!-- Payslip -->
+    <!-- Get process payroll information -->
+<?php
+$payroll_sql = "SELECT employee_info.emp_full_name, employee_info.emp_wages, employee_info.emp_total_allowance, employee_info.emp_total_deduction, ";
 
+$prepared_stmt_insert = mysqli_prepare($conn, $payroll_sql);
+mysqli_stmt_execute($prepared_stmt_insert);
+$result = $prepared_stmt_insert->get_result(); 
+$data = $result->fetch_assoc();
+
+$total = $data["employee"] + $data["epf_formula_employer_amt"];
+
+echo '<table border="1">';
+echo '<tr>';
+echo '<td>' . $data["emp_id"] . '</td>';
+echo '<td>' . $data["emp_full_name"] . '</td>';
+echo '<td>' . number_format($data["emp_wages"], 2 ) . '</td>';
+echo '<td>' . number_format($data["epf_formula_employee_amt"], 2 ) . '</td>';
+echo '<td>' . number_format($data["epf_formula_employer_amt"], 2 ) . '</td>';
+echo '<td>' . number_format($total, 2) . '</td>';
+echo '</tr>';
+echo '</table>';
+?>
+    
 </div>
 </div>
 <!-- /#page-content-wrapper -->

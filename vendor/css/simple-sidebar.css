@@ -7,6 +7,16 @@ body {
   overflow-x: hidden;
 }
 
+.sidebar_color_active {
+    color: white;
+    background-color: #0062cc;
+}
+
+.sidebar_color {
+    color: white;
+    background-color: #007bff;
+}   
+
 #sidebar-wrapper {
   min-height: 100vh;
   margin-left: -15rem;
