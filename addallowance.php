@@ -12,6 +12,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Payroll Software - Add Employee</title>
+<?php include "all_css.php"; ?>
 </head>
 <body>
 <div class="d-flex" id="wrapper">
@@ -52,7 +53,7 @@
 									?>
 								
 								<form class="form-horizontal" role="form" method="post">
-									
+									<div class="p-5 bg-white rounded shadow mb-5">
 									
 									<div class="form-group">
 										<label for="allowance_desc" class="col-sm-3 control-label"><h6>Item Description</h6></label>
@@ -71,7 +72,7 @@
 									<div class="col-sm-9">
 										<button type="submit" class="btn btn-primary btn-block" name="submit">Add Item</button>
 									</div>
-									
+                                    </div>
 								</form> <!-- /form -->
 							</div>
 						</div>

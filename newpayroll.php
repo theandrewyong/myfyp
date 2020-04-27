@@ -36,10 +36,9 @@
 <h1 class="mt-4">New Payroll</h1>
 <!-- dashboard conten here -->
 <hr>
-    <p><b>Payroll Transaction</b></p>
     <div class="row">
         <div class="col-md-6 col-12">
-            
+            <div class="p-5 bg-white rounded shadow mb-5">
 <?php
     if(isset($_POST["submit"])){
     //get input data
@@ -122,7 +121,9 @@
             </div>
             </form>
         </div>
+        </div>
         <div class="col-md-6 col-12">
+            <div class="p-5 bg-white rounded shadow mb-5">
             <br>
             <p><b>Employee</b></p>
             <div class="table-responsive">
@@ -143,7 +144,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+            </div></div>
     </div>
 </div>
 </div>

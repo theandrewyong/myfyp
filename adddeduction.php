@@ -18,13 +18,7 @@
 
 <title>Payroll Software - Add Employee</title>
 
-<!-- Bootstrap core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-
-<!-- Custom styles for this template -->
-<link href="css/simple-sidebar.css" rel="stylesheet">
-<link href="css/addemployee_button.css" rel="stylesheet">
+<?php include "all_css.php"; ?>
 
 </head>
 
@@ -76,7 +70,7 @@
 									?>
 								
 								<form class="form-horizontal" role="form" method="post">
-									
+									<div class="p-5 bg-white rounded shadow mb-5">
 									
 									<div class="form-group">
 										<label for="deduction_desc" class="col-sm-3 control-label"><h6>Item Description</h6></label>
@@ -95,7 +89,7 @@
 									<div class="col-sm-9">
 										<button type="submit" class="btn btn-primary btn-block" name="submit">Add Item</button>
 									</div>
-									
+                                    </div>
 								</form> <!-- /form -->
 							</div>
 						</div>
