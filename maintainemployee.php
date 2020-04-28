@@ -30,7 +30,7 @@
                         <a id="employee-tab" data-toggle="tab" href="#employee" role="tab" aria-controls="employee" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">Employee</a>
                     </li>
                     <li class="nav-item flex-sm-fill">
-                        <a id="allowance-tab" data-toggle="tab" href="#allowance" role="tab" aria-controls="allowance" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Allowance</a>
+                        <a id="allowance-tab" data-toggle="tab" href="#allowance" role="tab" aria-controls="allowance" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold false">Allowance</a>
                     </li>
                     <li class="nav-item flex-sm-fill">
                         <a id="deduction-tab" data-toggle="tab" href="#deduction" role="tab" aria-controls="deduction" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Deduction</a>
@@ -123,6 +123,8 @@
                                                             <th>Allowance ID</th>
                                                             <th>Allowance Desc</th>
                                                             <th>Allowance Rate</th>
+                                                            <th>Edit</th>
+                                                            <th>Delete</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -133,6 +135,8 @@
                                                             echo "<td>" . $data["allowance_id"] . "</td>";
                                                             echo "<td>" . $data["allowance_desc"] . "</td>";
                                                             echo "<td>" . $data["allowance_rate"] . "</td>";
+                                                            echo "<td>" . '<a href="editallowance.php?id=' . $data["allowance_id"] . '&desc=' . $data["allowance_desc"] . '&rate=' . $data["allowance_rate"] . '">Edit</a>' . "</td>";
+                                                            echo "<td>" . '<a href="deleteallowance.php?id=' . $data["allowance_id"] . '">Delete</a>' . "</td>";
                                                             echo "</tr>";
                                                         }
                                                     }  
@@ -205,21 +209,13 @@
                                                         while($data = mysqli_fetch_assoc($select_sql)){
                                                             echo "<tr>";
                                                             echo "<td>" . $data["deduction_id"] . "</td>";
-                                                            //echo "<td>" . $data["deduction_desc"] . "</td>";
-                                                            echo "<td>" . "<input type='text' name='edited_deduction_desc' value='" . $data["deduction_desc"] . "'>" . "</td>";
+                                                            echo "<td>" . $data["deduction_desc"] . "</td>";
                                                             echo "<td>" . $data["deduction_rate"] . "</td>";
-                                                            echo "<td>" . "<input type='submit' name='edit_deduction'>" . "</td>";
+                                                            echo "<td>" . '<a href="editdeduction.php?id=' . $data["deduction_id"] . '&desc=' . $data["deduction_desc"] . '&rate=' . $data["deduction_rate"] . '">Edit</a>' . "</td>";
                                                             echo "</tr>";
                                                         }
                                                     }  
-                                                    ?>
-                                                    <?php
-
-                                                        if(isset($_POST["edit_deduction"])){
-                                                            $edited_deduction_desc = $_POST["edited_deduction_desc"];  
-                                                            $deduction_sql = mysqli_query($conn, "UPDATE deduction SET deduction_desc = '$edited_deduction_desc' WHERE deduction_id = '6'");
-                                                        }
-                                                    ?>                            
+                                                    ?>                          
                                                     </tbody>
                                                 </table> 
                                                 </form>

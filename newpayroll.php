@@ -60,6 +60,7 @@
     ?> 
 
             <form action="newpayroll.php" method="post" enctype="multipart/form-data">
+            <p><b>Transaction Posting</b></p>
             <div class="row">
                 <div class="col-md-12">
                     <label for="">Process Date</label>
@@ -124,26 +125,43 @@
         </div>
         <div class="col-md-6 col-12">
             <div class="p-5 bg-white rounded shadow mb-5">
-            <br>
             <p><b>Employee</b></p>
-            <div class="table-responsive">
-                <table id="example" class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                        </tr> 
-                    </tbody>
-                </table>
-            </div>
+                        <div class="table-responsive">
+                            <div class="container-fluid">
+                            <?php
+                            $select_sql = mysqli_query($conn, "SELECT * FROM employee_info");  
+                            ?>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- Show admin table -->
+                                        <table id="example" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Employee ID</th>
+                                                <th>Employee Name</th>
+                                                <th>Process</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        if($datarows = mysqli_num_rows($select_sql) > 0){
+                                            $dynamic_checkbox_id = 0;
+                                            while($data = mysqli_fetch_assoc($select_sql)){
+                                            $dynamic_checkbox_id += 1;
+                                            echo "<tr>";
+                                            echo "<td>" . $data["emp_id"] . "</td>";
+                                            echo "<td>" . $data["emp_full_name"] . "</td>";
+                                            echo "<td>" . '<div class="custom-control custom-checkbox mb-3">' . '<input type="checkbox" class="custom-control-input" id="' . $dynamic_checkbox_id . '" name="example1" checked><label class="custom-control-label" for="' . $dynamic_checkbox_id . '"></label>' . '</div>' . "</td>";
+                                            echo "</tr>";
+                                            }
+                                        }  
+                                        ?>
+                                        </tbody>
+                                        </table>      
+                                    </div>
+                                </div>                       
+                            </div>        
+                        </div>
             </div></div>
     </div>
 </div>
