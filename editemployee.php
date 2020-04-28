@@ -188,123 +188,101 @@
 						<div class="row"><div class="col-sm-6"><!--left-------------------------------->
 									<a id="employee_section"><h1>Employee Main Profile</h1></a> 
 										
-											<div class="col-md-9">
+											<div class="col-md-11">
 												<label for="emp_id">Employee ID</label>
 												<input type="text" class="form-control" name="emp_id" id="emp_id" value="<?php echo $get_emp_id; ?>" disabled>
 											</div>
 										
 									  	<div class="form-group">
-										<label for="emp_full_name" class="col-sm-3 control-label"><h5 class="pt-2">Full Name</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_full_name" class="col-sm-12 control-label"><h5 class="pt-2">Full Name</h5></label>
+										<div class="col-sm-11">
 											<input type="text" id="emp_full_name" name="emp_full_name" placeholder="Full Name" class="form-control" value="<?php echo $show_emp_full_name; ?>" autofocus>
 										</div>
 										</div>
 									
 									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Gender<?php echo $show_emp_gender; ?></h5></label>
-										<div class="col-sm-6">
-											<div class="row">
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="femaleRadio" name="emp_gender" value="Female"
-														<?php 
-															if($show_emp_gender == "Female"){
-															   echo 'checked="checked"';
-															}
-															else{
-															}
-														 ?> >Female
-													</label>
-												</div>
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="maleRadio" name="emp_gender" value="Male"
-														<?php 
-															if($show_emp_gender == "Male"){
-															   echo 'checked="checked"';
-															}
-															else{
-															}
-														 ?> >Male
-													</label>
-												</div>
-											</div>
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Gender</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_gender" name="emp_gender">
+												<option value="Male" <?php if($show_emp_gender == "Male"){echo 'selected="selected"';} else{} ?>>Male</option>
+												<option value="Female" <?php if($show_emp_gender == "Female"){echo 'selected="selected"';} else{} ?>>Female</option>
+											  </select>
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_dob" class="col-sm-3 control-label"><h5 class="pt-2">Date of Birth</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_dob" class="col-sm-12 control-label"><h5 class="pt-2">Date of Birth</h5></label>
+										<div class="col-sm-11">
 											<input type="date" id="emp_dob" class="form-control" name="emp_dob" value="<?php echo $show_emp_dob; ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_email" class="col-sm-3 control-label"><h5 class="pt-2">Email</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_email" class="col-sm-12 control-label"><h5 class="pt-2">Email</h5></label>
+										<div class="col-sm-11">
 											<input type="email" id="emp_email" placeholder="Email" class="form-control" name= "emp_email" value="<?php echo $show_emp_email; ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_address" class="col-sm-3 control-label"><h5 class="pt-2">Address</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_address" class="col-sm-12 control-label"><h5 class="pt-2">Address</h5></label>
+										<div class="col-sm-11">
 											<input type="address" id="emp_address" placeholder="Address" class="form-control" name="emp_address" value="<?php echo $show_emp_address; ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_mobile" class="col-sm-3 control-label"><h5 class="pt-2">Phone number</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_mobile" class="col-sm-12 control-label"><h5 class="pt-2">Phone number</h5></label>
+										<div class="col-sm-11">
 											<input type="tel" id="emp_mobile" placeholder="Phone" class="form-control" name="emp_mobile" value="<?php echo $show_emp_mobile; ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_telephone" class="col-sm-5 control-label"><h5 class="pt-2">Telephone number</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_telephone" class="col-sm-12 control-label"><h5 class="pt-2">Telephone number</h5></label>
+										<div class="col-sm-11">
 											<input type="tel" id="emp_telephone" placeholder="Telephone" class="form-control" name="emp_telephone" value="<?php echo $show_emp_telephone; ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_ic" class="col-sm-3 control-label"><h5 class="pt-2">IC</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_ic" class="col-sm-12 control-label"><h5 class="pt-2">IC</h5></label>
+										<div class="col-sm-11">
 											<input type="ic" id="emp_ic" placeholder="IC/ID" class="form-control" name="emp_ic" value="<?php echo $show_emp_ic; ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_passport" class="col-sm-7 control-label"><h5 class="pt-2">Passport Number (Optional)</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_passport" class="col-sm-12 control-label"><h5 class="pt-2">Passport Number (Optional)</h5></label>
+										<div class="col-sm-11">
 											<input type="passport" id="emp_passport" placeholder="Passport Number" class="form-control" name="emp_passport" value="<?php echo $show_emp_passport; ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_immigration" class="col-sm-7 control-label"><h5 class="pt-2">Immigration Number (Optional)</h5> </label>
-										<div class="col-sm-9">
+										<label for="emp_immigration" class="col-sm-12 control-label"><h5 class="pt-2">Immigration Number (Optional)</h5> </label>
+										<div class="col-sm-11">
 											<input type="immigration" id="emp_immigration" name="emp_immigration" placeholder="Immigration Number" class="form-control" value="<?php echo $show_emp_immigration; ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_title" class="col-sm-3 control-label"><h5 class="pt-2">Job Title</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_title" class="col-sm-12 control-label"><h5 class="pt-2">Job Title</h5></label>
+										<div class="col-sm-11">
 											<input type="text" id="emp_title" name="emp_title" placeholder="Job title description" class="form-control" value="<?php echo $show_emp_title; ?>">
 										</div>
 									</div>
 							
 									<div class="form-group">
-										<label for="emp_join_date" class="col-sm-3 control-label"><h5 class="pt-2">Employee Join Date</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_join_date" class="col-sm-12 control-label"><h5 class="pt-2">Employee Join Date</h5></label>
+										<div class="col-sm-11">
 											<input type="date" id="emp_join_date" name="emp_join_date" class="form-control" value="<?php echo $show_emp_join_date; ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_confirm_date" class="col-sm-3 control-label"><h5 class="pt-2">Employee Start Date</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_confirm_date" class="col-sm-12 control-label"><h5 class="pt-2">Employee Start Date</h5></label>
+										<div class="col-sm-11">
 											<input type="date" id="emp_confirm_date" name="emp_confirm_date" class="form-control" value="<?php echo $show_emp_confirm_date; ?>">
 										</div>
 									</div>
@@ -316,58 +294,26 @@
 									<a id="payroll_section"><h1>Payroll Details</h1></a>
 									
 									<div class="form-group">
-										<label for="emp_wages" class="col-sm-3 control-label"><h5 class="pt-2">Wages</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_wages" class="col-sm-12 control-label"><h5 class="pt-2">Wages</h5></label>
+										<div class="col-sm-11">
 											<input type="number" id="emp_wages" name="emp_wages" placeholder="Employee Wages" class="form-control" value="<?php echo $show_emp_wages; ?>" autofocus>
 										</div>
 									</div>
-									
+						
 									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Payment Method</h5></label>
-										<div class="col-sm-6">
-											<div class="row">
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="bankin" name="emp_payment_method" value="Bank-In"
-															   <?php 
-															if($show_emp_payment_method == "Bank-In"){
-															   echo 'checked="checked"';
-															}
-															else{
-															}
-														 ?> >Bank-In
-													</label>
-												</div>
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="cash" name="emp_payment_method" value="Cash"
-															   <?php 
-															if($show_emp_payment_method == "Cash"){
-															   echo 'checked="checked"';
-															}
-															else{
-															}
-														 ?> >Cash
-													</label>
-												</div>
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="cheque" name="emp_payment_method" value="Cheque"
-															   <?php 
-															if($show_emp_payment_method == "Cheque"){
-															   echo 'checked="checked"';
-															}
-															else{
-															}
-														 ?> >Cheque
-													</label>
-												</div>
-											</div>
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Payment Method</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_payment_method" name="emp_payment_method">
+												<option value="Bank-In" <?php if($show_emp_payment_method == "Bank-In"){echo 'selected="selected"';} else{} ?>>Bank-In</option>
+												<option value="Cash" <?php if($show_emp_payment_method == "Cash"){echo 'selected="selected"';} else{} ?>>Cash</option>
+												<option value="Cheque" <?php if($show_emp_payment_method == "Cheque"){echo 'selected="selected"';} else{} ?>>Cheque</option>
+											  </select>
 										</div>
 									</div>
+						
 									<div class="form-group">
-										<label class="sel1 control-label col-sm-3"><h5 class="pt-2">Bank Name</h5></label>
-										<div class="col-sm-9">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Bank Name</h5></label>
+										<div class="col-sm-11">
 											<select class="form-control" id="emp_bank_name" name="emp_bank_name">
 												<option value="Maybank" <?php if($show_emp_bank_name == "Mabank"){echo 'selected="selected"';} else{} ?>>Maybank</option>
 												<option value="CIMB" <?php if($show_emp_bank_name == "CIMB"){echo 'selected="selected"';} else{} ?>>CIMB Bank</option>
@@ -390,98 +336,62 @@
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_account" class="col-sm-3 control-label"><h5 class="pt-2">Bank Account</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_account" class="col-sm-12 control-label"><h5 class="pt-2">Bank Account</h5></label>
+										<div class="col-sm-11">
 											<input type="text" id="emp_account" placeholder="Bank Account Number" class="form-control" name= "emp_account" value="<?php echo $show_emp_account; ?>">
 										</div>
 									</div>
-									
+						
 									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Health Status</h5></label>
-										<div class="col-sm-9">
-											<div class="row">
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="resident" name="emp_health_status" value="Resident" <?php if($show_emp_health_status == "Resident"){echo 'checked="checked"';} else{}?>>Resident
-													</label>
-												</div>
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="self-disabled" name="emp_health_status" value="Self-Disabled" <?php if($show_emp_health_status == "Self-Disabled"){echo 'checked="checked"';} else{}?>>Self-Disabled
-													</label>
-												</div>
-											</div>
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Health Status</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_health_status" name="emp_health_status">
+												<option value="Resident" <?php if($show_emp_health_status == "Resident"){echo 'selected="selected"';} else{} ?>>Resident</option>
+												<option value="Self-Disabled" <?php if($show_emp_health_status == "Self-Disabled"){echo 'selected="selected"';} else{} ?>>Self-Disabled</option>
+											  </select>
+										</div>
+									</div>
+						
+									<div class="form-group">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Martial Status</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_martial_status" name="emp_martial_status">
+												<option value="Single" <?php if($show_emp_martial_status == "Single"){echo 'selected="selected"';} else{} ?>>Single</option>
+												<option value="Married" <?php if($show_emp_martial_status == "Married"){echo 'selected="selected"';} else{} ?>>Married</option>
+												<option value="Divorced" <?php if($show_emp_martial_status == "Divorced"){echo 'selected="selected"';} else{} ?>>Divorced</option>
+												<option value="Widow" <?php if($show_emp_martial_status == "Widow"){echo 'selected="selected"';} else{} ?>>Widow</option>
+											  </select>
+										</div>
+									</div>
+						
+									<div class="form-group">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Spouse Status</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_spouse_status" name="emp_spouse_status">
+												<option value="Work" <?php if($show_emp_spouse_status == "Work"){echo 'selected="selected"';} else{} ?>>Work</option>
+												<option value="Disabled" <?php if($show_emp_spouse_status == "Disabled"){echo 'selected="selected"';} else{} ?>>Disabled</option>
+												<option value="None" <?php if($show_emp_spouse_status == "None"){echo 'selected="selected"';} else{} ?>>None</option>
+											  </select>
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Martial Status</h5></label>
-										<div class="col-sm-9">
-											<div class="row">
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="single" name="emp_martial_status" value="Single" <?php if($show_emp_martial_status == "Single"){echo 'checked="checked"';} else{} ?>>Single
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="married" name="emp_martial_status" value="Married" <?php if($show_emp_martial_status == "Married"){echo 'checked="checked"';} else{} ?>>Married
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="divorced" name="emp_martial_status" value="Divorced" <?php if($show_emp_martial_status == "Divorced"){echo 'checked="checked"';} else{} ?>>Divorced
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="widow" name="emp_martial_status" value="Widow" <?php if($show_emp_martial_status == "Widow"){echo 'checked="checked"';} else{} ?>>Widow
-													</label>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Spouse Status</h5></label>
-										<div class="col-sm-9">
-											<div class="row">
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="work" name="emp_spouse_status" value="Work" <?php if($show_emp_spouse_status == "Work"){echo 'checked="checked"';} else{} ?>>Work
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="disabled" name="emp_spouse_status" value="Disabled" <?php if($show_emp_spouse_status == "Disabled"){echo 'checked="checked"';} else{} ?>>Disabled
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="none" name="emp_spouse_status" value="None" <?php if($show_emp_spouse_status == "None"){echo 'checked="checked"';} else{} ?>>None
-													</label>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="form-group">
-										<label for="emp_epf" class="col-sm-3 control-label"><h5 class="pt-2">Employee EPF</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_epf" class="col-sm-12 control-label"><h5 class="pt-2">Employee EPF</h5></label>
+										<div class="col-sm-11">
 											<input type="number" id="emp_epf" name="emp_epf" placeholder="Employee EPF Number" class="form-control" value="<?php echo $show_emp_epf; ?>" autofocus>
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_socso" class="col-sm-3 control-label"><h5 class="pt-2">Employee SOCSO</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_socso" class="col-sm-12 control-label"><h5 class="pt-2">Employee SOCSO</h5></label>
+										<div class="col-sm-11">
 											<input type="number" id="emp_socso" name="emp_socso" placeholder="Employee SOCSO Number" class="form-control" value="<?php echo $show_emp_socso; ?>" autofocus>
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label class="sel1 control-label col-sm-3"><h5 class="pt-2">SOCSO Type</h5></label>
-										<div class="col-sm-9">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">SOCSO Type</h5></label>
+										<div class="col-sm-11">
 											<select class="form-control" id="emp_socso_type" name="emp_socso_type">
 												<option value="Category 1" <?php if($show_emp_socso_type == "Category 1"){echo 'selected="selected"';} else{} ?>>Category 1</option>
 												<option value="Category 2" <?php if($show_emp_socso_type == "Category 2"){echo 'selected="selected"';} else{} ?>>Category 2</option>
@@ -490,8 +400,8 @@
 									</div>
 									
 									<div class="form-group">
-										<label class="sel1 control-label col-sm-3"><h5 class="pt-2">EIS Eligibility</h5></label>
-										<div class="col-sm-9">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">EIS Eligibility</h5></label>
+										<div class="col-sm-11">
 											<select class="form-control" id="emp_eis_type" name="emp_eis_type">
 												<option value="Yes" <?php if($show_emp_eis_type == "Yes"){echo 'selected="selected"';} else{} ?>>Yes</option>
 												<option value="No" <?php if($show_emp_eis_type == "No"){echo 'selected="selected"';} else{} ?>>No</option>
@@ -500,14 +410,14 @@
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_resign_date" class="col-sm-3 control-label"><h5 class="pt-2">Employee Resign Date (Optional)</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_resign_date" class="col-sm-12 control-label"><h5 class="pt-2">Employee Resign Date (Optional)</h5></label>
+										<div class="col-sm-11">
 											<input type="date" id="emp_resign_date" name="emp_resign_date" class="form-control" value="<?php echo $show_emp_resign_date; ?>">
 										</div>
 									</div>
 									
 										<div class="form-group">
-										<div class="col-sm-9 pt-5"><button type="submit" class="btn btn-primary btn-block p-2">Register</button></div>
+										<div class="col-sm-11 pt-5"><button type="submit" class="btn btn-primary btn-block p-2" name="submit_1" id="submit_1">Register</button></div>
 									</div>
 							</div></div><!--right-------------------------------------------->		
 								  </form>

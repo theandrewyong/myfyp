@@ -32,103 +32,95 @@
 									<a id="employee_section"><h1>Employee Main Profile</h1></a> 
 									<br>
 									<div class="form-group">
-										<label for="emp_full_name" class="col-sm-3 control-label"><h5 class="pt-2">Full Name</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_full_name" class="col-sm-12 control-label"><h5 class="pt-2">Full Name</h5></label>
+										<div class="col-sm-11">
 											<input type="text" id="emp_full_name" name="emp_full_name" placeholder="Full Name" class="form-control" autofocus>
 										</div>
 									</div>
-									
+	
 									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Gender</h5></label>
-										<div class="col-sm-6">
-											<div class="row">
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="femaleRadio" name="emp_gender" value="Female">Female
-													</label>
-												</div>
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="maleRadio" name="emp_gender" value="Male">Male
-													</label>
-												</div>
-											</div>
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Gender</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_gender" name="emp_gender">
+												<option value="Male">Male</option>
+												<option value="Female">Female</option>
+											  </select>
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_dob" class="col-sm-3 control-label"><h5 class="pt-2">Date of Birth</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_dob" class="col-sm-12 control-label"><h5 class="pt-2">Date of Birth</h5></label>
+										<div class="col-sm-11">
 											<input type="date" id="emp_dob" class="form-control" name="emp_dob" value="<?php echo date('Y-m-t'); ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_email" class="col-sm-3 control-label"><h5 class="pt-2">Email</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_email" class="col-sm-12 control-label"><h5 class="pt-2">Email</h5></label>
+										<div class="col-sm-11">
 											<input type="email" id="emp_email" placeholder="Email" class="form-control" name= "emp_email">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_address" class="col-sm-3 control-label"><h5 class="pt-2">Address</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_address" class="col-sm-12 control-label"><h5 class="pt-2">Address</h5></label>
+										<div class="col-sm-11">
 											<input type="address" id="emp_address" placeholder="Address" class="form-control" name="emp_address">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_mobile" class="col-sm-3 control-label"><h5 class="pt-2">Phone number</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_mobile" class="col-sm-12 control-label"><h5 class="pt-2">Phone number</h5></label>
+										<div class="col-sm-11">
 											<input type="tel" id="emp_mobile" placeholder="Phone" class="form-control" name="emp_mobile">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_telephone" class="col-sm-5 control-label"><h5 class="pt-2">Telephone number</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_telephone" class="col-sm-12 control-label"><h5 class="pt-2">Telephone number</h5></label>
+										<div class="col-sm-11">
 											<input type="tel" id="emp_telephone" placeholder="Telephone" class="form-control" name="emp_telephone">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_ic" class="col-sm-3 control-label"><h5 class="pt-2">IC</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_ic" class="col-sm-12 control-label"><h5 class="pt-2">IC</h5></label>
+										<div class="col-sm-11">
 											<input type="ic" id="emp_ic" placeholder="IC/ID" class="form-control" name="emp_ic">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_passport" class="col-sm-7 control-label"><h5 class="pt-2">Passport Number (Optional)</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_passport" class="col-sm-12 control-label"><h5 class="pt-2">Passport Number (Optional)</h5></label>
+										<div class="col-sm-11">
 											<input type="passport" id="emp_passport" placeholder="Passport Number" class="form-control" name="emp_passport">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_immigration" class="col-sm-7 control-label"><h5 class="pt-2">Immigration Number (Optional)</h5> </label>
-										<div class="col-sm-9">
+										<label for="emp_immigration" class="col-sm-12 control-label"><h5 class="pt-2">Immigration Number (Optional)</h5> </label>
+										<div class="col-sm-11">
 											<input type="immigration" id="emp_immigration" name="emp_immigration" placeholder="Immigration Number" class="form-control">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_title" class="col-sm-3 control-label"><h5 class="pt-2">Job Title</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_title" class="col-sm-12 control-label"><h5 class="pt-2">Job Title</h5></label>
+										<div class="col-sm-11">
 											<input type="text" id="emp_title" name="emp_title" placeholder="Job title description" class="form-control">
 										</div>
 									</div>
 	
 									<div class="form-group">
-										<label for="emp_join_date" class="col-sm-3 control-label"><h5 class="pt-2">Employee Join Date</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_join_date" class="col-sm-12 control-label"><h5 class="pt-2">Employee Join Date</h5></label>
+										<div class="col-sm-11">
 											<input type="date" id="emp_join_date" name="emp_join_date" class="form-control" value="<?php echo date('Y-m-t'); ?>">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_confirm_date" class="col-sm-3 control-label"><h5 class="pt-2">Employee Start Date</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_confirm_date" class="col-sm-12 control-label"><h5 class="pt-2">Employee Start Date</h5></label>
+										<div class="col-sm-11">
 											<input type="date" id="emp_confirm_date" name="emp_confirm_date" class="form-control" value="<?php echo date('Y-m-t'); ?>">
 										</div>
 									</div>
@@ -139,38 +131,26 @@
 									<a id="payroll_section"><h1>Payroll Details</h1></a>
 									<br>
 									<div class="form-group">
-										<label for="emp_wages" class="col-sm-3 control-label"><h5 class="pt-2">Wages</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_wages" class="col-sm-12 control-label"><h5 class="pt-2">Wages</h5></label>
+										<div class="col-sm-11">
 											<input type="number" id="emp_wages" name="emp_wages" placeholder="Employee Wages" class="form-control" autofocus>
 										</div>
 									</div>
-									
+	
 									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Payment Method</h5></label>
-										<div class="col-sm-6">
-											<div class="row">
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="bankin" name="emp_payment_method" value="Bank-In">Bank-In
-													</label>
-												</div>
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="cash" name="emp_payment_method" value="Cash">Cash
-													</label>
-												</div>
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="cheque" name="emp_payment_method" value="Cheque">Cheque
-													</label>
-												</div>
-											</div>
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Payment Method</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_payment_method" name="emp_payment_method">
+												<option value="Bank_In">Bank_In</option>
+												<option value="Cash">Cash</option>
+												<option value="Cheque">Cheque</option>
+											  </select>
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label class="sel1 control-label col-sm-3"><h5 class="pt-2">Bank Name</h5></label>
-										<div class="col-sm-9">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Bank Name</h5></label>
+										<div class="col-sm-11">
 											<select class="form-control" id="emp_bank_name" name="emp_bank_name">
 												<option value="Maybank">Maybank</option>
 												<option value="CIMB">CIMB Bank</option>
@@ -193,98 +173,62 @@
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_account" class="col-sm-3 control-label"><h5 class="pt-2">Bank Account</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_account" class="col-sm-12 control-label"><h5 class="pt-2">Bank Account</h5></label>
+										<div class="col-sm-11">
 											<input type="text" id="emp_account" placeholder="Bank Account Number" class="form-control" name= "emp_account">
 										</div>
 									</div>
-									
+	
 									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Health Status</h5></label>
-										<div class="col-sm-9">
-											<div class="row">
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="resident" name="emp_health_status" value="Resident">Resident
-													</label>
-												</div>
-												<div class="col-sm-4">
-													<label class="radio-inline">
-														<input type="radio" id="self-disabled" name="emp_health_status" value="Self-Disabled">Self-Disabled
-													</label>
-												</div>
-											</div>
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Health Status</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_health_status" name="emp_health_status">
+												<option value="Resident">Resident</option>
+												<option value="Self-Disabled">Self-Disabled</option>
+											</select>
+										</div>
+									</div>
+	
+									<div class="form-group">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Martial Status</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_martial_status" name="emp_martial_status">
+												<option value="Single">Single</option>
+												<option value="Married">Married</option>
+												<option value="Divorced">Divorced</option>
+												<option value="Widow">Widow</option>
+											</select>
+										</div>
+									</div>
+	
+									<div class="form-group">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">Spouse Status</h5></label>
+										<div class="col-sm-11">
+											<select class="form-control" id="emp_spouse_status" name="emp_spouse_status">
+												<option value="Work">Work</option>
+												<option value="Disabled">Disabled</option>
+												<option value="None">None</option>
+											</select>
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Martial Status</h5></label>
-										<div class="col-sm-9">
-											<div class="row">
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="single" name="emp_martial_status" value="Single">Single
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="married" name="emp_martial_status" value="Married">Married
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="divorced" name="emp_martial_status" value="Divorced">Divorced
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="widow" name="emp_martial_status" value="Widow">Widow
-													</label>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="form-group">
-										<label class="control-label col-sm-3"><h5 class="pt-2">Spouse Status</h5></label>
-										<div class="col-sm-9">
-											<div class="row">
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="work" name="emp_spouse_status" value="Work">Work
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="disabled" name="emp_spouse_status" value="Disabled">Disabled
-													</label>
-												</div>
-												<div class="col-sm-3">
-													<label class="radio-inline">
-														<input type="radio" id="none" name="emp_spouse_status" value="None">None
-													</label>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-									<div class="form-group">
-										<label for="emp_epf" class="col-sm-3 control-label"><h5 class="pt-2">Employee EPF</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_epf" class="col-sm-12 control-label"><h5 class="pt-2">Employee EPF</h5></label>
+										<div class="col-sm-11">
 											<input type="number" id="emp_epf" name="emp_epf" placeholder="Employee EPF Number" class="form-control" autofocus>
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_socso" class="col-sm-3 control-label"><h5 class="pt-2">Employee SOCSO</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_socso" class="col-sm-12 control-label"><h5 class="pt-2">Employee SOCSO</h5></label>
+										<div class="col-sm-11">
 											<input type="number" id="emp_socso" name="emp_socso" placeholder="Employee SOCSO Number" class="form-control" autofocus>
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<label class="sel1 control-label col-sm-3"><h5 class="pt-2">SOCSO Type</h5></label>
-										<div class="col-sm-9">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">SOCSO Type</h5></label>
+										<div class="col-sm-11">
 											<select class="form-control" id="emp_socso_type" name="emp_socso_type">
 												<option value="Category 1">Category 1</option>
 												<option value="Category 2">Category 2</option>
@@ -293,8 +237,8 @@
 									</div>
 									
 									<div class="form-group">
-										<label class="sel1 control-label col-sm-3"><h5 class="pt-2">EIS Eligibility</h5></label>
-										<div class="col-sm-9">
+										<label class="sel1 control-label col-sm-12"><h5 class="pt-2">EIS Eligibility</h5></label>
+										<div class="col-sm-11">
 											<select class="form-control" id="emp_eis_type" name="emp_eis_type">
 												<option value="Yes">Yes</option>
 												<option value="No">No</option>
@@ -303,14 +247,14 @@
 									</div>
 									
 									<div class="form-group">
-										<label for="emp_resign_date" class="col-sm-3 control-label"><h5 class="pt-2">Employee Resign Date (Optional)</h5></label>
-										<div class="col-sm-9">
+										<label for="emp_resign_date" class="col-sm-12 control-label"><h5 class="pt-2">Employee Resign Date (Optional)</h5></label>
+										<div class="col-sm-11">
 											<input type="date" id="emp_resign_date" name="emp_resign_date" class="form-control">
 										</div>
 									</div>
 									
 									<div class="form-group">
-										<div class="col-sm-9 pt-5"><button type="submit" class="btn btn-primary btn-block p-2">Register</button></div>
+										<div class="col-sm-11 pt-5"><button type="submit" class="btn btn-primary btn-block p-2">Register</button></div>
 									</div>
 							</div></div><!--right-------------------------------------------->
 
