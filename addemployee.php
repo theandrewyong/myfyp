@@ -30,7 +30,7 @@
 								<form class="form-horizontal" role="form" action="addemployee_data.php" method="post">
 <div class="row"><div class="col-sm-6"><!--left-------------------------------->
 									<a id="employee_section"><h1>Employee Main Profile</h1></a> 
-									
+									<br>
 									<div class="form-group">
 										<label for="emp_full_name" class="col-sm-3 control-label"><h5 class="pt-2">Full Name</h5></label>
 										<div class="col-sm-9">
@@ -137,7 +137,7 @@
 									<hr/>
 <div class="col-sm-6"><!--right--------------------------------------------------->
 									<a id="payroll_section"><h1>Payroll Details</h1></a>
-									
+									<br>
 									<div class="form-group">
 										<label for="emp_wages" class="col-sm-3 control-label"><h5 class="pt-2">Wages</h5></label>
 										<div class="col-sm-9">
