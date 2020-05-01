@@ -35,48 +35,29 @@
 <div class="container-fluid">
 <h1 class="mt-4">New Payroll</h1>
 <!-- dashboard conten here -->
-<hr>
+<hr> <form action="newpayroll.php" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6 col-12">
             <div class="p-5 bg-white rounded shadow mb-5">
-<?php
-    if(isset($_POST["submit"])){
-    //get input data
-    $payroll_monthly_process_date = mysqli_escape_string($conn, $_POST["process_payroll_process_date"]);
-    $payroll_monthly_from = mysqli_escape_string($conn, $_POST["process_payroll_from"]);
-    $payroll_monthly_to = mysqli_escape_string($conn, $_POST["process_payroll_to"]);
-    $payroll_monthly_desc_1 = mysqli_escape_string($conn, $_POST["process_payroll_desc_1"]);
-    $payroll_monthly_desc_2 = mysqli_escape_string($conn, $_POST["process_payroll_desc_2"]);
-    $payroll_monthly_ref_1 = mysqli_escape_string($conn, $_POST["process_payroll_ref_1"]);
-    $payroll_monthly_ref_2 = mysqli_escape_string($conn, $_POST["process_payroll_ref_2"]);
 
-    $new_user_sql = "INSERT INTO process_payroll (process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2) VALUES (?,?,?,?,?,?,?)";
-
-    $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
-    mysqli_stmt_bind_param($prepared_stmt_insert, 'sssssss', $payroll_monthly_process_date, $payroll_monthly_from, $payroll_monthly_to, $payroll_monthly_desc_1, $payroll_monthly_desc_2, $payroll_monthly_ref_1, $payroll_monthly_ref_2);
-    mysqli_stmt_execute($prepared_stmt_insert);
-    mysqli_stmt_close($prepared_stmt_insert);
-    }
-    ?> 
-
-            <form action="newpayroll.php" method="post" enctype="multipart/form-data">
+           
             <p><b>Transaction Posting</b></p>
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <label for="">Month</label>
+                    <input type="number" name="process_payroll_process_month" class="form-control" value="<?php echo date("m"); ?>">
+                </div>                
+                <div class="col-md-6 col-12">
+                    <label for="">Year</label>
+                    <input type="text" name="process_payroll_process_year" class="form-control" value="<?php echo date("Y"); ?>">
+                </div>
+            </div>                
             <div class="row">
                 <div class="col-md-12">
                     <label for="">Process Date</label>
                     <input type="date" class="form-control" name="process_payroll_process_date" value="<?php echo date('Y-m-d'); ?>">
                 </div>    
             </div>    
-            <div class="row">
-                <div class="col-md-6 col-12">
-                    <label for="">Year</label>
-                    <input type="text" class="form-control" disabled>
-                </div>
-                <div class="col-md-6 col-12">
-                    <label for="">Month</label>
-                    <input type="text" class="form-control" disabled>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-md-6 col-12">
                     <label for="">Process From</label>
@@ -120,50 +101,125 @@
                     
                 </div>    
             </div>
-            </form>
+           
         </div>
         </div>
         <div class="col-md-6 col-12">
             <div class="p-5 bg-white rounded shadow mb-5">
             <p><b>Employee</b></p>
-                        <div class="table-responsive">
-                            <div class="container-fluid">
-                            <?php
-                            $select_sql = mysqli_query($conn, "SELECT * FROM employee_info");  
-                            ?>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <!-- Show admin table -->
-                                        <table id="example" class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Employee ID</th>
-                                                <th>Employee Name</th>
-                                                <th>Process</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
-                                        if($datarows = mysqli_num_rows($select_sql) > 0){
-                                            $dynamic_checkbox_id = 0;
-                                            while($data = mysqli_fetch_assoc($select_sql)){
-                                            $dynamic_checkbox_id += 1;
-                                            echo "<tr>";
-                                            echo "<td>" . $data["emp_id"] . "</td>";
-                                            echo "<td>" . $data["emp_full_name"] . "</td>";
-                                            echo "<td>" . '<div class="custom-control custom-checkbox mb-3">' . '<input type="checkbox" class="custom-control-input" id="' . $dynamic_checkbox_id . '" name="example1" checked><label class="custom-control-label" for="' . $dynamic_checkbox_id . '"></label>' . '</div>' . "</td>";
-                                            echo "</tr>";
+                <div class="table-responsive">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="example" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Employee ID</th>
+                                        <th>Employee Name</th>
+                                        <th>To process</th>
+                                    </tr>
+                                </thead>                                
+                                <tbody>
+                                <?php
+                                $all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
+                                $process_date = date("Y-m-d");
+                                $process_date_month = date("m"); 
+                                $process_date_year = date("Y"); 
+                                $to_process_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_month = '$process_date_month' AND process_payroll_process_year = '$process_date_year'");
+
+                                if(mysqli_num_rows($all_employee_sql) != 0){
+                                    while($all_emp_data = mysqli_fetch_assoc($all_employee_sql)){
+                                        $emp_array[] = $all_emp_data["emp_id"];
+                                    }
+                                }else{
+                                    $emp_array[] = "";
+                                }
+                                if(mysqli_num_rows($to_process_sql) != 0){
+                                    while( $compare_data = mysqli_fetch_assoc($to_process_sql)){
+                                        $process_array[] = $compare_data["emp_id"];
+                                    }
+                                }else{
+                                    $process_array[] = "";
+                                }
+                                if(mysqli_num_rows($to_process_sql) >= 0){
+                                    $ccb = 0;
+                                    $show_table_data = array_diff($emp_array, $process_array);
+                                    foreach($show_table_data as $std){
+                                        $ccb++;
+                                        $get_name = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$std'");
+                                        $get_name_result = mysqli_fetch_assoc($get_name);
+                                        echo "<tr>";
+                                        echo "<td>" . $std . "</td>";
+                                        echo "<td>" . $get_name_result["emp_full_name"] . "</td>";
+                                        echo "<td>" . '<input value="' . $get_name_result["emp_id"] . '" type="checkbox" name="cb' . $ccb . '">' . "</td>";
+                                        echo "</tr>";                                   
+                                    }                                            
+                                }else{
+                                    echo "<tr>";
+                                    echo "<td colspan='2'>All Employee processed for this Month and Year</td>";
+                                    echo "</tr>";
+                                }
+                                if(isset($_POST["submit"])){
+                                    
+                                    $process_month = $_POST["process_payroll_process_month"];
+                                    $process_year = $_POST["process_payroll_process_year"];
+                                    $process_date = $_POST["process_payroll_process_date"];
+                                    $process_from = $_POST["process_payroll_from"];
+                                    $process_to = $_POST["process_payroll_to"];
+                                    $process_desc1 = $_POST["process_payroll_desc_1"];
+                                    $process_desc2 = $_POST["process_payroll_desc_2"];
+                                    $process_ref1 = $_POST["process_payroll_ref_1"];
+                                    $process_ref2 = $_POST["process_payroll_ref_2"];
+                                    
+                                    $counter = count($show_table_data) + 1;
+                                    for($i=1;$i<$counter;$i++){
+                                        if(isset($_POST["cb$i"])){
+                                            ${"check_ca$i"} = $_POST["cb$i"];
+                                            //echo ${"check_ca$i"} . "<br>";
+                                            //get EPF formula to count
+                                            $epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula");
+                                            while($ef = mysqli_fetch_assoc($epf_formula_sql)){
+                                                $ef_start = $ef["epf_formula_wage_start"];
+                                                $ef_end = $ef["epf_formula_wage_end"];  
+                                                //employee wages
+                                                $specific_emp_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '${"check_ca$i"}'");
+                                                $get_specific_result = mysqli_fetch_assoc($specific_emp_sql);
+                                                $emp_wages = $get_specific_result["emp_wages"];// get individual employee wages
+                                                $emp_allowance = $get_specific_result["emp_total_allowance"];
+                                               // $emp_overtime = "";
+                                               // $emp_commission = "";
+                                               // $emp_claims = "";
+                                               // $emp_director_fees = "";
+                                               // $emp_bonus = "";
+                                               // $emp_others = "";
+                                               // $emp_advance_paid = "";
+                                               // $emp_loan = "";
+                                               // $emp_adhoc_deduction = "";
+                                               // $emp_unpaid_leave = "";
+                                               // $emp_advance_deduct = "";
+                                                if(($emp_wages >= $ef_start) && ($emp_wages <= $ef_end)){ //if wages is in between
+                                                    //echo $ef["epf_formula_employee_amt"]; //display employee epf amt for the range
+                                                    $epf_employee_deduction = $ef["epf_formula_employee_amt"];
+                                                    $epf_employer_deduction = $ef["epf_formula_employer_amt"];
+                                                    $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, epf_employee_deduction, epf_employer_deduction) VALUES ('${"check_ca$i"}', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$epf_employee_deduction', '$epf_employer_deduction')");                                                      
+                                                }                                                
                                             }
                                         }  
-                                        ?>
-                                        </tbody>
-                                        </table>      
-                                    </div>
-                                </div>                       
-                            </div>        
-                        </div>
-            </div></div>
-    </div>
+                                    }
+                                    
+                                }
+                                ?>
+                                    
+                                </tbody>
+                                </table>
+
+                            </div>
+                        </div>                       
+                    </div>        
+                </div>
+            </div>
+        </div>
+    </div> </form>
 </div>
 </div>
 <!-- /#page-content-wrapper -->
@@ -182,7 +238,11 @@ e.preventDefault();
 $("#wrapper").toggleClass("toggled");
 });
 </script>
-
+<script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
 </body>
 
 </html>

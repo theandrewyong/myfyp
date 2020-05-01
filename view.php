@@ -81,8 +81,8 @@
                                         echo '<tr>';
                                         echo '<td>' . $data["epf_formula_wage_start"] . '</td>';
                                         echo '<td>' . $data["epf_formula_wage_end"] . '</td>';
-                                        echo '<td>' . $data["epf_formula_employee_epf"] . '</td>';
-                                        echo '<td>' . $data["epf_formula_employer_epf"] . '</td>';
+                                        echo '<td>' . $data["epf_formula_employee_amt"] . '</td>';
+                                        echo '<td>' . $data["epf_formula_employer_amt"] . '</td>';
                                         echo '</tr>';
                                     }
                                 }
@@ -198,6 +198,8 @@
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
 <!-- Menu Toggle Script -->
 <script>
@@ -205,6 +207,17 @@ $("#menu-toggle").click(function(e) {
 e.preventDefault();
 $("#wrapper").toggleClass("toggled");
 });
+    
+$(document).ready( function() {
+  $('#example').dataTable( {
+     language: {
+        search: "",
+         "lengthMenu": "_MENU_",
+        searchPlaceholder: "Search records"
+     },
+    "sDom": '<"mot"f><"xot"l>rt<"bottom"pi><"clear">'
+  } );
+} );
 </script>
 
 </body>
