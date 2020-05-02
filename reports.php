@@ -79,7 +79,7 @@ div.desc {
 </div>
     
 <div class="gallery">
-  <a target="_blank" href="img_5terre.jpg" >
+  <a target="_blank" href="test_pdf_generator.php" >
     <img src="img/download.png" alt="Cinque Terre" width="100%;">
   <div class="desc">EPF</div></a>
 </div>
