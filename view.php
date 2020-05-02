@@ -48,7 +48,7 @@
                 <a id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">SOCSO table</a>
             </li>
             <li class="nav-item flex-sm-fill">
-                <a id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">EIS table</a>
+                <a id="profile1-tab" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">EIS table</a>
             </li>
         </ul>
         <div id="myTabContent" class="tab-content">
@@ -72,12 +72,12 @@
                                 </thead>
                                 <tbody>
                                 <?php
-                                $sql = "SELECT * FROM epf_formula";
-                                $prepared_stmt_insert = mysqli_prepare($conn, $sql);
-                                mysqli_stmt_execute($prepared_stmt_insert);
-                                $result = $prepared_stmt_insert->get_result(); 
-                                if($result->num_rows > 0) { 
-                                    while ($data = $result->fetch_assoc()) {
+                                $epf_formula_sql = "SELECT * FROM epf_formula";
+                                $epf_formula_prepared_stmt_insert = mysqli_prepare($conn, $epf_formula_sql);
+                                mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
+                                $epf_result = $epf_formula_prepared_stmt_insert->get_result(); 
+                                if($epf_result->num_rows > 0) { 
+                                    while ($data = $epf_result->fetch_assoc()) {
                                         echo '<tr>';
                                         echo '<td>' . $data["epf_formula_wage_start"] . '</td>';
                                         echo '<td>' . $data["epf_formula_wage_end"] . '</td>';
@@ -99,7 +99,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bordered">
+                            <table id="example1" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th colspan="2">Wages</th>
@@ -128,8 +128,8 @@
                                         echo '<td>' . $data["socso_formula_wage_end"] . '</td>';
                                         echo '<td>' . $data["socso_formula_employee_amt"] . '</td>';
                                         echo '<td>' . $data["socso_formula_employer_amt"] . '</td>';
-                                        echo '<td>' . $data["socso_total_amt"] . '</td>';
-                                        echo '<td>' . $data["socso_employer_contribution_amt"] . '</td>';
+                                        echo '<td>' . $data["socso_formula_total"] . '</td>';
+                                        echo '<td>' . $data["socso_formula_employer_contribution"] . '</td>';
                                         echo '</tr>';
                                     }
                                 }
@@ -141,12 +141,12 @@
                 </div>    
                 <!-- SOCSO table end --> 
             </div>
-            <div id="profile" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-5">
+            <div id="profile1" role="tabpanel" aria-labelledby="profile1-tab" class="tab-pane fade px-4 py-5">
                 <!-- EIS table -->
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bordered">
+                            <table id="example2" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th colspan="2">Wages</th>
@@ -172,8 +172,8 @@
                                         echo '<td>' . $data["eis_formula_wage_start"] . '</td>';
                                         echo '<td>' . $data["eis_formula_wage_end"] . '</td>';
                                         echo '<td>' . $data["eis_formula_employee_amt"] . '</td>';
+                                        echo '<td>' . $data["eis_formula_employee_amt"] . '</td>';
                                         echo '<td>' . $data["eis_formula_employer_amt"] . '</td>';
-                                        echo '<td>' . $data["eis_formula_total_amt"] . '</td>';
                                         echo '</tr>';
                                     }
                                 }
@@ -217,7 +217,18 @@ $(document).ready( function() {
      },
     "sDom": '<"mot"f><"xot"l>rt<"bottom"pi><"clear">'
   } );
+    
+  $('#example2').dataTable( {
+     language: {
+        search: "",
+         "lengthMenu": "_MENU_",
+        searchPlaceholder: "Search records"
+     },
+    "sDom": '<t>'
+  } );    
 } );
+
+
 </script>
 
 </body>
