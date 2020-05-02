@@ -62,60 +62,15 @@ div.desc {
 
 <?php include "navbar.php"; ?>
     
-<div class="container-fluid">
-<h1 class="mt-4">Reports</h1>
-<hr>
-<!-- dashboard conten here -->
-<div class="gallery">
-  <a href="payslip.php">
-    <img src="img/download.png" alt="Cinque Terre" width="100%;">
-  <div class="desc">Payslip</div></a>
-</div>
-
-<div class="gallery">
-  <a target="_blank" href="img_forest.jpg">
-    <img src="img/gg.jpg" alt="Forest" width="100%;">
-  <div class="desc">Payroll Summary</div></a>
-</div>
-    
-<div class="gallery">
-  <a target="_blank" href="img_5terre.jpg" >
-    <img src="img/download.png" alt="Cinque Terre" width="100%;">
-  <div class="desc">EPF</div></a>
-</div>
-
-<div class="gallery">
-  <a target="_blank" href="img_forest.jpg">
-    <img src="img/gg.jpg" alt="Forest" width="100%;">
-  <div class="desc">SOCSO</div></a>
-</div>
-
-    
-<div class="gallery">
-  <a target="_blank" href="img_5terre.jpg" >
-    <img src="img/download.png" alt="Cinque Terre" width="100%;">
-  <div class="desc">EIS</div></a>
-</div>
-
-<div class="gallery">
-  <a target="_blank" href="img_forest.jpg">
-    <img src="img/gg.jpg" alt="Forest" width="100%;">
-  <div class="desc">Yearly Wages</div></a>
-</div>
-
-
-<div class="gallery">
-  <a target="_blank" href="img_5terre.jpg" >
-    <img src="img/download.png" alt="Cinque Terre" width="100%;">
-  <div class="desc">Yearly Individual Wages</div></a>
-</div>
-
-
-
-    
-</div>
-<!-- footer here -->
-<?php include "footer.php"; ?> 
+    <div class="container-fluid">
+        <h1 class="mt-4">Reports</h1>
+        <hr>
+        <div class="gallery">
+          <a target="_blank" href="test_pdf_generator.php" >
+            <img src="img/download.png" alt="Cinque Terre" width="100%;">
+          <div class="desc">EPF</div></a>
+        </div>
+    </div>
 </div>
 <!-- /#page-content-wrapper -->
 
