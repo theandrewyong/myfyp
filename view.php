@@ -57,7 +57,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bordered">
+                            <table id="example" class="table table-striped table-bordered" width="100%">
                                 <thead>
                                     <tr>
                                         <th colspan="2">Wages</th>
@@ -99,7 +99,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table id="example1" class="table table-striped table-bordered">
+                            <table id="example3" class="table table-striped table-bordered" width="100%">
                                 <thead>
                                     <tr>
                                         <th colspan="2">Wages</th>
@@ -146,7 +146,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
-                            <table id="example2" class="table table-striped table-bordered">
+                            <table id="example2" class="table table-striped table-bordered" width="100%">
                                 <thead>
                                     <tr>
                                         <th colspan="2">Wages</th>
@@ -216,16 +216,29 @@ $(document).ready( function() {
         searchPlaceholder: "Search records"
      },
     "sDom": '<"mot"f><"xot"l>rt<"bottom"pi><"clear">'
-  } );
+  } );   
+} );
     
+$(document).ready( function() {
   $('#example2').dataTable( {
      language: {
         search: "",
          "lengthMenu": "_MENU_",
         searchPlaceholder: "Search records"
      },
-    "sDom": '<t>'
-  } );    
+    "sDom": '<"mot"f><"xot"l>rt<"bottom"pi><"clear">'
+  } );   
+} );
+    
+$(document).ready( function() {
+  $('#example3').dataTable( {
+     language: {
+        search: "",
+         "lengthMenu": "_MENU_",
+        searchPlaceholder: "Search records"
+     },
+    "sDom": '<"mot"f><"xot"l>rt<"bottom"pi><"clear">'
+  } );   
 } );
 
 

@@ -39,73 +39,6 @@
     <div class="row">
         <div class="col-md-6 col-12">
             <div class="p-5 bg-white rounded shadow mb-5">
-
-           
-            <p><b>Transaction Posting</b></p>
-            <div class="row">
-                <div class="col-md-6 col-12">
-                    <label for="">Month</label>
-                    <input type="number" name="process_payroll_process_month" class="form-control" value="<?php echo date("m"); ?>">
-                </div>                
-                <div class="col-md-6 col-12">
-                    <label for="">Year</label>
-                    <input type="text" name="process_payroll_process_year" class="form-control" value="<?php echo date("Y"); ?>">
-                </div>
-            </div>                
-            <div class="row">
-                <div class="col-md-12">
-                    <label for="">Process Date</label>
-                    <input type="date" class="form-control" name="process_payroll_process_date" value="<?php echo date('Y-m-d'); ?>">
-                </div>    
-            </div>    
-            <div class="row">
-                <div class="col-md-6 col-12">
-                    <label for="">Process From</label>
-                    <input type="date" class="form-control" name="process_payroll_from" value="<?php echo date('Y-m-01'); ?>">
-                </div>
-                <div class="col-md-6 col-12">
-                    <label for="">To</label>
-                    <input type="date" class="form-control" name="process_payroll_to" value="<?php echo date('Y-m-t'); ?>">
-                </div>
-            </div>
-            <br>
-            <p><b>Description</b></p>
-            <div class="row">
-                <div class="col-12">
-                    <label for="">Description 1</label>
-                    <input type="text" class="form-control" name="process_payroll_desc_1">                
-                </div>    
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <label for="">Description 2</label>
-                    <input type="text" class="form-control" name="process_payroll_desc_2">                
-                </div>    
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <label for="">Reference 1</label>
-                    <input type="text" class="form-control" name="process_payroll_ref_1">                
-                </div>    
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <label for="">Reference 2</label>
-                    <input type="text" class="form-control" name="process_payroll_ref_2">                
-                </div>    
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <br>
-                    <input type="submit" class="btn btn-success" name="submit">
-                    
-                </div>    
-            </div>
-           
-        </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="p-5 bg-white rounded shadow mb-5">
             <p><b>Employee</b></p>
                 <div class="table-responsive">
                     <div class="container-fluid">
@@ -201,15 +134,34 @@
                                                     //echo $ef["epf_formula_employee_amt"]; //display employee epf amt for the range
                                                     $epf_employee_deduction = $ef["epf_formula_employee_amt"];
                                                     $epf_employer_deduction = $ef["epf_formula_employer_amt"];
-                                                    $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, epf_employee_deduction, epf_employer_deduction) VALUES ('${"check_ca$i"}', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$epf_employee_deduction', '$epf_employer_deduction')");                                                      
+                                                    //count SOCSO
+                                                    $socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula");
+                                                    while($sc = mysqli_fetch_assoc($socso_formula_sql)){
+                                                        $sc_start = $sc["socso_formula_wage_start"];
+                                                        $sc_end = $sc["socso_formula_wage_end"];
+                                                        if(($emp_wages >= $sc_start) && ($emp_wages <= $sc_end)){
+                                                            $socso_employee_deduction = $sc["socso_formula_employee_amt"];
+                                                            $socso_employer_deduction = $sc["socso_formula_employer_amt"];
+                                                            //count EIS
+                                                            $eis_formula_sql = mysqli_query($conn, "SELECT * FROM eis_formula");
+                                                            while($es = mysqli_fetch_assoc($eis_formula_sql)){
+                                                                $es_start = $es["eis_formula_wage_start"];
+                                                                $es_end = $es["eis_formula_wage_end"];
+                                                                if(($emp_wages >= $es_start) && ($emp_wages <= $es_end)){
+                                                                    $eis_employee_deduction = $es["eis_formula_employee_amt"];
+                                                                    $eis_employer_deduction = $es["eis_formula_employer_amt"];
+                                                                    $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction) VALUES ('${"check_ca$i"}', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction')"); 
+                                                                }
+                                                            }                                                            
+                                                        }
+                                                    }                                                   
                                                 }                                                
                                             }
                                         }  
                                     }
-                                    
-                                }
+                                    header("Refresh:0");
+                                }                                                                                                                  
                                 ?>
-                                    
                                 </tbody>
                                 </table>
 
@@ -219,7 +171,74 @@
                 </div>
             </div>
         </div>
-    </div> </form>
+        <div class="col-md-6 col-12">
+            <div class="p-5 bg-white rounded shadow mb-5">
+
+           
+            <p><b>Transaction Posting</b></p>
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <label for="">Month</label>
+                    <input type="number" name="process_payroll_process_month" class="form-control" value="<?php echo date("m"); ?>">
+                </div>                
+                <div class="col-md-6 col-12">
+                    <label for="">Year</label>
+                    <input type="text" name="process_payroll_process_year" class="form-control" value="<?php echo date("Y"); ?>">
+                </div>
+            </div>                
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="">Process Date</label>
+                    <input type="date" class="form-control" name="process_payroll_process_date" value="<?php echo date('Y-m-d'); ?>">
+                </div>    
+            </div>    
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <label for="">Process From</label>
+                    <input type="date" class="form-control" name="process_payroll_from" value="<?php echo date('Y-m-01'); ?>">
+                </div>
+                <div class="col-md-6 col-12">
+                    <label for="">To</label>
+                    <input type="date" class="form-control" name="process_payroll_to" value="<?php echo date('Y-m-t'); ?>">
+                </div>
+            </div>
+            <br>
+            <p><b>Description</b></p>
+            <div class="row">
+                <div class="col-12">
+                    <label for="">Description 1</label>
+                    <input type="text" class="form-control" name="process_payroll_desc_1">                
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <label for="">Description 2</label>
+                    <input type="text" class="form-control" name="process_payroll_desc_2">                
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <label for="">Reference 1</label>
+                    <input type="text" class="form-control" name="process_payroll_ref_1">                
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <label for="">Reference 2</label>
+                    <input type="text" class="form-control" name="process_payroll_ref_2">                
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <br>
+                    <input type="submit" class="btn btn-success" name="submit">
+                    
+                </div>    
+            </div>
+            </div>
+        </div>        
+        </div>
+    </form>
 </div>
 </div>
 <!-- /#page-content-wrapper -->

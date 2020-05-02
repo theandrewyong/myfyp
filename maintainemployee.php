@@ -52,8 +52,9 @@
                                             <tr>
                                                 <th>Employee ID</th>
                                                 <th>Employee Name</th>
-                                                <th>Edit</th>
                                                 <th>Employee Position</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -63,8 +64,9 @@
                                             echo "<tr>";
                                             echo "<td>" . $data["emp_id"] . "</td>";
                                             echo "<td>" . $data["emp_full_name"] . "</td>";
-                                            echo "<td>" . '<a href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit</a>' . "</td>";
                                             echo "<td>" . $data["emp_title"] . "</td>";
+                                            echo "<td>" . '<a href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit</a>' . "</td>";
+                                            echo "<td>" . '<a href="deleteemployee.php?id=' . $data["emp_id"] . '">Delete</a>' . "</td>";
                                             echo "</tr>";
                                             }
                                         }  
@@ -199,7 +201,8 @@
                                                             <th>Deduction ID</th>
                                                             <th>Deduction Desc</th>
                                                             <th>Deduction Rate</th>
-                                                            <th>Action</th>
+                                                            <th>Edit</th>
+                                                            <th>Delete</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -212,6 +215,7 @@
                                                             echo "<td>" . $data["deduction_desc"] . "</td>";
                                                             echo "<td>" . $data["deduction_rate"] . "</td>";
                                                             echo "<td>" . '<a href="editdeduction.php?id=' . $data["deduction_id"] . '&desc=' . $data["deduction_desc"] . '&rate=' . $data["deduction_rate"] . '">Edit</a>' . "</td>";
+                                                            echo "<td>" . '<a href="deletededuction.php?id=' . $data["deduction_id"] . '">Delete</a>' . "</td>";
                                                             echo "</tr>";
                                                         }
                                                     }  

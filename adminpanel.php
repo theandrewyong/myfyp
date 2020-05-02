@@ -76,16 +76,21 @@
                                                 <th>No</th>
                                                 <th>Username</th>
                                                 <th>Permission Level</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
                                             </tr>
                                         </thead>
                                     <tbody>
                                     <?php
                                     $select_all_sql = mysqli_query($conn, "SELECT * FROM account");
                                     while($data = mysqli_fetch_assoc($select_all_sql)){
+                                    $username_id = $data["username_id"];
                                     echo "<tr>";
-                                    echo "<td>" . "1" . "</td>";
+                                    echo "<td>" . $username_id . "</td>";
                                     echo "<td>" . $data["username"] . "</td>";
                                     echo "<td>" . $data["permission"] . "</td>";
+                                    echo "<td>" . '<a href="editadmin.php?id=' . $username_id . '">Edit</a>' . "</td>";
+                                    echo "<td>" . '<a href="deleteadmin.php?id=' . $username_id . '">Delete</a>'. "</td>";
                                     echo "</tr>";
                                     }        
                                     ?>

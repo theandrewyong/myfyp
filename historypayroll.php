@@ -40,36 +40,9 @@
 <!-- dashboard conten here -->
 <hr>
     <div class="row">
-        <div class="col-md-6 col-12">
-        <ul class="list-group">
-            <li class="list-group-item active">Month End</li>
-            <?php
-                $select_all_sql = mysqli_query($conn, "SELECT * FROM process_payroll");
-                while($data = mysqli_fetch_assoc($select_all_sql)){
-                
-                echo '<a href="historydetails.php">';
-                echo '<li class="list-group-item">';
-                echo 'Process date: ' . $data["payroll_monthly_process_date"] . '<br>' . 'From ' . $data["payroll_monthly_from"] . ' to ' . $data["payroll_monthly_to"];
-                echo '</li>';
-                echo '</a>';
-                }        
-            ?>
-            
-            </ul>
-        </div>
-        <div class="col-md-6 col-12">
-        <ul class="list-group">
-            <li class="list-group-item active">Ad Hoc</li>
-            <li class="list-group-item">Jan 2020</li>
-            <li class="list-group-item">Feb 2020</li>
-            <li class="list-group-item">Mar 2020</li>
-            <li class="list-group-item">Apr 2020</li>
-        </ul>
-        </div>
+
     </div>
     <br>
-    <h2>Past Payroll from 2018 - 2019</h2>
-    <!-- dashboard conten here -->
     <hr>
     <div class="row">
         <div class="col-md-6 col-12">
