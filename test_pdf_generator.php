@@ -7,7 +7,7 @@ include "conn.php";
   }
   $username = $_SESSION["username"];
 
-date_default_timezone_set("America/New_York");
+date_default_timezone_set("Asia/Kuching");
 $currentdate = date('m/d/Y h:i:s a', time());
 $currentmonthyeaer = date('M Y');
 
