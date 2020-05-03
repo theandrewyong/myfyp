@@ -39,16 +39,28 @@
 <h1 class="mt-4">Payroll History</h1>
 <!-- dashboard conten here -->
 <hr>
-    <div class="row">
-
-    </div>
-    <br>
-    <hr>
-    <div class="row">
-        <div class="col-md-6 col-12">
-            
-        </div>
-    </div>
+    <!-- show payroll based on month -->
+    <?php
+    $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
+    
+    while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
+        // find if date exists
+        $specific_month = $select_result["process_payroll_process_month"];
+        $specific_year = $select_result["process_payroll_process_year"];
+        
+        $specific_month_array[] = $specific_month;
+        $specific_year_array[] = $specific_year;
+    }
+    //get value for each month only once
+   $unique_month_array = array_unique($specific_month_array);
+   $unique_year_array = array_unique($specific_year_array);
+    
+    foreach($unique_month_array as $uma){
+        foreach($unique_year_array as $uya){
+            echo '<a href="historydetails.php?month=' . $uma . '&year=' . $uya . '">' . $uma . '</a>' . '<br>';   
+        }
+    }
+    ?>
 </div>
 </div>
 <!-- /#page-content-wrapper -->
