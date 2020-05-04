@@ -35,11 +35,41 @@
 <div class="container-fluid">
 <h1 class="mt-4">New Payroll</h1>
 <!-- dashboard conten here -->
+
+
 <?php
+
+    
+if(isset($_POST["check"])){
+    $check_month = $_POST["process_payroll_process_month"];
+    $check_year = $_POST["process_payroll_process_year"];
+    //check if empty
+    $all_check_sql = mysqli_query($conn, "SELECT * FROM temp_process");
+   // $acs = mysqli_fetch_assoc($all_check_sql);
+    if(mysqli_num_rows($all_check_sql) == 0){
+        $check_sql = mysqli_query($conn, "INSERT INTO temp_process (temp_month, temp_year) VALUES ('$check_month', '$check_year')");
+    }else{
+        $check_sql = mysqli_query($conn, "UPDATE temp_process SET temp_month = '$check_month', temp_year = '$check_year'");
+    }
+}    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+$all_check_sql = mysqli_query($conn, "SELECT * FROM temp_process");
+$acs = mysqli_fetch_assoc($all_check_sql);
+
+    
 $all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
 $process_date = date("Y-m-d");
-$process_date_month = date("m"); 
-$process_date_year = date("Y"); 
+$process_date_month = $acs["temp_month"]; 
+$process_date_year = $acs["temp_year"]; 
 $to_process_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_month = '$process_date_month' AND process_payroll_process_year = '$process_date_year'");
 
 if(mysqli_num_rows($all_employee_sql) != 0){
@@ -144,13 +174,18 @@ if(isset($_POST["submit"])){
             <div class="row">
                 <div class="col-md-6 col-12">
                     <label for="">Month</label>
-                    <input type="number" name="process_payroll_process_month" class="form-control" value="<?php echo date("m"); ?>">
+                    <input type="number" name="process_payroll_process_month" class="form-control" value="<?php echo $process_date_month; ?>">
                 </div>                
                 <div class="col-md-6 col-12">
                     <label for="">Year</label>
-                    <input type="text" name="process_payroll_process_year" class="form-control" value="<?php echo date("Y"); ?>">
+                    <input type="text" name="process_payroll_process_year" class="form-control" value="<?php echo $process_date_year; ?>">
                 </div>
-            </div>                
+            </div><br>
+            <div class="row">
+                <div class="col-12">
+                    <input type="submit" class="btn btn-success" name="check">
+                </div>    
+            </div><br>
             <div class="row">
                 <div class="col-md-12">
                     <label for="">Process Date</label>
@@ -271,6 +306,7 @@ if ( window.history.replaceState ) {
   window.history.replaceState( null, null, window.location.href );
 }
 </script>
+
 </body>
 
 </html>
