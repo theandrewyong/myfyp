@@ -132,7 +132,7 @@
 		$handle = fopen("C:\Users\Public\Downloads\backup.sql","w+");
 		fwrite($handle,$return);
 		fclose($handle);
-		$message2 = '<label class="text-success">Database Successfully Backep-Up</label>';
+		$message2 = '<label class="text-success">Database Successfully Backed-Up to C:\Users\Public\Downloads\backup.sql</label>';
 		}
 	?>
 	
