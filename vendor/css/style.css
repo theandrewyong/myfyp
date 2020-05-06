@@ -75,3 +75,35 @@ body {
 }
 /* End Table alignment */
 
+
+.polaroids {
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.polaroid {
+  display: inline-block;
+  margin: 10px;
+  position: relative;
+  width: auto;
+}
+
+.polaroid img {
+  border: 12px solid #fff;
+  border-bottom: 70px solid #fff;
+  -webkit-box-shadow: 3px 3px 3px #888;
+  -moz-box-shadow: 3px 3px 3px #888;
+  box-shadow: 3px 3px 3px #888;
+  height: 270px;
+  max-width: 100%;
+}
+
+.polaroid p {
+  color: black;
+  font: 500 18px/22px Arial, sans-serif;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+}

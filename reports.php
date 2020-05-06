@@ -38,9 +38,54 @@
 <h1 class="mt-4">Reports</h1>
 <hr>
 <!-- dashboard conten here -->
-    <a href="epf_report.php">EPF Report</a>
-    <a href="socso_report.php">SOCSO Report</a>
-    <a href="eis_report.php">EIS Report</a>
+
+  <div class="polaroids">
+    
+    <div class="polaroid">
+    <a href="epf_report.php">
+      <img src="img/payslip.png" width="220px;">
+      <p>Payslip Report</p>
+    </a>
+    </div>
+    <div class="polaroid">
+    <a href="epf_report.php">
+      <img src="img/epf.png" width="220px;">
+      <p>EPF Report</p>
+    </a>
+    </div>
+    <div class="polaroid">
+    <a href="epf_report.php">    
+      <img src="img/socso.png" width="220px;">
+      <p>SOCSO Report</p>
+    </a>
+    </div>
+    <div class="polaroid">
+    <a href="eis_report.php">    
+      <img src="img/eis.png" width="220px;">
+      <p>EIS Report</p>
+    </a>
+    </div>
+    <div class="polaroid">
+    <a href="payroll_summary_report.php">    
+      <img src="img/payroll%20summary.png" width="220px;">
+      <p>Payroll Summary Report</p>
+    </a>
+    </div>
+    <div class="polaroid">
+    <a href="yearly_wages_report.php">    
+      <img src="img/yearly_icon.png" width="220px;">
+      <p>Yearly Wages Report</p>
+    </a>
+    </div>
+    <div class="polaroid">
+    <a href="yearly_individual_report.php">    
+      <img src="img/yearly_icon.png" width="220px;">
+      <p>Yearly Individual Report</p>
+    </a>
+    </div>      
+
+  </div>
+  
 </div>
 </div>
 <!-- /#page-content-wrapper -->
