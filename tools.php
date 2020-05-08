@@ -109,7 +109,7 @@
 		  $result = mysqli_query($connection,"SELECT * FROM ".$table);
 		  $num_fields = mysqli_num_fields($result);
 
-		  $return .= 'DROP TABLE '.$table.';';
+		 // $return .= 'DROP TABLE '.$table.';';
 		  $row2 = mysqli_fetch_row(mysqli_query($connection,"SHOW CREATE TABLE ".$table));
 		  $return .= "\n\n".$row2[1].";\n\n";
 
@@ -130,7 +130,8 @@
 			
 		//save file
 		$handle = fopen("C:\Users\Public\Downloads\backup.sql","w+");
-		fwrite($handle,$return);
+		fwrite($handle, "SET FOREIGN_KEY_CHECKS = 0;\n");
+        fwrite($handle,$return);
 		fclose($handle);
 		$message2 = '<label class="text-success">Database Successfully Backed-Up to C:\Users\Public\Downloads\backup.sql</label>';
 		}
