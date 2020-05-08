@@ -70,29 +70,17 @@
 								  ?>
 								
 								<form method="POST">
-									<a id="employee_section"><h1>Edit Deduction</h1></a> 
-		
-											<div class="col-md-9">
-												<label for="emp_id">Employee Deduction ID</label>
-												<input type="text" class="form-control" name="emp_deduction_id" id="emp_deduction_id" value="<?php echo $get_emp_deduction_id; ?>" disabled>
-											</div>
-										
-									  	<div class="form-group">
-										<label for="emp_deduction_id" class="col-sm-3 control-label"><h6>Deduction ID</h6></label>
-										<div class="col-sm-9">
-											<input type="text" id="emp_deduction_id" name="deduction_id" placeholder="Full Name" class="form-control" value="<?php echo $show_deduction_id; ?>" disabled>
-										</div>
-										</div>
+									<a id="employee_section"><h1>Edit Deduction</h1></a>
 									
 										<div class="form-group">
-										<label for="deduction_desc" class="col-sm-3 control-label"><h6>deduction Desc</h6></label>
+										<label for="deduction_desc" class="col-sm-3 control-label"><h6>Deduction Desc</h6></label>
 										<div class="col-sm-9">
 											<input type="text" id="deduction_desc" name="deduction_desc" class="form-control" value="<?php echo $show_deduction_desc; ?>" disabled>
 										</div>
 										</div>
 									
 									<div class="form-group">
-										<label for="deduction_rate" class="col-sm-3 control-label"><h6>deduction Rate</h6></label>
+										<label for="deduction_rate" class="col-sm-3 control-label"><h6>Deduction Rate</h6></label>
 										<div class="col-sm-9">
 											<input type="text" id="deduction_rate" placeholder="Email" class="form-control" name= "deduction_rate" value="<?php echo $show_deduction_rate; ?>">
 										</div>

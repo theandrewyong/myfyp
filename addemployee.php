@@ -1,5 +1,6 @@
 <?php
     session_start();
+	include "conn.php";
     if(empty($_SESSION["username"])){
         header("location:index.php");
     }
@@ -27,10 +28,88 @@
             <div class="bg-white shadow mb-5">
                 <div id="myTabContent" class="tab-content">
                     <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-5 show active">
-								<form class="form-horizontal" role="form" action="addemployee_data.php" method="post">
+						<?php
+							$message='';
+							$count =0;
+							if(isset($_POST["register"])){
+
+							$emp_display_id = $_POST["emp_display_id"];
+							$combined = "E" . $emp_display_id;
+								
+							$emp_full_name = $_POST["emp_full_name"];
+							$emp_gender = $_POST["emp_gender"];
+							$emp_dob = $_POST["emp_dob"];
+							$emp_email = $_POST["emp_email"];
+							$emp_address = $_POST["emp_address"];
+							$emp_mobile = $_POST["emp_mobile"];
+							$emp_telephone = $_POST["emp_telephone"];
+							$emp_ic = $_POST["emp_ic"];
+							$emp_passport = $_POST["emp_passport"];
+							$emp_immigration = $_POST["emp_immigration"];
+							$emp_title = $_POST["emp_title"];
+							//---------------------------------------------------
+							$emp_wages = $_POST["emp_wages"];
+							$emp_payment_method = $_POST["emp_payment_method"];	
+							$emp_bank_name = $_POST["emp_bank_name"];
+							$emp_account = $_POST["emp_account"];
+							$emp_health_status = $_POST["emp_health_status"];
+							$emp_martial_status = $_POST["emp_martial_status"];
+							$emp_spouse_status = $_POST["emp_spouse_status"];
+							$emp_epf = $_POST["emp_epf"];
+							$emp_socso = $_POST["emp_socso"];
+							$emp_socso_type = $_POST["emp_socso_type"];
+							$emp_eis_type = $_POST["emp_eis_type"];
+							$emp_join_date = $_POST["emp_join_date"];
+							$emp_confirm_date = $_POST["emp_confirm_date"];
+							$emp_resign_date = $_POST["emp_resign_date"];
+							$data_created_date = date("Y/m/d");
+								
+							$select_sql = mysqli_query($conn, "SELECT * FROM employee_info"); 
+							while($data = mysqli_fetch_assoc($select_sql)){
+								if ($combined == $data["emp_display_id"])
+								{
+									$message = '<label class="text-danger">Error: ID already exist.</label>';
+									$count = $count+1;
+								}
+							}
+							
+							if ($count==0){
+								$new_employee_sql = "INSERT INTO employee_info (emp_display_id, emp_full_name, emp_gender, emp_dob, emp_email, emp_address, emp_mobile, emp_telephone, emp_ic, emp_passport, emp_immigration, emp_title, emp_wages, emp_payment_method, emp_bank_name, emp_account, emp_health_status, emp_martial_status, emp_spouse_status, emp_epf, emp_socso, emp_socso_type, emp_eis_type, emp_join_date, emp_confirm_date, emp_resign_date, data_created_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+								$prepared_stmt_insert = mysqli_prepare($conn, $new_employee_sql);
+
+								mysqli_stmt_bind_param($prepared_stmt_insert, 'sssssssssssssssssssssssssss', $combined, $emp_full_name, $emp_gender, $emp_dob, $emp_email, $emp_address, $emp_mobile, $emp_telephone, $emp_ic, $emp_passport, $emp_immigration, $emp_title, $emp_wages, $emp_payment_method, $emp_bank_name, $emp_account, $emp_health_status, $emp_martial_status, $emp_spouse_status, $emp_epf, $emp_socso, $emp_socso_type, $emp_eis_type, $emp_join_date, $emp_confirm_date, $emp_resign_date, $data_created_date);
+
+								mysqli_stmt_execute($prepared_stmt_insert);
+								mysqli_stmt_close($prepared_stmt_insert);
+
+								$update_sql = mysqli_query($conn, "UPDATE employee_id_count SET emp_id_count='$emp_display_id'");	
+							}
+
+							header("Location: maintainemployee.php"); 
+							}
+						
+						$show_sql = mysqli_query($conn, "SELECT * FROM employee_id_count");
+						$show_data = mysqli_fetch_assoc($show_sql);
+						$show_emp_id_count = $show_data['emp_id_count'] + 1;
+						
+							?>
+						
+								<form class="form-horizontal" role="form" method="post">
 <div class="row"><div class="col-sm-6"><!--left-------------------------------->
 									<a id="employee_section"><h1>Employee Main Profile</h1></a> 
 									<br>
+	
+									<div class="form-group">
+										<label for="emp_display_id" class="col-sm-12 control-label"><h5 class="pt-2">Employee Display ID <?php echo $message; ?></h5></label>
+										<div class="col-sm-11">
+											<div class="input-group-prepend">
+												<span class="input-group-text">E</span>  
+												<input type="number" id="emp_display_id" name="emp_display_id" class="form-control" min="1000" max="9999" value="<?php echo $show_emp_id_count; ?>" autofocus>
+											</div>
+										</div>
+									</div>
+	
 									<div class="form-group">
 										<label for="emp_full_name" class="col-sm-12 control-label"><h5 class="pt-2">Full Name</h5></label>
 										<div class="col-sm-11">
@@ -254,7 +333,7 @@
 									</div>
 									
 									<div class="form-group">
-										<div class="col-sm-11 pt-5"><button type="submit" class="btn btn-primary btn-block p-2">Register</button></div>
+										<div class="col-sm-11 pt-5"><button type="submit" class="btn btn-primary btn-block p-2" name="register">Register</button></div>
 									</div>
 							</div></div><!--right-------------------------------------------->
 

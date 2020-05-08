@@ -65,8 +65,11 @@
 								
 								<?php
 								  //submit_1
+								  $message='';
+								  $count=0;
 								  if(isset($_POST["submit_1"])){
 									  
+									$emp_display_id = $_POST["emp_display_id"];
 									$emp_full_name = $_POST["emp_full_name"];
 									$emp_gender = $_POST["emp_gender"];
 									$emp_dob = $_POST["emp_dob"];
@@ -94,10 +97,19 @@
 									$emp_resign_date  = $_POST["emp_resign_date"];
 									$data_edited_date = date("Y/m/d");
 									  
-	
-									  $update_sql = mysqli_query($conn, "UPDATE employee_info SET emp_full_name='$emp_full_name', emp_gender='$emp_gender', emp_dob='$emp_dob', emp_email='$emp_email', emp_address='$emp_address', emp_mobile='$emp_mobile', emp_telephone='$emp_telephone', emp_ic='$emp_ic', emp_passport='$emp_passport', emp_immigration='$emp_immigration', emp_title='$emp_title', emp_wages='$emp_wages', emp_payment_method='$emp_payment_method', emp_bank_name='$emp_bank_name', emp_account='$emp_account', emp_health_status='$emp_health_status', emp_martial_status='$emp_martial_status', emp_spouse_status='$emp_spouse_status', emp_epf='$emp_epf', emp_socso='$emp_socso', emp_socso_type='$emp_socso_type', emp_eis_type='$emp_eis_type', emp_join_date='$emp_join_date', emp_confirm_date='$emp_confirm_date', emp_resign_date='$emp_resign_date', data_edited_date='$data_edited_date' WHERE emp_id ='$get_emp_id'");
-
+									$select_sql = mysqli_query($conn, "SELECT * FROM employee_info"); 
+									while($data = mysqli_fetch_assoc($select_sql)){
+										if ($emp_display_id == $data["emp_display_id"])
+										{
+											$message = '<label class="text-danger">Error: ID already exist.</label>';
+											$count = $count+1;
+										}
+									}
+									  
+									  if ($count==0){
+									  $update_sql = mysqli_query($conn, "UPDATE employee_info SET emp_display_id='$emp_display_id', emp_full_name='$emp_full_name', emp_gender='$emp_gender', emp_dob='$emp_dob', emp_email='$emp_email', emp_address='$emp_address', emp_mobile='$emp_mobile', emp_telephone='$emp_telephone', emp_ic='$emp_ic', emp_passport='$emp_passport', emp_immigration='$emp_immigration', emp_title='$emp_title', emp_wages='$emp_wages', emp_payment_method='$emp_payment_method', emp_bank_name='$emp_bank_name', emp_account='$emp_account', emp_health_status='$emp_health_status', emp_martial_status='$emp_martial_status', emp_spouse_status='$emp_spouse_status', emp_epf='$emp_epf', emp_socso='$emp_socso', emp_socso_type='$emp_socso_type', emp_eis_type='$emp_eis_type', emp_join_date='$emp_join_date', emp_confirm_date='$emp_confirm_date', emp_resign_date='$emp_resign_date', data_edited_date='$data_edited_date' WHERE emp_id ='$get_emp_id'");}
 								  }
+								
 								//submit_2
 									if(isset($_POST["submit_2"])){
 										
@@ -156,6 +168,7 @@
 								  //show all existing value in all input fields
 									$show_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$get_emp_id'");
 									$show_data = mysqli_fetch_assoc($show_sql);
+									$show_emp_display_id = $show_data['emp_display_id'];
 									$show_emp_id = $show_data['emp_id'];
 									$show_emp_full_name = $show_data['emp_full_name'];
 									$show_emp_gender = $show_data['emp_gender'];
@@ -181,18 +194,29 @@
 									$show_emp_eis_type = $show_data['emp_eis_type'];
 									$show_emp_join_date = $show_data['emp_join_date'];
 									$show_emp_confirm_date = $show_data['emp_confirm_date'];
-									$show_emp_resign_date = $show_data['emp_resign_date'];
+									$show_emp_resign_date = $show_data['emp_resign_date'];	
 								  ?>
 								
 								<form action="editemployee.php?emp_id=<?php echo "$get_emp_id"; ?>" method="POST">
 						<div class="row"><div class="col-sm-6"><!--left-------------------------------->
 									<a id="employee_section"><h1>Employee Main Profile</h1></a> 
 										
-											<div class="col-md-11">
-												<label for="emp_id">Employee ID</label>
-												<input type="text" class="form-control" name="emp_id" id="emp_id" value="<?php echo $get_emp_id; ?>" disabled>
+										<div class="form-group">
+											<label for="emp_display_id" class="col-sm-12 control-label"><h5 class="pt-2">Employee Display ID <?php echo $message; ?></h5></label>
+											<div class="col-sm-11">
+												<div class="input-group-prepend"> 
+													<input type="text" id="emp_display_id" name="emp_display_id" class="form-control" value="<?php echo $show_emp_display_id; ?>" autofocus>
+												</div>
 											</div>
+										</div>
 										
+										<div class="form-group">
+										<label for="emp_full_name" class="col-sm-12 control-label"><h5 class="pt-2">Full Name</h5></label>
+										<div class="col-sm-11">
+											<input type="text" id="emp_full_name" name="emp_full_name" placeholder="Full Name" class="form-control" value="<?php echo $show_emp_full_name; ?>" autofocus>
+										</div>
+										</div>
+							
 									  	<div class="form-group">
 										<label for="emp_full_name" class="col-sm-12 control-label"><h5 class="pt-2">Full Name</h5></label>
 										<div class="col-sm-11">
@@ -429,7 +453,7 @@
 								<form action="editemployee.php?emp_id=<?php echo "$get_emp_id"; ?>" method="POST">
 										<div class="col-sm-12">
 												<label for="emp_id">Employee ID</label>
-												<input type="text" class="form-control" name="emp_id" id="emp_id" value="<?php echo $get_emp_id; ?>" disabled>
+												<input type="text" class="form-control" name="emp_id" id="emp_id" value="<?php echo $show_emp_display_id; ?>" disabled>
 											</div>
 
 											<br/>
@@ -467,8 +491,6 @@
 											<table id="example" class="table table-bordered">
 												<thead>
 													<tr>
-														<th>Employee ID</th>
-														<th>Allwoance ID</th>
 														<th>Allowance Name</th>
 														<th>Alowance Rate (RM)</th>
 														<th>Edit Rate</th>
@@ -485,8 +507,6 @@
 											if($datarows = mysqli_num_rows($table_sql) > 0){
                     						while($data = mysqli_fetch_assoc($table_sql)){
 											echo '<tr>';
-											echo '<td>' . $data["emp_id"] . '</td>';
-											echo '<td>' . $data["allowance_id"] . '</td>';
 											echo '<td>' . $data["allowance_desc"] . '</td>';
 											echo '<td>' . $data["allowance_rate"] . '</td>';
 											echo "<td>" . '<a href="employee_allowance_edit.php?emp_allowance_id=' . $data["emp_allowance_id"] . '&emp_id=' . $data["emp_id"] . '">Edit</a>' . "</td>";
@@ -515,7 +535,7 @@
 								<form action="editemployee.php?emp_id=<?php echo "$get_emp_id"; ?>" method="POST">
 										<div class="col-sm-12">
 												<label for="emp_id">Employee ID</label>
-												<input type="text" class="form-control" name="emp_id" id="emp_id" value="<?php echo $get_emp_id; ?>" disabled>
+												<input type="text" class="form-control" name="emp_id" id="emp_id" value="<?php echo $show_emp_display_id; ?>" disabled>
 											</div>
 
 											<br/>
@@ -552,8 +572,6 @@
 											<table id="example" class="table table-bordered">
 												<thead>
 													<tr>
-														<th>Employee ID</th>
-														<th>Deduction ID</th>
 														<th>Deduction Name</th>
 														<th>Deduction Rate (RM)</th>
 														<th>Edit Rate</th>
@@ -570,8 +588,6 @@
 											if($datarows = mysqli_num_rows($table_sql_d) > 0){
                     						while($data = mysqli_fetch_assoc($table_sql_d)){
 											echo '<tr>';
-											echo '<td>' . $data["emp_id"] . '</td>';
-											echo '<td>' . $data["deduction_id"] . '</td>';
 											echo '<td>' . $data["deduction_desc"] . '</td>';
 											echo '<td>' . $data["deduction_rate"] . '</td>';
 											echo "<td>" . '<a href="employee_deduction_edit.php?emp_deduction_id=' . $data["emp_deduction_id"] . '&emp_id=' . $data["emp_id"] . '">Edit</a>' . "</td>";

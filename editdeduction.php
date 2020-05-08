@@ -43,22 +43,23 @@
     <div class="p-5 bg-white rounded shadow mb-5">
         <?php
         if(isset($_POST["submit"])){
+			$edited_deduction_display_id = $_POST["edited_id"];
             $edited_deduction_desc = $_POST["edited_desc"];
             $edited_deduction_rate = $_POST["edited_rate"];
             
-            mysqli_query($conn, "UPDATE deduction SET deduction_desc = '$edited_deduction_desc', deduction_rate = '$edited_deduction_rate' WHERE deduction_id = '$deduction_id'");
+            mysqli_query($conn, "UPDATE deduction SET deduction_display_id = '$edited_deduction_display_id', deduction_desc = '$edited_deduction_desc', deduction_rate = '$edited_deduction_rate' WHERE deduction_id = '$deduction_id'");
         }
         
         $show_sql = mysqli_query($conn, "SELECT * FROM deduction WHERE deduction_id = '$deduction_id'");
           $show_data = mysqli_fetch_assoc($show_sql);
-        
+        $deduction_display_id = $show_data["deduction_display_id"];
         $deduction_desc = $show_data["deduction_desc"];
         $deduction_rate = $show_data["deduction_rate"];
         
         ?>
         <form action="editdeduction.php?id=<?php echo $deduction_id; ?>" method="post">
             <p>Deduction ID
-            <input type="text" name="edited_id" value="<?php echo $deduction_id; ?>" class="form-control" disabled>
+            <input type="text" name="edited_id" value="<?php echo $deduction_display_id; ?>" class="form-control">
             </p>
             <p>Deduction Desc
             <input type="text" name="edited_desc" value="<?php echo $deduction_desc; ?>" class="form-control">

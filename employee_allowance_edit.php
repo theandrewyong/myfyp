@@ -72,19 +72,6 @@
 								
 								<form method="POST">
 									<a id="employee_section"><h1>Edit Allowance</h1></a> 
-		
-											<div class="col-md-9">
-												<label for="emp_allowance_id"><h6>Employee Allowance ID</h6></label>
-												<input type="text" class="form-control" name="emp_allowance_id" id="emp_allowance_id" value="<?php echo $get_emp_allowance_id; ?>" disabled>
-											</div>
-									<br/>
-										
-									  	<div class="form-group">
-										<label for="emp_allowance_id" class="col-sm-3 control-label"><h6>Allowance ID</h6></label>
-										<div class="col-sm-9">
-											<input type="text" id="allowance_id" name="allowance_id" placeholder="Full Name" class="form-control" value="<?php echo $show_allowance_id; ?>" disabled>
-										</div>
-										</div>
 									
 										<div class="form-group">
 										<label for="allowance_desc" class="col-sm-3 control-label"><h6>Allowance Desc</h6></label>

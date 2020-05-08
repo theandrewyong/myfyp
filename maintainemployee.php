@@ -50,7 +50,7 @@
                                         <table id="example" class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Employee ID</th>
+                                                <th>Employee Display ID</th>
                                                 <th>Employee Name</th>
                                                 <th>Employee Position</th>
                                                 <th>Edit</th>
@@ -62,7 +62,7 @@
                                         if($datarows = mysqli_num_rows($select_sql) > 0){
                                             while($data = mysqli_fetch_assoc($select_sql)){
                                             echo "<tr>";
-                                            echo "<td>" . $data["emp_id"] . "</td>";
+                                            echo "<td>" . $data["emp_display_id"] . "</td>";
                                             echo "<td>" . $data["emp_full_name"] . "</td>";
                                             echo "<td>" . $data["emp_title"] . "</td>";
                                             echo "<td>" . '<a href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit</a>' . "</td>";
@@ -81,11 +81,12 @@
                     <div id="allowance" role="tabpanel" aria-labelledby="allowance-tab" class="tab-pane fade px-4 py-5">
                         <?php
                         if(isset($_POST["submit"])){
+							$allowance_display_id = $_POST["allowance_display_id"];
                             $allowance_desc = $_POST["allowance_desc"];
                             $allowance_rate = $_POST["allowance_rate"];
-                            $new_allowance_sql = "INSERT INTO allowance (allowance_desc, allowance_rate) VALUES (?,?)";
+                            $new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
                             $prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
-                            mysqli_stmt_bind_param($prepared_stmt_insert, 'ss', $allowance_desc, $allowance_rate);
+                            mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
                             mysqli_stmt_execute($prepared_stmt_insert);
                             mysqli_stmt_close($prepared_stmt_insert);
                         }
@@ -93,6 +94,14 @@
                         <div class="row">
                             <div class="col-6">
                                 <form class="form-horizontal" role="form" method="post">
+									
+									<div class="form-group">
+                                    <label for="allowance_display_id" class="col-sm-3 control-label"><h6>Item Display ID</h6></label>
+                                        <div class="col-12">
+                                            <input type="text" id="allowance_display_id" name="allowance_display_id" placeholder="Display ID: P01" class="form-control">
+                                        </div>
+                                    </div>
+									
                                     <div class="form-group">
                                     <label for="allowance_desc" class="col-sm-3 control-label"><h6>Item Description</h6></label>
                                         <div class="col-12">
@@ -122,9 +131,9 @@
                                                 <table id="example1" class="table table-bordered">
                                                     <thead>
                                                         <tr>
-                                                            <th>Allowance ID</th>
+                                                            <th>Allowance Display ID</th>
                                                             <th>Allowance Desc</th>
-                                                            <th>Allowance Rate</th>
+                                                            <th>Allowance Rate (RM)</th>
                                                             <th>Edit</th>
                                                             <th>Delete</th>
                                                         </tr>
@@ -134,7 +143,7 @@
                                                     if($datarows = mysqli_num_rows($select_sql) > 0){
                                                         while($data = mysqli_fetch_assoc($select_sql)){
                                                             echo "<tr>";
-                                                            echo "<td>" . $data["allowance_id"] . "</td>";
+                                                            echo "<td>" . $data["allowance_display_id"] . "</td>";
                                                             echo "<td>" . $data["allowance_desc"] . "</td>";
                                                             echo "<td>" . $data["allowance_rate"] . "</td>";
                                                             echo "<td>" . '<a href="editallowance.php?id=' . $data["allowance_id"] . '&desc=' . $data["allowance_desc"] . '&rate=' . $data["allowance_rate"] . '">Edit</a>' . "</td>";
@@ -155,11 +164,12 @@
                     <div id="deduction" role="tabpanel" aria-labelledby="deduction-tab" class="tab-pane fade px-4 py-5">
                         <?php
                         if(isset($_POST["submit1"])){
+							$deduction_display_id = $_POST["deduction_display_id"];
                             $deduction_desc = $_POST["deduction_desc"];
                             $deduction_rate = $_POST["deduction_rate"];
-                            $new_deduction_sql = "INSERT INTO deduction (deduction_desc, deduction_rate) VALUES (?,?)";
+                            $new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
                             $prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
-                            mysqli_stmt_bind_param($prepared_stmt_insert, 'ss', $deduction_desc, $deduction_rate);
+                            mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
                             mysqli_stmt_execute($prepared_stmt_insert);
                             mysqli_stmt_close($prepared_stmt_insert);
                         }
@@ -167,6 +177,14 @@
                         <div class="row">
                             <div class="col-6">
 								<form class="form-horizontal" role="form" method="post">
+									
+									<div class="form-group">
+                                    <label for="deduction_display_id" class="col-sm-3 control-label"><h6>Item Display ID</h6></label>
+                                        <div class="col-12">
+                                            <input type="text" id="deduction_display_id" name="deduction_display_id" placeholder="Display ID: A01" class="form-control">
+                                        </div>
+                                    </div>
+									
 									<div class="form-group">
 										<label for="deduction_desc" class="col-sm-3 control-label"><h6>Item Description</h6></label>
 										<div class="col-sm-12">
@@ -198,9 +216,9 @@
                                                 <table id="example2" class="table table-bordered">
                                                     <thead>
                                                         <tr>
-                                                            <th>Deduction ID</th>
+                                                            <th>Deduction Display ID</th>
                                                             <th>Deduction Desc</th>
-                                                            <th>Deduction Rate</th>
+                                                            <th>Deduction Rate (RM)</th>
                                                             <th>Edit</th>
                                                             <th>Delete</th>
                                                         </tr>
@@ -211,7 +229,7 @@
                                                     if($datarows = mysqli_num_rows($select_sql) > 0){
                                                         while($data = mysqli_fetch_assoc($select_sql)){
                                                             echo "<tr>";
-                                                            echo "<td>" . $data["deduction_id"] . "</td>";
+                                                            echo "<td>" . $data["deduction_display_id"] . "</td>";
                                                             echo "<td>" . $data["deduction_desc"] . "</td>";
                                                             echo "<td>" . $data["deduction_rate"] . "</td>";
                                                             echo "<td>" . '<a href="editdeduction.php?id=' . $data["deduction_id"] . '&desc=' . $data["deduction_desc"] . '&rate=' . $data["deduction_rate"] . '">Edit</a>' . "</td>";
