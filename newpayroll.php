@@ -55,18 +55,15 @@ if(isset($_POST["check"])){
     
     
     
-    
-    
-    
-    
-    
-    
-    
+
+
 $all_check_sql = mysqli_query($conn, "SELECT * FROM temp_process");
 $acs = mysqli_fetch_assoc($all_check_sql);
 
     
 $all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
+    
+    
 $process_date = date("Y-m-d");
 $process_date_month = $acs["temp_month"]; 
 $process_date_year = $acs["temp_year"]; 

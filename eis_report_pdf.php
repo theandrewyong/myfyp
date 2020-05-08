@@ -6,6 +6,8 @@ include "conn.php";
       header("location:index.php");
   }
   $username = $_SESSION["username"];
+    $get_month = $_GET["month"];
+    $get_year = $_GET["year"];
 
 date_default_timezone_set("Asia/Kuching");
 $currentdate = date('m/d/Y h:i:s a', time());
@@ -36,25 +38,35 @@ $pdf->Cell (30,7,'Employer',"TB",0);
 $pdf->Cell (30,7,'Total',"RTB",1);
 
 //eis data from sql **
-$query=@mysqli_query($conn,"select * from employee_info");
+$query=@mysqli_query($conn,"SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$get_month' AND process_payroll_process_year = '$get_year'");
 $count = 0;
+$total_wages = 0;
+$total_employee_deduction = 0;
+$total_employer_deduction = 0;
 while($data=@mysqli_fetch_array($query)) {
+    $eis_employee_wages = $data["emp_wages"];
+    $eis_employee_deduction = $data["eis_employee_deduction"];
+    $eis_employer_deduction = $data["eis_employer_deduction"];
+    $eis_employee_deduction_total = $eis_employee_deduction + $eis_employer_deduction;    
 	$pdf->Cell (10,7,$data["emp_id"],0,0);
 	$pdf->Cell (150,7,$data["emp_full_name"],0,0);
-	$pdf->Cell (30,7,$data["emp_wages"],0,0);
-	$pdf->Cell (30,7,$data["emp_total_allowance"],0,0);
-	$pdf->Cell (30,7,$data["emp_total_deduction"],0,0);
-	$pdf->Cell (30,7,$data["emp_mobile"],0,1);
+	$pdf->Cell (30,7,$eis_employee_wages,0,0);
+	$pdf->Cell (30,7,$eis_employee_deduction,0,0);
+	$pdf->Cell (30,7,$eis_employer_deduction,0,0);
+	$pdf->Cell (30,7,$eis_employee_deduction_total,0,1);
 	$count = $count+1;
+    $total_wages = $total_wages + $eis_employee_wages;
+    $total_employee_deduction = $total_employee_deduction + $eis_employee_deduction;
+    $total_employer_deduction = $total_employer_deduction + $eis_employer_deduction;    
 }
-
+$all_total = $total_employee_deduction + $total_employer_deduction;
 //eis totals **
 $pdf->Cell (10,7,'',0,0);
 $pdf->Cell (150,7,'',0,0);
-$pdf->Cell (30,7,'Total W',"TB",0);
-$pdf->Cell (30,7,'Total Em',"TB",0);
-$pdf->Cell (30,7,'Total Er',"TB",0);
-$pdf->Cell (30,7,'Total',"TB",1);
+$pdf->Cell (30,7,$total_wages,"TB",0);
+$pdf->Cell (30,7,$total_employee_deduction,"TB",0);
+$pdf->Cell (30,7,$total_employer_deduction,"TB",0);
+$pdf->Cell (30,7,$all_total,"TB",1);
 
 //count of records
 $pdf->SetFont("Arial","", 11);

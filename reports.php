@@ -42,7 +42,7 @@
   <div class="polaroids">
     
     <div class="polaroid">
-    <a href="epf_report.php">
+    <a href="payslip_report.php">
       <img src="img/payslip.png" width="220px;">
       <p>Payslip Report</p>
     </a>
@@ -54,7 +54,7 @@
     </a>
     </div>
     <div class="polaroid">
-    <a href="epf_report.php">    
+    <a href="socso_report.php">    
       <img src="img/socso.png" width="220px;">
       <p>SOCSO Report</p>
     </a>

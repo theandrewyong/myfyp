@@ -46,7 +46,7 @@
                 <div class="col-6">
                 <div class="form-group">
                 <label for="email">Month</label>
-                    <input type="text" class="form-control" id="month" name="month" value="<?php echo date("m"); ?>">
+                    <input type="text" class="form-control" id="month" name="month" value="<?php echo (int)date("m"); ?>">
                 </div>
                 </div>
                 <div class="col-6">

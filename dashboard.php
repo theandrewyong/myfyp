@@ -57,6 +57,19 @@ $("#menu-toggle").click(function(e) {
 e.preventDefault();
 $("#wrapper").toggleClass("toggled");
 });
+    
+// Used jQuery to create the new logic:
+
+  if ($(window).width() < 922) {
+    $('#sidebar').collapse({
+      toggle: false
+    });
+  } else {
+    $('#sidebar').collapse({
+      toggle: true
+    });
+  }
+
 </script>
 
 </body>

@@ -46,7 +46,7 @@
                 <div class="col-6">
                 <div class="form-group">
                 <label for="email">Month</label>
-                    <input type="text" class="form-control" id="month" name="month" value="<?php echo date("m"); ?>">
+                    <input type="text" class="form-control" id="month" name="month" value="<?php echo (int)date("m"); ?>">
                 </div>
                 </div>
                 <div class="col-6">
@@ -75,7 +75,7 @@
                 }
                 
             ?>
-            <a target="_blank" href="test_pdf_generator.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a>
+            <a target="_blank" href="eis_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a>
             </div>
         </div>
     </div>
