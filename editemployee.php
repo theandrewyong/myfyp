@@ -97,6 +97,9 @@
 									$emp_resign_date  = $_POST["emp_resign_date"];
 									$data_edited_date = date("Y/m/d");
 									  
+									//update blank data to avoid ID already exist in edit employee
+									$clear_sql = mysqli_query($conn, "UPDATE employee_info SET emp_display_id='' WHERE emp_id ='$get_emp_id'");
+									  
 									$select_sql = mysqli_query($conn, "SELECT * FROM employee_info"); 
 									while($data = mysqli_fetch_assoc($select_sql)){
 										if ($emp_display_id == $data["emp_display_id"])

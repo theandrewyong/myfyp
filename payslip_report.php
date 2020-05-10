@@ -75,7 +75,7 @@
                 }
                 
             ?>
-            <a target="_blank" href="test_pdf_generator.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a>
+            <a target="_blank" href="payslip_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a>
             </div>
         </div>
     </div>
