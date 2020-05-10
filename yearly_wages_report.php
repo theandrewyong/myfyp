@@ -62,6 +62,13 @@
                 $year = "";
                 $view_table = FALSE;
                
+                if(isset($_POST["submit"])){
+                $view_table = TRUE;
+
+                $year = $_POST["year"]; 
+
+                    $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_year = '$year'"); 
+                }
                 
                 //check and see which month exists
                 $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
@@ -79,10 +86,9 @@
                $unique_year_array = array_unique($specific_year_array);                
                 foreach($unique_month_array as $uma){
                    // echo $uma;
-                }
-                
+                } 
             ?>
-            <a target="_blank" href="test_pdf_generator.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a>
+            <a target="_blank" href="yearly_wages_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a>
             </div>
         </div>
     </div>

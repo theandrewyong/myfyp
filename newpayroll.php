@@ -260,7 +260,7 @@ if(isset($_POST["submit"])){
                                 echo "<tr>";
                                 echo "<td>" . $std . "</td>";
                                 echo "<td>" . $get_name_result["emp_full_name"] . "</td>";
-                                echo "<td>" . '<input value="' . $get_name_result["emp_id"] . '" type="checkbox" name="cb' . $ccb . '">' . "</td>";
+                                echo "<td>" . '<input value="' . $get_name_result["emp_id"] . '" type="checkbox" name="cb' . $ccb . '" checked>' . "</td>";
                                 echo "</tr>";                                   
                             }                                            
                         }else{
