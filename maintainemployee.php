@@ -78,17 +78,33 @@
                             </div>        
                         </div>
                     </div>
+					
                     <div id="allowance" role="tabpanel" aria-labelledby="allowance-tab" class="tab-pane fade px-4 py-5">
                         <?php
+						$message ='';
                         if(isset($_POST["submit"])){
+							
+							$count = 0;
 							$allowance_display_id = $_POST["allowance_display_id"];
                             $allowance_desc = $_POST["allowance_desc"];
                             $allowance_rate = $_POST["allowance_rate"];
-                            $new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
-                            $prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
-                            mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
-                            mysqli_stmt_execute($prepared_stmt_insert);
-                            mysqli_stmt_close($prepared_stmt_insert);
+							
+							$select_sql = mysqli_query($conn, "SELECT * FROM allowance"); 
+							while($data = mysqli_fetch_assoc($select_sql)){
+								if ($allowance_display_id == $data["allowance_display_id"])
+								{
+									$message = '<label class="text-danger">Error: ID already exist.</label>';
+									$count = $count+1;
+								}
+							}
+							
+							if ($count==0){
+								$new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
+								$prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
+								mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
+								mysqli_stmt_execute($prepared_stmt_insert);
+								mysqli_stmt_close($prepared_stmt_insert);
+							}
                         }
                         ?>
                         <div class="row">
@@ -96,7 +112,7 @@
                                 <form class="form-horizontal" role="form" method="post">
 									
 									<div class="form-group">
-                                    <label for="allowance_display_id" class="col-sm-3 control-label"><h6>Item Display ID</h6></label>
+                                    <label for="allowance_display_id" class="col-sm-3 control-label"><h6>Item Display ID <?php echo $message ?></h6></label>
                                         <div class="col-12">
                                             <input type="text" id="allowance_display_id" name="allowance_display_id" placeholder="Display ID: P01" class="form-control">
                                         </div>
@@ -163,15 +179,31 @@
                     </div>
                     <div id="deduction" role="tabpanel" aria-labelledby="deduction-tab" class="tab-pane fade px-4 py-5">
                         <?php
+						$message2 ='';
                         if(isset($_POST["submit1"])){
+							
+							$count2 = 0;
 							$deduction_display_id = $_POST["deduction_display_id"];
                             $deduction_desc = $_POST["deduction_desc"];
                             $deduction_rate = $_POST["deduction_rate"];
-                            $new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
-                            $prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
-                            mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
-                            mysqli_stmt_execute($prepared_stmt_insert);
-                            mysqli_stmt_close($prepared_stmt_insert);
+							
+							$select_sql2 = mysqli_query($conn, "SELECT * FROM deduction"); 
+							while($data = mysqli_fetch_assoc($select_sql2)){
+								if ($deduction_display_id == $data["deduction_display_id"])
+								{
+									$message2 = '<label class="text-danger">Error: ID already exist.</label>';
+									$count2 = $count2+1;
+								}
+							}
+							
+							if ($count2==0){
+								$new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
+								$prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
+								mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
+								mysqli_stmt_execute($prepared_stmt_insert);
+								mysqli_stmt_close($prepared_stmt_insert);
+							}
+							
                         }
                         ?>
                         <div class="row">
@@ -179,7 +211,7 @@
 								<form class="form-horizontal" role="form" method="post">
 									
 									<div class="form-group">
-                                    <label for="deduction_display_id" class="col-sm-3 control-label"><h6>Item Display ID</h6></label>
+                                    <label for="deduction_display_id" class="col-sm-3 control-label"><h6>Item Display ID <?php echo $message2 ?> </h6></label>
                                         <div class="col-12">
                                             <input type="text" id="deduction_display_id" name="deduction_display_id" placeholder="Display ID: A01" class="form-control">
                                         </div>

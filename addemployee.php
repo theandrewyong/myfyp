@@ -84,9 +84,10 @@
 								mysqli_stmt_close($prepared_stmt_insert);
 
 								$update_sql = mysqli_query($conn, "UPDATE employee_id_count SET emp_id_count='$emp_display_id'");	
+								
+								header("Location: maintainemployee.php");
 							}
-
-							header("Location: maintainemployee.php"); 
+ 
 							}
 						
 						$show_sql = mysqli_query($conn, "SELECT * FROM employee_id_count");
