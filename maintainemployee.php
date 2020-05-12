@@ -88,6 +88,7 @@
 							$allowance_display_id = $_POST["allowance_display_id"];
                             $allowance_desc = $_POST["allowance_desc"];
                             $allowance_rate = $_POST["allowance_rate"];
+							$format_allowance_rate = number_format("$allowance_rate",2);	
 							
 							$select_sql = mysqli_query($conn, "SELECT * FROM allowance"); 
 							while($data = mysqli_fetch_assoc($select_sql)){
@@ -101,7 +102,7 @@
 							if ($count==0){
 								$new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
 								$prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
-								mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
+								mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $format_allowance_rate);
 								mysqli_stmt_execute($prepared_stmt_insert);
 								mysqli_stmt_close($prepared_stmt_insert);
 							}
@@ -186,6 +187,7 @@
 							$deduction_display_id = $_POST["deduction_display_id"];
                             $deduction_desc = $_POST["deduction_desc"];
                             $deduction_rate = $_POST["deduction_rate"];
+							$format_deduction_rate = number_format("$deduction_rate",2);
 							
 							$select_sql2 = mysqli_query($conn, "SELECT * FROM deduction"); 
 							while($data = mysqli_fetch_assoc($select_sql2)){
@@ -199,7 +201,7 @@
 							if ($count2==0){
 								$new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
 								$prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
-								mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
+								mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $format_deduction_rate);
 								mysqli_stmt_execute($prepared_stmt_insert);
 								mysqli_stmt_close($prepared_stmt_insert);
 							}

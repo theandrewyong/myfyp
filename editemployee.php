@@ -82,6 +82,8 @@
 									$emp_immigration = $_POST["emp_immigration"];
 									$emp_title = $_POST["emp_title"];
 									$emp_wages = $_POST["emp_wages"];
+									$format_emp_wages = number_format("$emp_wages",2); 
+									
 									$emp_payment_method = $_POST["emp_payment_method"];
 									$emp_bank_name = $_POST["emp_bank_name"];
 									$emp_account = $_POST["emp_account"];
@@ -129,13 +131,14 @@
 										$allowance_id = $data["allowance_id"];
 										$allowance_desc = $data["allowance_desc"];
 										$allowance_rate = $data["allowance_rate"];
+										$format_allowance_rate = number_format("$allowance_rate",2); 
 										
 										$new_employee_allowance = "INSERT INTO employee_allowance (emp_id, allowance_id, allowance_desc, allowance_rate) VALUES (?,?,?,?)";
 										
 
 										$prepared_stmt_insert = mysqli_prepare($conn, $new_employee_allowance);
 
-										mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $allowance_id, $allowance_desc, $allowance_rate);
+										mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $allowance_id, $allowance_desc, $format_allowance_rate);
 										
 										mysqli_stmt_execute($prepared_stmt_insert);
 										mysqli_stmt_close($prepared_stmt_insert);
@@ -156,13 +159,14 @@
 										$deduction_id = $data["deduction_id"];
 										$deduction_desc = $data["deduction_desc"];
 										$deduction_rate = $data["deduction_rate"];
+										$format_deduction_rate = number_format("$deduction_rate",2); 
 										
 										$new_employee_deduction = "INSERT INTO employee_deduction (emp_id, deduction_id, deduction_desc, deduction_rate) VALUES (?,?,?,?)";
 										
 
 										$prepared_stmt_insert = mysqli_prepare($conn, $new_employee_deduction);
 
-										mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $deduction_id, $deduction_desc, $deduction_rate);
+										mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $deduction_id, $deduction_desc, $format_deduction_rate);
 										
 										mysqli_stmt_execute($prepared_stmt_insert);
 										mysqli_stmt_close($prepared_stmt_insert);
@@ -211,13 +215,6 @@
 													<input type="text" id="emp_display_id" name="emp_display_id" class="form-control" value="<?php echo $show_emp_display_id; ?>" autofocus>
 												</div>
 											</div>
-										</div>
-										
-										<div class="form-group">
-										<label for="emp_full_name" class="col-sm-12 control-label"><h5 class="pt-2">Full Name</h5></label>
-										<div class="col-sm-11">
-											<input type="text" id="emp_full_name" name="emp_full_name" placeholder="Full Name" class="form-control" value="<?php echo $show_emp_full_name; ?>" autofocus>
-										</div>
 										</div>
 							
 									  	<div class="form-group">
@@ -323,7 +320,7 @@
 									<div class="form-group">
 										<label for="emp_wages" class="col-sm-12 control-label"><h5 class="pt-2">Wages</h5></label>
 										<div class="col-sm-11">
-											<input type="number" id="emp_wages" name="emp_wages" placeholder="Employee Wages" class="form-control" value="<?php echo $show_emp_wages; ?>" autofocus>
+											<input type="number" id="emp_wages" name="emp_wages" placeholder="Employee Wages" step=".01" class="form-control" value="<?php echo $show_emp_wages; ?>" autofocus>
 										</div>
 									</div>
 						

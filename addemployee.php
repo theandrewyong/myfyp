@@ -30,6 +30,7 @@
                     <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-5 show active">
 						<?php
 							$message='';
+						$format_emp_wages=0;
 							$count =0;
 							if(isset($_POST["register"])){
 
@@ -49,6 +50,8 @@
 							$emp_title = $_POST["emp_title"];
 							//---------------------------------------------------
 							$emp_wages = $_POST["emp_wages"];
+							$format_emp_wages = number_format("$emp_wages",2);	
+							
 							$emp_payment_method = $_POST["emp_payment_method"];	
 							$emp_bank_name = $_POST["emp_bank_name"];
 							$emp_account = $_POST["emp_account"];
@@ -78,14 +81,14 @@
 
 								$prepared_stmt_insert = mysqli_prepare($conn, $new_employee_sql);
 
-								mysqli_stmt_bind_param($prepared_stmt_insert, 'sssssssssssssssssssssssssss', $combined, $emp_full_name, $emp_gender, $emp_dob, $emp_email, $emp_address, $emp_mobile, $emp_telephone, $emp_ic, $emp_passport, $emp_immigration, $emp_title, $emp_wages, $emp_payment_method, $emp_bank_name, $emp_account, $emp_health_status, $emp_martial_status, $emp_spouse_status, $emp_epf, $emp_socso, $emp_socso_type, $emp_eis_type, $emp_join_date, $emp_confirm_date, $emp_resign_date, $data_created_date);
+								mysqli_stmt_bind_param($prepared_stmt_insert, 'sssssssssssssssssssssssssss', $combined, $emp_full_name, $emp_gender, $emp_dob, $emp_email, $emp_address, $emp_mobile, $emp_telephone, $emp_ic, $emp_passport, $emp_immigration, $emp_title, $format_emp_wages, $emp_payment_method, $emp_bank_name, $emp_account, $emp_health_status, $emp_martial_status, $emp_spouse_status, $emp_epf, $emp_socso, $emp_socso_type, $emp_eis_type, $emp_join_date, $emp_confirm_date, $emp_resign_date, $data_created_date);
 
 								mysqli_stmt_execute($prepared_stmt_insert);
 								mysqli_stmt_close($prepared_stmt_insert);
 
 								$update_sql = mysqli_query($conn, "UPDATE employee_id_count SET emp_id_count='$emp_display_id'");	
 								
-								header("Location: maintainemployee.php");
+								//header("Location: maintainemployee.php");
 							}
  
 							}
@@ -99,7 +102,7 @@
 								<form class="form-horizontal" role="form" method="post">
 <div class="row"><div class="col-sm-6"><!--left-------------------------------->
 									<a id="employee_section"><h1>Employee Main Profile</h1></a> 
-									<br>
+									<br> <?php echo $format_emp_wages; ?>
 	
 									<div class="form-group">
 										<label for="emp_display_id" class="col-sm-12 control-label"><h5 class="pt-2">Employee Display ID <?php echo $message; ?></h5></label>
