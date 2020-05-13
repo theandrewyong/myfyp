@@ -11,7 +11,7 @@ $username = $_SESSION["username"];
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Payroll Software - New Payroll</title>
+<title>Payroll Software - New AdHoc</title>
 <?php include "all_css.php"; ?>
 </head>
 <body>
@@ -20,7 +20,7 @@ $username = $_SESSION["username"];
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">New Payroll</h1>
+            <h1 class="mt-4">New AdHoc</h1>
             <?php
             if(isset($_POST["check"])){
                 $check_month = $_POST["process_payroll_process_month"];

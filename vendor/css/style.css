@@ -64,14 +64,29 @@ body {
 /* End Rounded tabs */
 
 /* Table alignment */
-.mot {
-    margin-top: 10px;
+.dtb_search {
     float:left;
+    font-size: 16px;
     clear: both;
 }   
 
-.xot {
-    float: right;
+#example_filter input {
+    font-size: 16px;
+}
+
+
+#example2_filter input {
+    font-size: 16px;
+}
+
+#example3_filter input {
+    font-size: 16px;
+}
+
+.dtb_length {
+    float: left;
+    font-size: 16px;
+    clear: both;
 }
 /* End Table alignment */
 

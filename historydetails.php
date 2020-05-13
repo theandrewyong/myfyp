@@ -41,7 +41,7 @@
 <h1 class="mt-4">Payroll History Details</h1>
 <hr>
 <!-- dashboard conten here -->
-    <div class="p-5 bg-white rounded shadow mb-5">
+    <div class="p-3 bg-white rounded shadow mb-5">
         <div class="table-responsive">
             <table id="example" class="table table-striped table-bordered">
                 <thead>
@@ -57,7 +57,7 @@
             while($data = mysqli_fetch_assoc($select_all_sql)){
             $process_id = $data["process_payroll_id"];
             echo "<tr>";
-            echo "<td>" . $data["emp_id"] . "</td>";
+            echo "<td>" . $data["emp_display_id"] . "</td>";
             echo "<td>" . $data["emp_full_name"] . "</td>";
             echo "<td>" . '<a href="edithistory.php?pid=' . $process_id . '">Edit</a>' . "</td>";
             echo "</tr>";

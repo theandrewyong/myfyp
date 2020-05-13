@@ -42,14 +42,35 @@
 <!-- dashboard conten here -->
     <div class="p-5 bg-white rounded shadow mb-5">
         <?php
-        if(isset($_POST["submit"])){
-            $edited_admin_username = $_POST["edited_username"];
-            $edited_admin_password = $_POST["edited_password"];
+        $error = FALSE;
+        $error_edited_admin_username = "";
+        $error_edited_admin_password = "";
+        $edited_admin_username = "";
+        $edited_admin_password = "";
+        $edited_admin_permission = "";
+        
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            if(empty($_POST["edited_username"])){
+                $error_edited_admin_username = '<span class="text-danger"> *Invalid Username</span>';
+                $error = TRUE;
+            }else{
+                $edited_admin_username = $_POST["edited_username"];
+            }
+            
+            if(empty($_POST["edited_password"])){
+                $error_edited_admin_password = '<span class="text-danger"> *Invalid Password</span>';
+                $error = TRUE;
+            }else{
+                $edited_admin_password = $_POST["edited_password"];
+            }
             $edited_admin_permission = $_POST["edited_permission"];
             
-            mysqli_query($conn, "UPDATE account SET username = '$edited_admin_username', password = '$edited_admin_password', permission = '$edited_admin_permission' WHERE username_id = '$admin_id'");
+            if($error == FALSE){
+                mysqli_query($conn, "UPDATE account SET username = '$edited_admin_username', password = '$edited_admin_password', permission = '$edited_admin_permission' WHERE username_id = '$admin_id'"); 
+                
+                echo '<script>alert("Updated Successfully");</script>';
+            }
         }
-        
         $show_sql = mysqli_query($conn, "SELECT * FROM account WHERE username_id = '$admin_id'");
           $show_data = mysqli_fetch_assoc($show_sql);
         
@@ -60,11 +81,11 @@
         ?>
         <form action="editadmin.php?id=<?php echo $admin_id; ?>" method="post" enctype="multipart/form-data" autocomplete="off">
             <div class="form-group">
-            <label for="email">Username:</label>
+            <label for="email">Username:<?php echo $error_edited_admin_username;?></label>
                 <input type="text" class="form-control" id="email" name="edited_username" value="<?php echo $admin_username; ?>">
             </div>
             <div class="form-group">
-                <label for="pwd">Password:</label>
+                <label for="pwd">Password:<?php echo $error_edited_admin_password;?></label>
                 <input type="password" class="form-control" id="pwd" name="edited_password" value="<?php echo $admin_password; ?>">
             </div>
             <div class="form-group">

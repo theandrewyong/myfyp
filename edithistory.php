@@ -63,8 +63,13 @@
             $new_advance_deduct = $_POST["new_advance_deduct"];
             $new_adjustment = $_POST["new_adjustment"];
             
+            $new_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance + $new_claims + $new_director_fees + $new_advance_paid + $new_bonus + $new_others;
+            $new_gross_deduct = $new_epf + $new_socso + $new_eis + $new_deduction + $new_loan + $new_unpaid_leave + $new_advance_deduct; 
+            
+            $new_netpay = $new_gross_pay - $new_gross_deduct + $new_adjustment;
+            
             //update sql
-            $update_sql = mysqli_query($conn, "UPDATE process_payroll SET process_payroll_wage = '$new_wages', process_payroll_overtime = '$new_overtime', process_payroll_commission = '$new_commission', process_payroll_allowance = '$new_allowance', process_payroll_claims = '$new_claims', process_payroll_director_fees = '$new_director_fees', process_payroll_advance_paid = '$new_advance_paid', process_payroll_bonus = '$new_bonus', process_payroll_others = '$new_others', epf_employee_deduction = '$new_epf', socso_employee_deduction = '$new_socso', eis_employee_deduction = '$new_eis', process_payroll_deduction = '$new_deduction', process_payroll_loan = '$new_loan', process_payroll_unpaid_leave = '$new_unpaid_leave', process_payroll_advance_deduct = '$new_advance_deduct', process_payroll_adjustment = '$new_adjustment' WHERE process_payroll_id = '$process_id'");
+            $update_sql = mysqli_query($conn, "UPDATE process_payroll SET process_payroll_wage = '$new_wages', process_payroll_overtime = '$new_overtime', process_payroll_commission = '$new_commission', process_payroll_allowance = '$new_allowance', process_payroll_claims = '$new_claims', process_payroll_director_fees = '$new_director_fees', process_payroll_advance_paid = '$new_advance_paid', process_payroll_bonus = '$new_bonus', process_payroll_others = '$new_others', epf_employee_deduction = '$new_epf', socso_employee_deduction = '$new_socso', eis_employee_deduction = '$new_eis', process_payroll_deduction = '$new_deduction', process_payroll_loan = '$new_loan', process_payroll_unpaid_leave = '$new_unpaid_leave', process_payroll_advance_deduct = '$new_advance_deduct', process_payroll_adjustment = '$new_adjustment', process_payroll_net_pay = '$new_netpay' WHERE process_payroll_id = '$process_id'");
             
         }        
         
@@ -260,7 +265,7 @@
                         
                             <p>NP<span class="float-right">Net Pay</span></p>
                             <h1>RM<span class="float-right" id="net_pay"></span></h1>                       
-                        
+
                         
                         
                     </div>                    
