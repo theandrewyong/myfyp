@@ -5,6 +5,21 @@ if(empty($_SESSION["username"])){
     header("location:index.php");
 }
 $username = $_SESSION["username"];
+
+$select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
+$data_exists = FALSE;
+$unique_month_array = "";
+$unique_year_array = "";
+
+while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
+    $data_exists = TRUE;
+    $specific_month = $select_result["process_payroll_process_month"];
+    $specific_year = $select_result["process_payroll_process_year"];
+    $specific_month_array[] = $specific_month;
+    $specific_year_array[] = $specific_year;
+    $unique_month_array = array_unique($specific_month_array);
+    $unique_year_array = array_unique($specific_year_array);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,22 +37,6 @@ $username = $_SESSION["username"];
         <div class="container-fluid">
             <h1 class="mt-4">Payroll History</h1>
             <hr>
-            <?php
-            $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
-            $data_exists = FALSE;
-            $unique_month_array = "";
-            $unique_year_array = "";
-
-            while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
-                $data_exists = TRUE;
-                $specific_month = $select_result["process_payroll_process_month"];
-                $specific_year = $select_result["process_payroll_process_year"];
-                $specific_month_array[] = $specific_month;
-                $specific_year_array[] = $specific_year;
-                $unique_month_array = array_unique($specific_month_array);
-                $unique_year_array = array_unique($specific_year_array);
-                }
-            ?>
             <div class="p-3 bg-white rounded shadow mb-5">
                 <div class="table-responsive">
                     <table id="example" class="table table-striped table-bordered">
@@ -58,7 +57,7 @@ $username = $_SESSION["username"];
                                     echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
                                     echo '<td>' . $uya . '</td>';
                                     echo '<td>' . '<a href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View Details</a>' . '</td>';
-                                    echo '<td>' . '<a href="deletehistory.php?month=' . $uma . '&year=' . $uya . '">Delete</a>' . '</td>';
+                                    echo '<td>' . '<a href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
                                     echo '</tr>';
                                 }
                             }

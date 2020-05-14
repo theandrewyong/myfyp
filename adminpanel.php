@@ -5,6 +5,45 @@ include "conn.php";
 header("location:index.php");
 }
 $username = $_SESSION["username"];
+
+$error = FALSE;
+$error_username = "";
+$error_password = "";
+$username = "";
+$password = "";
+$permission = ""; 
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if(empty($_POST["username"])){
+        $error_username = '<span class="text-danger"> *Invalid Username</span>';
+        $error = TRUE;
+    }else{
+        $username = mysqli_escape_string($conn,  test_input($_POST["username"]));
+    }
+    if(empty($_POST["password"])){
+        $error_password = '<span class="text-danger"> *Invalid Password</span>';
+        $error = TRUE;
+    }else{
+        $password = mysqli_escape_string($conn, test_input($_POST["password"]));
+    }
+    $permission = mysqli_escape_string($conn, test_input($_POST["permission"]));
+
+    if($error == FALSE){
+        $new_user_sql = "INSERT INTO account (username, password, permission) VALUES (?,?,?)";
+        $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
+        mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $username, $password, $permission);
+        mysqli_stmt_execute($prepared_stmt_insert);
+        mysqli_stmt_close($prepared_stmt_insert);
+        echo '<script>alert("Created Successfully");</script>';
+    }
+}
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,48 +71,7 @@ $username = $_SESSION["username"];
                     </li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
-                    <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-1 py-3 show active">
-                    <?php
-                        $error = FALSE;
-                        $error_username = "";
-                        $error_password = "";
-                        $username = "";
-                        $password = "";
-                        $permission = ""; 
-                        
-                    if($_SERVER["REQUEST_METHOD"] == "POST"){
-                        if(empty($_POST["username"])){
-                            $error_username = '<span class="text-danger"> *Invalid Username</span>';
-                            $error = TRUE;
-                        }else{
-                            $username = mysqli_escape_string($conn,  test_input($_POST["username"]));
-                        }
-                        if(empty($_POST["password"])){
-                            $error_password = '<span class="text-danger"> *Invalid Password</span>';
-                            $error = TRUE;
-                        }else{
-                            $password = mysqli_escape_string($conn, test_input($_POST["password"]));
-                        }
-                        $permission = mysqli_escape_string($conn, test_input($_POST["permission"]));
-                        
-                        if($error == FALSE){
-                            $new_user_sql = "INSERT INTO account (username, password, permission) VALUES (?,?,?)";
-                            $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
-                            mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $username, $password, $permission);
-                            mysqli_stmt_execute($prepared_stmt_insert);
-                            mysqli_stmt_close($prepared_stmt_insert);
-                            echo '<script>alert("Created Successfully");</script>';
-                        }
-                    }
-                        
-                    function test_input($data) {
-                        $data = trim($data);
-                        $data = stripslashes($data);
-                        $data = htmlspecialchars($data);
-                        return $data;
-                    }
-                                                
-                    ?>          
+                    <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-1 py-3 show active">          
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data" autocomplete="off">
                             <div class="form-group">
                                 <label for="email">Username:<?php echo $error_username;?></label>

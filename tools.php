@@ -5,6 +5,94 @@ if(empty($_SESSION["username"])){
     header("location:index.php");
 }
 $username = $_SESSION["username"];
+
+$message = '';
+if(isset($_POST["import"])){
+
+    if($_FILES["database"]["name"] != ''){
+        $array = explode(".", $_FILES["database"]["name"]);
+        $extension = end($array);
+
+        if($extension == 'sql'){
+            $connect = mysqli_connect("localhost", "root", "", "payroll_db");
+            $drop_table = mysqli_query($conn, "DROP DATABASE payroll_db");
+            $create_table = mysqli_query($conn, "CREATE DATABASE payroll_db");
+            $output = '';
+            $count = 0;
+            $file_data = file($_FILES["database"]["tmp_name"]);
+
+            foreach($file_data as $row){
+                $start_character = substr(trim($row), 0, 2);
+                if($start_character != '--' || $start_character != '/*' || $start_character != '//' || $row != ''){
+                    $output = $output . $row;
+                    $end_character = substr(trim($row), -1, 1);
+
+                    if($end_character == ';'){
+                        if(!mysqli_query($connect, $output)){
+                            $count++;
+                        }
+                        $output = '';
+                    }
+                }
+            }
+            if($count > 0){
+                $message = '<label class="text-danger">There is an error in Database Import</label>';
+            }else{
+                $message = '<label class="text-success">Database Successfully Imported</label>';
+            }
+        }else{
+            $message = '<label class="text-danger">Invalid File</label>';
+        }
+    }else{
+        $message = '<label class="text-danger">Please Select SQL File</label>';
+    }
+}
+
+$message2 = '';
+if(isset($_POST["export"])){
+    $connection = mysqli_connect('localhost','root','','payroll_db');
+    $tables = array();
+    $result = mysqli_query($connection,"SHOW TABLES");
+
+    while($row = mysqli_fetch_row($result)){
+        $tables[] = $row[0];
+    }
+    $return = '';
+
+    foreach($tables as $table){
+        $result = mysqli_query($connection,"SELECT * FROM ".$table);
+        $num_fields = mysqli_num_fields($result);
+        $row2 = mysqli_fetch_row(mysqli_query($connection,"SHOW CREATE TABLE ".$table));
+        $return .= "\n\n".$row2[1].";\n\n";
+
+        for($i=0;$i<$num_fields;$i++){
+            while($row = mysqli_fetch_row($result)){
+                $return .= "INSERT INTO ".$table." VALUES(";
+
+                for($j=0;$j<$num_fields;$j++){
+                    $row[$j] = addslashes($row[$j]);
+                    if(isset($row[$j])){
+                        $return .= '"'.$row[$j].'"';
+                    }else{ 
+                        $return .= '""';
+                    }
+                    if($j<$num_fields-1){
+                        $return .= ',';
+                    }
+                }
+                $return .= ");\n";
+            }
+        }
+        $return .= "\n\n\n";
+    }
+
+    $handle = fopen("C:\Users\Public\Downloads\backup.sql","w+");
+    fwrite($handle, "SET FOREIGN_KEY_CHECKS = 0;\n");
+    fwrite($handle,$return);
+    fclose($handle);
+
+    $message2 = '<label class="text-success">Database Successfully Backed-Up to C:\Users\Public\Downloads\backup.sql</label>';
+}            
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,96 +110,6 @@ $username = $_SESSION["username"];
         <div class="container-fluid">
             <h1 class="mt-4">Tools</h1>
             <hr>
-            <?php 
-            $message = '';
-            if(isset($_POST["import"])){
-
-                if($_FILES["database"]["name"] != ''){
-                    $array = explode(".", $_FILES["database"]["name"]);
-                    $extension = end($array);
-                    
-                    if($extension == 'sql'){
-                        $connect = mysqli_connect("localhost", "root", "", "payroll_db");
-                        $drop_table = mysqli_query($conn, "DROP DATABASE payroll_db");
-                        $create_table = mysqli_query($conn, "CREATE DATABASE payroll_db");
-                        $output = '';
-                        $count = 0;
-                        $file_data = file($_FILES["database"]["tmp_name"]);
-                        
-                        foreach($file_data as $row){
-                            $start_character = substr(trim($row), 0, 2);
-                            if($start_character != '--' || $start_character != '/*' || $start_character != '//' || $row != ''){
-                                $output = $output . $row;
-                                $end_character = substr(trim($row), -1, 1);
-                                
-                                if($end_character == ';'){
-                                    if(!mysqli_query($connect, $output)){
-                                        $count++;
-                                    }
-                                    $output = '';
-                                }
-                            }
-                        }
-                        if($count > 0){
-                            $message = '<label class="text-danger">There is an error in Database Import</label>';
-                        }else{
-                            $message = '<label class="text-success">Database Successfully Imported</label>';
-                        }
-                    }else{
-                        $message = '<label class="text-danger">Invalid File</label>';
-                    }
-                }else{
-                    $message = '<label class="text-danger">Please Select SQL File</label>';
-                }
-            }
-            
-            $message2 = '';
-            if(isset($_POST["export"])){
-                $connection = mysqli_connect('localhost','root','','payroll_db');
-                $tables = array();
-                $result = mysqli_query($connection,"SHOW TABLES");
-                
-                while($row = mysqli_fetch_row($result)){
-                    $tables[] = $row[0];
-                }
-                $return = '';
-                
-                foreach($tables as $table){
-                    $result = mysqli_query($connection,"SELECT * FROM ".$table);
-                    $num_fields = mysqli_num_fields($result);
-                    $row2 = mysqli_fetch_row(mysqli_query($connection,"SHOW CREATE TABLE ".$table));
-                    $return .= "\n\n".$row2[1].";\n\n";
-
-                    for($i=0;$i<$num_fields;$i++){
-                        while($row = mysqli_fetch_row($result)){
-                            $return .= "INSERT INTO ".$table." VALUES(";
-                            
-                            for($j=0;$j<$num_fields;$j++){
-                                $row[$j] = addslashes($row[$j]);
-                                if(isset($row[$j])){
-                                    $return .= '"'.$row[$j].'"';
-                                }else{ 
-                                    $return .= '""';
-                                }
-                                if($j<$num_fields-1){
-                                    $return .= ',';
-                                }
-                            }
-                            $return .= ");\n";
-                        }
-                    }
-                    $return .= "\n\n\n";
-                }
-                
-                $handle = fopen("C:\Users\Public\Downloads\backup.sql","w+");
-                fwrite($handle, "SET FOREIGN_KEY_CHECKS = 0;\n");
-                fwrite($handle,$return);
-                fclose($handle);
-                
-                $message2 = '<label class="text-success">Database Successfully Backed-Up to C:\Users\Public\Downloads\backup.sql</label>';
-            }            
-            ?>
-            
             <div class="row">
                 <div class="col-md-6 col-sm-12">
                     <div class="p-3 bg-white rounded shadow mb-5">

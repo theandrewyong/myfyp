@@ -116,12 +116,21 @@ $username = $_SESSION["username"];
             }
         header("Refresh:0");
         }
+        /*
+        $dateValue = date("Y-m-d");
+        $time=strtotime($dateValue);
+        $month=date("m",$time);
+        $year=date("Y",$time);
+        $str="09";
+        $str = ltrim($str, '0');
+        echo $str;
+        */
         ?>
         <hr>
         <form action="newpayroll.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-6 col-12">
-                    <div class="p-5 bg-white rounded shadow mb-5">
+                    <div class="p-3 bg-white rounded shadow mb-5">
                         <p><b>Transaction Posting</b></p>
                         <div class="row">
                             <div class="col-md-6 col-12">
@@ -191,45 +200,43 @@ $username = $_SESSION["username"];
                     </div>
                 </div>
                 <div class="col-md-6 col-12">
-                    <div class="p-5 bg-white rounded shadow mb-5">
+                    <div class="p-3 bg-white rounded shadow mb-5">
                         <p><b>Employee</b></p>
-                        <div class="table-responsive">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <table id="example" class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Employee ID</th>
-                                                    <th>Employee Name</th>
-                                                    <th>To process</th>
-                                                </tr>
-                                            </thead>                                
-                                            <tbody>
-                                            <?php
-                                            if(mysqli_num_rows($to_process_sql) >= 0){
-                                                
-                                                foreach($show_table_data as $std){
-                                                    $ccb++;
-                                                    $get_name = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$std'");
-                                                    $get_name_result = mysqli_fetch_assoc($get_name);
-                                                    echo "<tr>";
-                                                    echo "<td>" . $get_name_result["emp_display_id"] . "</td>";
-                                                    echo "<td>" . $get_name_result["emp_full_name"] . "</td>";
-                                                    echo "<td>" . '<input value="' . $get_name_result["emp_id"] . '" type="checkbox" name="cb' . $ccb . '" checked>' . "</td>";
-                                                    echo "</tr>";                                   
-                                                }                                            
-                                            }else{
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                    <table id="example" class="table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Employee ID</th>
+                                                <th>Employee Name</th>
+                                                <th>To process</th>
+                                            </tr>
+                                        </thead>                                
+                                        <tbody>
+                                        <?php
+                                        if(mysqli_num_rows($to_process_sql) >= 0){
+
+                                            foreach($show_table_data as $std){
+                                                $ccb++;
+                                                $get_name = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$std'");
+                                                $get_name_result = mysqli_fetch_assoc($get_name);
                                                 echo "<tr>";
-                                                echo "<td colspan='2'>All Employee processed for this Month and Year</td>";
-                                                echo "</tr>";
-                                            }
-                                            ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>                       
-                            </div>        
+                                                echo "<td>" . $get_name_result["emp_display_id"] . "</td>";
+                                                echo "<td>" . $get_name_result["emp_full_name"] . "</td>";
+                                                echo "<td>" . '<input value="' . $get_name_result["emp_id"] . '" type="checkbox" name="cb' . $ccb . '" checked>' . "</td>";
+                                                echo "</tr>";                                   
+                                            }                                            
+                                        }else{
+                                            echo "<tr>";
+                                            echo "<td colspan='2'>All Employee processed for this Month and Year</td>";
+                                            echo "</tr>";
+                                        }
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                              
                         </div>
                     </div>
                 </div>
@@ -240,11 +247,25 @@ $username = $_SESSION["username"];
 </div>
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 <script>
 $("#menu-toggle").click(function(e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
 });
+    
+$(document).ready( function() {
+    $('#example').dataTable( {
+        responsive: true,
+        language: {
+        search: "",
+        "lengthMenu": "_MENU_",
+        searchPlaceholder: "Search records"
+        },
+        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
+    } );   
+} );    
 </script>
 <script>
 if ( window.history.replaceState ) {
