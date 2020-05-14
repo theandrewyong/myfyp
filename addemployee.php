@@ -216,7 +216,7 @@
 									<div class="form-group">
 										<label for="emp_wages" class="col-sm-12 control-label"><h5 class="pt-2">Wages</h5></label>
 										<div class="col-sm-11">
-											<input type="number" id="emp_wages" name="emp_wages" placeholder="Employee Wages" class="form-control" autofocus>
+											<input type="text" id="emp_wages" name="emp_wages" placeholder="Employee Wages" class="form-control" autofocus>
 										</div>
 									</div>
 	
