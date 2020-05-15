@@ -44,23 +44,22 @@ $emp_id_unique = array_unique($emp_id_array);
 $pdf->SetFont("Arial","", 8);
 
 $pdf->Cell (40,7,'Employee Name',"LT",0);
-$pdf->Cell (14.5,7,'Wages',"T","R",0);
-$pdf->Cell (14.5,7,'Overtime',"T","R",0);
-$pdf->Cell (17,7,'Commission',"T","R",0);
-$pdf->Cell (14.5,7,'Allowance',"T","R",0);
-$pdf->Cell (14.5,7,'Claims',"T","R",0);
-$pdf->Cell (14.5,7,'Director',"T","R",0);
-$pdf->Cell (14.5,7,'Advance',"T","R",0);
-$pdf->Cell (14.5,7,'Bonus',"T","R",0);
-$pdf->Cell (14.5,7,'Others',"T","R",0);
-$pdf->Cell (14.5,7,'EPF',"T","R",0);
-$pdf->Cell (14.5,7,'SOCSO',"T","R",0);
-$pdf->Cell (14.5,7,'EIS',"T","R",0);
-$pdf->Cell (14.5,7,'Deduction',"T","R",0);
-$pdf->Cell (14.5,7,'Loan',"T","R",0);
-$pdf->Cell (14.5,7,'Unpaid',"T","R",0);
-$pdf->Cell (14.5,7,'Advance',"RT","R",0);
-$pdf->Cell (14.5,7,'',"",1);
+$pdf->Cell (14.5,7,'Wages',"T",0);
+$pdf->Cell (14.5,7,'Overtime',"T",0);
+$pdf->Cell (17,7,'Commission',"T",0);
+$pdf->Cell (14.5,7,'Allowance',"T",0);
+$pdf->Cell (14.5,7,'Claims',"T",0);
+$pdf->Cell (14.5,7,'Director',"T",0);
+$pdf->Cell (14.5,7,'Advance',"T",0);
+$pdf->Cell (14.5,7,'Bonus',"T",0);
+$pdf->Cell (14.5,7,'Others',"T",0);
+$pdf->Cell (14.5,7,'EPF',"T",0);
+$pdf->Cell (14.5,7,'SOCSO',"T",0);
+$pdf->Cell (14.5,7,'EIS',"T",0);
+$pdf->Cell (14.5,7,'Deduction',"T",0);
+$pdf->Cell (14.5,7,'Loan',"T",0);
+$pdf->Cell (14.5,7,'Unpaid',"T",0);
+$pdf->Cell (14.5,7,'Advance',"RT",1);
 
 $pdf->Cell (40,3,'',"LB",0);
 $pdf->Cell (14.5,3,'',"B",0);
@@ -68,8 +67,8 @@ $pdf->Cell (14.5,3,'',"B",0);
 $pdf->Cell (17,3,'',"B",0);
 $pdf->Cell (14.5,3,'',"B",0);
 $pdf->Cell (14.5,3,'',"B",0);
-$pdf->Cell (14.5,3,'Fees',"B","R",0);
-$pdf->Cell (14.5,3,'Paid',"B","R",0);
+$pdf->Cell (14.5,3,'Fees',"B",0);
+$pdf->Cell (14.5,3,'Paid',"B",0);
 $pdf->Cell (14.5,3,'',"B",0);
 $pdf->Cell (14.5,3,'',"B",0);
 $pdf->Cell (14.5,3,'',"B",0);
@@ -77,29 +76,10 @@ $pdf->Cell (14.5,3,'',"B",0);
 $pdf->Cell (14.5,3,'',"B",0);
 $pdf->Cell (14.5,3,'',"B",0);
 $pdf->Cell (14.5,3,'',"B",0);
-$pdf->Cell (14.5,3,'Leave',"B","R",0);
-$pdf->Cell (14.5,3,'Deduct',"RB","R",0);
-$pdf->Cell (14.5,3,'',"",1);
+$pdf->Cell (14.5,3,'Leave',"B",0);
+$pdf->Cell (14.5,3,'Deduct',"RB",1);
 
-//variables for grand total
-$grand_wage = 0;
-$grand_overtime = 0;
-$grand_commission = 0;
-$grand_allowance = 0;
-$grand_claims = 0;
-$grand_director_fees = 0;
-$grand_advance_paid = 0;
-$grand_bonus = 0;
-$grand_others = 0;
-$grand_epf = 0;
-$grand_socso = 0;
-$grand_eis = 0;
-$grand_deduction = 0;
-$grand_loan = 0;
-$grand_unpaid_leave = 0;
-$grand_advance_deduct = 0;
-
-//payroll summary data from sql 
+//payroll summary data from sql **
 $count = 0;
 foreach($emp_id_unique as $eiu){
 	//count the total wages for each employee
@@ -127,83 +107,46 @@ foreach($emp_id_unique as $eiu){
 	$sum_advance_deduct = $usql["sum_advance_deduct"];
 	
 	$pdf->Cell (40,7,$emp_name,"",0);
-	$pdf->Cell (14.5,7,$sum_wage,"","R",0);
-	$pdf->Cell (14.5,7,$sum_overtime,"","R",0);
-	$pdf->Cell (17,7,$sum_commission,"","R",0);
-	$pdf->Cell (14.5,7,$sum_allowance,"","R",0);
-	$pdf->Cell (14.5,7,$sum_claims,"","R",0);
-	$pdf->Cell (14.5,7,$sum_director_fees,"","R",0);
-	$pdf->Cell (14.5,7,$sum_advance_paid,"","R",0);
-	$pdf->Cell (14.5,7,$sum_bonus,"","R",0);
-	$pdf->Cell (14.5,7,$sum_others,"","R",0);
-	$pdf->Cell (14.5,7,$sum_epf,"","R",0);
-	$pdf->Cell (14.5,7,$sum_socso,"","R",0);
-	$pdf->Cell (14.5,7,$sum_eis,"","R",0);
-	$pdf->Cell (14.5,7,$sum_deduction,"","R",0);
-	$pdf->Cell (14.5,7,$sum_loan,"","R",0);
-	$pdf->Cell (14.5,7,$sum_unpaid_leave,"","R",0);
-	$pdf->Cell (14.5,7,$sum_advance_deduct,"","R",0);
-	$pdf->Cell (14.5,7,"","",1);
+	$pdf->Cell (14.5,7,$sum_wage,"",0);
+	$pdf->Cell (14.5,7,$sum_overtime,"",0);
+	$pdf->Cell (17,7,$sum_commission,"",0);
+	$pdf->Cell (14.5,7,$sum_allowance,"",0);
+	$pdf->Cell (14.5,7,$sum_claims,"",0);
+	$pdf->Cell (14.5,7,$sum_director_fees,"",0);
+	$pdf->Cell (14.5,7,$sum_advance_paid,"",0);
+	$pdf->Cell (14.5,7,$sum_bonus,"",0);
+	$pdf->Cell (14.5,7,$sum_others,"",0);
+	$pdf->Cell (14.5,7,$sum_epf,"",0);
+	$pdf->Cell (14.5,7,$sum_socso,"",0);
+	$pdf->Cell (14.5,7,$sum_eis,"",0);
+	$pdf->Cell (14.5,7,$sum_deduction,"",0);
+	$pdf->Cell (14.5,7,$sum_loan,"",0);
+	$pdf->Cell (14.5,7,$sum_unpaid_leave,"",0);
+	$pdf->Cell (14.5,7,$sum_advance_deduct,"",1);
 	
 	$count = $count + 1;
-	
-	$grand_wage = $grand_wage + $sum_wage;
-	$grand_overtime = $grand_overtime + $sum_overtime;
-	$grand_commission = $grand_commission + $sum_commission;
-	$grand_allowance = $grand_allowance + $sum_allowance;
-	$grand_claims = $grand_claims + $sum_claims;
-	$grand_director_fees = $grand_director_fees + $sum_director_fees;
-	$grand_advance_paid = $grand_advance_paid + $sum_advance_paid;
-	$grand_bonus = $grand_bonus + $sum_bonus;
-	$grand_others = $grand_others + $sum_others;
-	$grand_epf = $grand_epf + $sum_epf;
-	$grand_socso = $grand_socso + $sum_socso;
-	$grand_eis = $grand_eis + $sum_eis;
-	$grand_deduction = $grand_deduction + $sum_deduction;
-	$grand_loan = $grand_loan + $sum_loan;
-	$grand_unpaid_leave = $grand_unpaid_leave + $sum_unpaid_leave;
-	$grand_advance_deduct = $grand_advance_deduct + $sum_advance_deduct;
-}
-
-//format grand total
-$format_grand_wage = number_format("$grand_wage",2);
-$format_grand_overtime = number_format("$grand_overtime",2);
-$format_grand_commission = number_format("$grand_commission",2);
-$format_grand_allowance = number_format("$grand_allowance",2);
-$format_grand_claims = number_format("$grand_claims",2);
-$format_grand_director_fees = number_format("$grand_director_fees",2);
-$format_grand_advance_paid = number_format("$grand_advance_paid",2);
-$format_grand_bonus = number_format("$grand_bonus",2);
-$format_grand_others = number_format("$grand_others",2);
-$format_grand_epf = number_format("$grand_epf",2);
-$format_grand_socso = number_format("$grand_socso",2);
-$format_grand_eis = number_format("$grand_eis",2);
-$format_grand_deduction = number_format("$grand_deduction",2);
-$format_grand_loan = number_format("$grand_loan",2);
-$format_grand_unpaid_leave = number_format("$grand_unpaid_leave",2);
-$format_grand_advance_deduct = number_format("$grand_advance_deduct",2);
+	}
 
 $pdf->SetFont("Arial","B", 8);
 $pdf->Cell (40,7,'Grand Total',"",0);
 
 $pdf->SetFont("Arial","", 8);
-$pdf->Cell (14.5,7,$format_grand_wage,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_overtime,"TB","R",0);
-$pdf->Cell (17,7,$format_grand_commission,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_allowance,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_claims,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_director_fees,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_advance_paid,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_bonus,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_others,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_epf,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_socso,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_eis,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_deduction,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_loan,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_unpaid_leave,"TB","R",0);
-$pdf->Cell (14.5,7,$format_grand_advance_deduct,"TB","R",0);
-$pdf->Cell (14.5,7,'',"",1);
+$pdf->Cell (14.5,7,$sum_wage,"TB",0);//error, need to store to display 2 deci
+$pdf->Cell (14.5,7,$sum_overtime,"TB",0);
+$pdf->Cell (17,7,$sum_commission,"TB",0);
+$pdf->Cell (14.5,7,$sum_allowance,"TB",0);
+$pdf->Cell (14.5,7,$sum_claims,"TB",0);
+$pdf->Cell (14.5,7,$sum_director_fees,"TB",0);
+$pdf->Cell (14.5,7,$sum_advance_paid,"TB",0);
+$pdf->Cell (14.5,7,$sum_bonus,"TB",0);
+$pdf->Cell (14.5,7,$sum_others,"TB",0);
+$pdf->Cell (14.5,7,$sum_epf,"TB",0);
+$pdf->Cell (14.5,7,$sum_socso,"TB",0);
+$pdf->Cell (14.5,7,$sum_eis,"TB",0);
+$pdf->Cell (14.5,7,$sum_deduction,"TB",0);
+$pdf->Cell (14.5,7,$sum_loan,"TB",0);
+$pdf->Cell (14.5,7,$sum_unpaid_leave,"TB",0);
+$pdf->Cell (14.5,7,$sum_advance_deduct,"TB",1);
 
 //count of records
 $pdf->SetFont("Arial","", 10);

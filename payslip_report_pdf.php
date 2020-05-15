@@ -243,20 +243,12 @@ else {
 	$pdf->Cell (60,4.5,'',"0",0);
 	$pdf->Cell (35,4.5,'',"LR",1,"C");
 }
- 
-//total earnings
-$total_earnings = $data["process_payroll_wage"]+ $data["process_payroll_overtime"]+ $data["process_payroll_commission"]+ $data["process_payroll_allowance"]+ $data["process_payroll_claims"]+ $data["process_payroll_director_fees"]+ $data["process_payroll_advance_paid"]+ $data["process_payroll_bonus"]+ $data["process_payroll_others"];
-$format_total_earnings = number_format("$total_earnings",2);
 
 $pdf->Cell (60,4.5,'	TOTAL EARNINGS',"1",0);
-$pdf->Cell (35,4.5,$format_total_earnings,"TB",0,"C");
-
-//total deductions	
-$total_deductions = $data["epf_employee_deduction"]+ $data["socso_employee_deduction"]+ $data["eis_employee_deduction"]+ $data["process_payroll_deduction"]+ $data["process_payroll_loan"]+ $data["process_payroll_unpaid_leave"]+ $data["process_payroll_advance_deduct"];
-$format_total_deductions = number_format("$total_deductions",2);
-
+$pdf->Cell (35,4.5,$data["process_payroll_wage"]+ $data["process_payroll_overtime"]+ $data["process_payroll_commission"]+ $data["process_payroll_allowance"]+ $data["process_payroll_claims"]+ $data["process_payroll_director_fees"]+ $data["process_payroll_advance_paid"]+ $data["process_payroll_bonus"]+ $data["process_payroll_others"],"TB",0,"C");//error, need to store in sql for 2 deci
+	
 $pdf->Cell (60,4.5,'	TOTAL DEDUCTIONS',"1",0);
-$pdf->Cell (35,4.5,$format_total_deductions,"1",1,"C");
+$pdf->Cell (35,4.5,$data["epf_employee_deduction"]+ $data["socso_employee_deduction"]+ $data["eis_employee_deduction"]+ $data["process_payroll_deduction"]+ $data["process_payroll_loan"]+ $data["process_payroll_unpaid_leave"]+ $data["process_payroll_advance_deduct"],"1",1,"C");//need to store in sql for 2 deci
 	
 $pdf->Cell (60,6,'	Adjustments',"L",0);
 $pdf->Cell (35,6,$data["process_payroll_adjustment"],"LR",0,"C");
