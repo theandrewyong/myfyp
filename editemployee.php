@@ -26,8 +26,6 @@ $emp_passport = $_POST["emp_passport"];
 $emp_immigration = $_POST["emp_immigration"];
 $emp_title = $_POST["emp_title"];
 $emp_wages = $_POST["emp_wages"];
-$format_emp_wages = number_format("$emp_wages",2); 
-
 $emp_payment_method = $_POST["emp_payment_method"];
 $emp_bank_name = $_POST["emp_bank_name"];
 $emp_account = $_POST["emp_account"];
@@ -75,14 +73,13 @@ $data = $data = $result->fetch_assoc();
 $allowance_id = $data["allowance_id"];
 $allowance_desc = $data["allowance_desc"];
 $allowance_rate = $data["allowance_rate"];
-$format_allowance_rate = number_format("$allowance_rate",2); 
 
 $new_employee_allowance = "INSERT INTO employee_allowance (emp_id, allowance_id, allowance_desc, allowance_rate) VALUES (?,?,?,?)";
 
 
 $prepared_stmt_insert = mysqli_prepare($conn, $new_employee_allowance);
 
-mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $allowance_id, $allowance_desc, $format_allowance_rate);
+mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $allowance_id, $allowance_desc, $allowance_rate);
 
 mysqli_stmt_execute($prepared_stmt_insert);
 mysqli_stmt_close($prepared_stmt_insert);
@@ -102,15 +99,14 @@ $data = $data = $result->fetch_assoc();
 
 $deduction_id = $data["deduction_id"];
 $deduction_desc = $data["deduction_desc"];
-$deduction_rate = $data["deduction_rate"];
-$format_deduction_rate = number_format("$deduction_rate",2); 
+$deduction_rate = $data["deduction_rate"]; 
 
 $new_employee_deduction = "INSERT INTO employee_deduction (emp_id, deduction_id, deduction_desc, deduction_rate) VALUES (?,?,?,?)";
 
 
 $prepared_stmt_insert = mysqli_prepare($conn, $new_employee_deduction);
 
-mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $deduction_id, $deduction_desc, $format_deduction_rate);
+mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $deduction_id, $deduction_desc, $deduction_rate);
 
 mysqli_stmt_execute($prepared_stmt_insert);
 mysqli_stmt_close($prepared_stmt_insert);

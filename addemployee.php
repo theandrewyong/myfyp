@@ -9,7 +9,6 @@ $username = $_SESSION["username"];
 
     <?php
     $message='';
-    $format_emp_wages=0;
     $count =0;
     if(isset($_POST["register"])){
 
@@ -29,8 +28,6 @@ $username = $_SESSION["username"];
     $emp_title = $_POST["emp_title"];
     //---------------------------------------------------
     $emp_wages = $_POST["emp_wages"];
-    $format_emp_wages = number_format("$emp_wages",2);	
-
     $emp_payment_method = $_POST["emp_payment_method"];	
     $emp_bank_name = $_POST["emp_bank_name"];
     $emp_account = $_POST["emp_account"];
@@ -60,7 +57,7 @@ $username = $_SESSION["username"];
 
     $prepared_stmt_insert = mysqli_prepare($conn, $new_employee_sql);
 
-    mysqli_stmt_bind_param($prepared_stmt_insert, 'sssssssssssssssssssssssssss', $combined, $emp_full_name, $emp_gender, $emp_dob, $emp_email, $emp_address, $emp_mobile, $emp_telephone, $emp_ic, $emp_passport, $emp_immigration, $emp_title, $format_emp_wages, $emp_payment_method, $emp_bank_name, $emp_account, $emp_health_status, $emp_martial_status, $emp_spouse_status, $emp_epf, $emp_socso, $emp_socso_type, $emp_eis_type, $emp_join_date, $emp_confirm_date, $emp_resign_date, $data_created_date);
+    mysqli_stmt_bind_param($prepared_stmt_insert, 'sssssssssssssssssssssssssss', $combined, $emp_full_name, $emp_gender, $emp_dob, $emp_email, $emp_address, $emp_mobile, $emp_telephone, $emp_ic, $emp_passport, $emp_immigration, $emp_title, $emp_wages, $emp_payment_method, $emp_bank_name, $emp_account, $emp_health_status, $emp_martial_status, $emp_spouse_status, $emp_epf, $emp_socso, $emp_socso_type, $emp_eis_type, $emp_join_date, $emp_confirm_date, $emp_resign_date, $data_created_date);
 
     mysqli_stmt_execute($prepared_stmt_insert);
     mysqli_stmt_close($prepared_stmt_insert);

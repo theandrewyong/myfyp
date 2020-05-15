@@ -48,8 +48,7 @@ if(isset($_POST["submit"])){
 $count = 0;
 $allowance_display_id = $_POST["allowance_display_id"];
 $allowance_desc = $_POST["allowance_desc"];
-$allowance_rate = $_POST["allowance_rate"];
-$format_allowance_rate = number_format("$allowance_rate",2);	
+$allowance_rate = $_POST["allowance_rate"];	
 $select_sql = mysqli_query($conn, "SELECT * FROM allowance"); 
 
 while($data = mysqli_fetch_assoc($select_sql)){
@@ -62,7 +61,7 @@ $count = $count+1;
 if ($count==0){
 $new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
 $prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
-mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $format_allowance_rate);
+mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
 mysqli_stmt_execute($prepared_stmt_insert);
 mysqli_stmt_close($prepared_stmt_insert);
 }
@@ -74,7 +73,6 @@ $count2 = 0;
 $deduction_display_id = $_POST["deduction_display_id"];
 $deduction_desc = $_POST["deduction_desc"];
 $deduction_rate = $_POST["deduction_rate"];
-$format_deduction_rate = number_format("$deduction_rate",2);
 $select_sql2 = mysqli_query($conn, "SELECT * FROM deduction"); 
 
 while($data = mysqli_fetch_assoc($select_sql2)){
@@ -88,7 +86,7 @@ $count2 = $count2+1;
 if ($count2==0){
 $new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
 $prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
-mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $format_deduction_rate);
+mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
 mysqli_stmt_execute($prepared_stmt_insert);
 mysqli_stmt_close($prepared_stmt_insert);
 }
@@ -189,7 +187,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                         <h6>Rate of Item (RM)</h6>
                                     </label>
                                     <div class="col-md-12">
-                                        <input type="number" id="allowance_rate" name="allowance_rate" step=".01" placeholder="Rate Example: 100" class="form-control">
+                                        <input type="text" id="allowance_rate" name="allowance_rate" placeholder="Rate Example: 100" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -255,7 +253,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                         <h6>Rate of Item (RM)</h6>
                                     </label>
                                     <div class="col-sm-12">
-                                        <input type="number" id="deduction_rate" name="deduction_rate" step=".01" placeholder="Rate Example: 100" class="form-control" autofocus>
+                                        <input type="text" id="deduction_rate" name="deduction_rate" placeholder="Rate Example: 100" class="form-control" autofocus>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
