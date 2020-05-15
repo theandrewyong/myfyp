@@ -6,6 +6,43 @@ if(empty($_SESSION["username"])){
 }
 $username = $_SESSION["username"];
 
+
+if(!empty($_GET["delete_emp_id"])){
+    $employee_id = $_GET["delete_emp_id"];
+    $delete_sql = "DELETE FROM employee_info WHERE emp_id = '$employee_id'";
+    $delete = mysqli_query($conn, $delete_sql);
+
+    if($delete){
+        echo '<script>' . 'alert(\'Deleted Successfully\')' . '</script>';
+    }else{
+        echo '<script>' . 'alert(\'Delete Error! Foreign Key constraints exists\')' . '</script>';
+    }        
+}
+
+if(!empty($_GET["delete_allowance_id"])){
+    $allowance_id = $_GET["delete_allowance_id"];
+    $delete_sql = "DELETE FROM allowance WHERE allowance_id = '$allowance_id'";
+    $delete = mysqli_query($conn, $delete_sql);
+
+    if($delete){
+        echo '<script>' . 'alert(\'Deleted Successfully\')' . '</script>';
+    }else{
+        echo '<script>' . 'alert(\'Delete Error! Foreign Key constraints exists\')' . '</script>';
+    }        
+}
+
+if(!empty($_GET["delete_deduction_id"])){
+    $deduction_id = $_GET["delete_deduction_id"];
+    $delete_sql = "DELETE FROM deduction WHERE deduction_id = '$deduction_id'";
+    $delete = mysqli_query($conn, $delete_sql);
+
+    if($delete){
+        echo '<script>' . 'alert(\'Deleted Successfully\')' . '</script>';
+    }else{
+        echo '<script>' . 'alert(\'Delete Error! Foreign Key constraints exists\')' . '</script>';
+    }        
+}
+
 $message ='';
 if(isset($_POST["submit"])){
 $count = 0;
@@ -62,18 +99,6 @@ $select_allowance = mysqli_query($conn, "SELECT * FROM allowance");
 $select_deduction = mysqli_query($conn, "SELECT * FROM deduction"); 
 
 
-    if(!empty($_GET["delete_emp_id"])){
-        $employee_id = $_GET["delete_emp_id"];
-        $delete_sql = "DELETE FROM employee_info WHERE emp_id = '$employee_id'";
-        $delete = mysqli_query($conn, $delete_sql);
-        
-        if($delete){
-            echo '<script>' . 'alert(\'Deleted Successfully\')' . '</script>';
-        }else{
-            echo '<script>' . 'alert(\'Delete Error! Employee Exists in Payroll History\')' . '</script>';
-        }        
-    }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,7 +153,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["emp_full_name"] . "</td>";
                                                 echo "<td>" . $data["emp_title"] . "</td>";
                                                 echo "<td>" . '<a href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit</a>' . "</td>";
-                                                echo "<td>" . '<a href="maintainemployee.php?delete_emp_id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\')">Delete</a>' . "</td>";
+                                                echo "<td>" . '<a href="maintainemployee.php?delete_emp_id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  
@@ -194,7 +219,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["allowance_desc"] . "</td>";
                                                 echo "<td>" . $data["allowance_rate"] . "</td>";
                                                 echo "<td>" . '<a href="editallowance.php?id=' . $data["allowance_id"] . '&desc=' . $data["allowance_desc"] . '&rate=' . $data["allowance_rate"] . '">Edit</a>' . "</td>";
-                                                echo "<td>" . '<a href="deleteallowance.php?id=' . $data["allowance_id"] . '">Delete</a>' . "</td>";
+                                                echo "<td>" . '<a href="maintainemployee.php?delete_allowance_id=' . $data["allowance_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  
@@ -260,7 +285,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["deduction_desc"] . "</td>";
                                                 echo "<td>" . $data["deduction_rate"] . "</td>";
                                                 echo "<td>" . '<a href="editdeduction.php?id=' . $data["deduction_id"] . '&desc=' . $data["deduction_desc"] . '&rate=' . $data["deduction_rate"] . '">Edit</a>' . "</td>";
-                                                echo "<td>" . '<a href="deletededuction.php?id=' . $data["deduction_id"] . '">Delete</a>' . "</td>";
+                                                echo "<td>" . '<a href="maintainemployee.php?delete_deduction_id=' . $data["deduction_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  

@@ -9,7 +9,9 @@
 
     <a href="maintainemployee.php" class="<?php if($curPageName == 'maintainemployee.php'){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Maintain Employee</a>
 
-    <a href="newpayroll.php" class="<?php if($curPageName == 'newpayroll.php'){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">New Payroll</a>      
+    <a href="newpayroll.php" class="<?php if($curPageName == 'newpayroll.php'){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">New Payroll</a> 
+        
+    <a href="newadhoc.php" class="<?php if($curPageName == 'newadhoc.php'){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">New AdHoc</a>        
 
     <a href="historypayroll.php" class="<?php if($curPageName == 'historypayroll.php'){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Payroll History</a>
 
