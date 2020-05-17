@@ -14,6 +14,7 @@ if(!empty($_GET["delete_emp_id"])){
 
     if($delete){
         echo '<script>' . 'alert(\'Deleted Successfully\')' . '</script>';
+        header("location:dashboard.php");
     }else{
         echo '<script>' . 'alert(\'Delete Error! Foreign Key constraints exists\')' . '</script>';
     }        

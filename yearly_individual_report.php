@@ -100,8 +100,8 @@
             <tbody>
             <?php
 				//hide errors
-				error_reporting(0);
-				ini_set('display_errors', 0);
+				//error_reporting(0);
+				//ini_set('display_errors', 0);
 				
 				$id = "";
                 if($view_table){
@@ -116,8 +116,12 @@
                             
                         echo '<tr>';
                         echo '<td>' . $yid_display . '</td>';
-                        echo '<td>' . $yid_name . '</td>'; ?>
-                        <td><a target="_blank" href="individual_report_details.php?year=<?php echo $year . '&id=' . $id;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Details</a></td>;<?php
+                        echo '<td>' . $yid_name . '</td>';
+                        ?>
+                
+                        <td><a target="_blank" href="individual_report_details.php?year=<?php echo $year . '&id=' . $id;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Details</a></td>
+                
+                    <?php
                         echo '</tr>';                       
                         
                     }                    
