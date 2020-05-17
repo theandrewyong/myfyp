@@ -38,34 +38,49 @@ while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
             <h1 class="mt-4">Payroll History</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">
-                <div class="table-responsive">
-                    <table id="example" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Month</th>
-                                <th>Year</th>
-                                <th>Details</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        if($data_exists){
-                            foreach($unique_month_array as $uma){
-                                foreach($unique_year_array as $uya){
-                                    echo '<tr>';
-                                    echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
-                                    echo '<td>' . $uya . '</td>';
-                                    echo '<td>' . '<a href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View Details</a>' . '</td>';
-                                    echo '<td>' . '<a href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
-                                    echo '</tr>';
+                <ul id="myTab" role="tablist" class="nav nav-tabs nav-pills flex-column flex-sm-row text-center bg-light border-0 rounded-nav">
+                    <li class="nav-item flex-sm-fill">
+                        <a id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">Month-End History</a>
+                    </li>
+                    <li class="nav-item flex-sm-fill">
+                        <a id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">AdHoc History</a>
+                    </li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-1 py-3 show active">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>Year</th>
+                                        <th>Details</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                if($data_exists){
+                                    foreach($unique_month_array as $uma){
+                                        foreach($unique_year_array as $uya){
+                                            echo '<tr>';
+                                            echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
+                                            echo '<td>' . $uya . '</td>';
+                                            echo '<td>' . '<a href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View Details</a>' . '</td>';
+                                            echo '<td>' . '<a href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                                            echo '</tr>';
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                        ?>
-                        </tbody>
-                    </table>
-                </div>  
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="profile" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-1 py-3">
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>

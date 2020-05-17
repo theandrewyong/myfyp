@@ -45,51 +45,51 @@ if(!empty($_GET["delete_deduction_id"])){
 
 $message ='';
 if(isset($_POST["submit"])){
-$count = 0;
-$allowance_display_id = $_POST["allowance_display_id"];
-$allowance_desc = $_POST["allowance_desc"];
-$allowance_rate = $_POST["allowance_rate"];	
-$select_sql = mysqli_query($conn, "SELECT * FROM allowance"); 
+    $count = 0;
+    $allowance_display_id = $_POST["allowance_display_id"];
+    $allowance_desc = $_POST["allowance_desc"];
+    $allowance_rate = $_POST["allowance_rate"];	
+    $select_sql = mysqli_query($conn, "SELECT * FROM allowance"); 
 
-while($data = mysqli_fetch_assoc($select_sql)){
-if ($allowance_display_id == $data["allowance_display_id"])
-{
-$message = '<label class="text-danger">Error: ID already exist.</label>';
-$count = $count+1;
-}
-}
-if ($count==0){
-$new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
-$prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
-mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
-mysqli_stmt_execute($prepared_stmt_insert);
-mysqli_stmt_close($prepared_stmt_insert);
-}
+    while($data = mysqli_fetch_assoc($select_sql)){
+        if ($allowance_display_id == $data["allowance_display_id"])
+        {
+            $message = '<label class="text-danger">Error: ID already exist.</label>';
+            $count = $count+1;
+        }
+    }
+    if ($count==0){
+        $new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
+        $prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
+        mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
+        mysqli_stmt_execute($prepared_stmt_insert);
+        mysqli_stmt_close($prepared_stmt_insert);
+    }
 }
 
 $message2 ='';
 if(isset($_POST["submit1"])){
-$count2 = 0;
-$deduction_display_id = $_POST["deduction_display_id"];
-$deduction_desc = $_POST["deduction_desc"];
-$deduction_rate = $_POST["deduction_rate"];
-$select_sql2 = mysqli_query($conn, "SELECT * FROM deduction"); 
+    $count2 = 0;
+    $deduction_display_id = $_POST["deduction_display_id"];
+    $deduction_desc = $_POST["deduction_desc"];
+    $deduction_rate = $_POST["deduction_rate"];
+    $select_sql2 = mysqli_query($conn, "SELECT * FROM deduction"); 
 
-while($data = mysqli_fetch_assoc($select_sql2)){
-if ($deduction_display_id == $data["deduction_display_id"])
-{
-$message2 = '<label class="text-danger">Error: ID already exist.</label>';
-$count2 = $count2+1;
-}
-}
+    while($data = mysqli_fetch_assoc($select_sql2)){
+        if ($deduction_display_id == $data["deduction_display_id"])
+        {
+            $message2 = '<label class="text-danger">Error: ID already exist.</label>';
+            $count2 = $count2+1;
+        }
+    }
 
-if ($count2==0){
-$new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
-$prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
-mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
-mysqli_stmt_execute($prepared_stmt_insert);
-mysqli_stmt_close($prepared_stmt_insert);
-}
+    if ($count2==0){
+        $new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
+        $prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
+        mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
+        mysqli_stmt_execute($prepared_stmt_insert);
+        mysqli_stmt_close($prepared_stmt_insert);
+    }
 }
 
 $select_emp = mysqli_query($conn, "SELECT * FROM employee_info");
@@ -313,9 +313,9 @@ $("#menu-toggle").click(function(e) {
 $(document).ready( function() {
     $('#example').dataTable( {
         language: {
-        search: "",
-        "lengthMenu": "_MENU_",
-        searchPlaceholder: "Search records"
+            search: "",
+            "lengthMenu": "_MENU_",
+            searchPlaceholder: "Search records"
         },
         "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
     } );
@@ -324,9 +324,9 @@ $(document).ready( function() {
 $(document).ready( function() {
     $('#example1').dataTable( {
         language: {
-        search: "",
-        "lengthMenu": "_MENU_",
-        searchPlaceholder: "Search records"
+            search: "",
+            "lengthMenu": "_MENU_",
+            searchPlaceholder: "Search records"
         },
         "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
     } );
@@ -335,9 +335,9 @@ $(document).ready( function() {
 $(document).ready( function() {
     $('#example2').dataTable( {
         language: {
-        search: "",
-        "lengthMenu": "_MENU_",
-        searchPlaceholder: "Search records"
+            search: "",
+            "lengthMenu": "_MENU_",
+            searchPlaceholder: "Search records"
         },
         "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
     } );

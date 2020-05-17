@@ -8,6 +8,7 @@ $username = $_SESSION["username"];
 $process_id = $_GET["pid"];
 
 if(isset($_POST["submit"])){
+    //get all new value from edited history
     $new_wages = $_POST["new_wages"];
     $new_overtime = $_POST["new_overtime"];
     $new_commission = $_POST["new_commission"];
@@ -17,19 +18,71 @@ if(isset($_POST["submit"])){
     $new_advance_paid = $_POST["new_advance_paid"];
     $new_bonus = $_POST["new_bonus"];
     $new_others = $_POST["new_others"];
-    $new_epf = $_POST["new_epf"];
-    $new_socso = $_POST["new_socso"];
+    //$new_epf = $_POST["new_epf"];
+    //$new_socso = $_POST["new_socso"];
     $new_eis = $_POST["new_eis"];
     $new_deduction = $_POST["new_deduction"];
     $new_loan = $_POST["new_loan"];
     $new_unpaid_leave = $_POST["new_unpaid_leave"];
     $new_advance_deduct = $_POST["new_advance_deduct"];
     $new_adjustment = $_POST["new_adjustment"];
-    $new_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance + $new_claims + $new_director_fees + $new_advance_paid + $new_bonus + $new_others;
-    $new_gross_deduct = $new_epf + $new_socso + $new_eis + $new_deduction + $new_loan + $new_unpaid_leave + $new_advance_deduct; 
-    $new_netpay = $new_gross_pay - $new_gross_deduct + $new_adjustment;
+    // end get all new value from edited history
     
-    $update_sql = mysqli_query($conn, "UPDATE process_payroll SET process_payroll_wage = '$new_wages', process_payroll_overtime = '$new_overtime', process_payroll_commission = '$new_commission', process_payroll_allowance = '$new_allowance', process_payroll_claims = '$new_claims', process_payroll_director_fees = '$new_director_fees', process_payroll_advance_paid = '$new_advance_paid', process_payroll_bonus = '$new_bonus', process_payroll_others = '$new_others', epf_employee_deduction = '$new_epf', socso_employee_deduction = '$new_socso', eis_employee_deduction = '$new_eis', process_payroll_deduction = '$new_deduction', process_payroll_loan = '$new_loan', process_payroll_unpaid_leave = '$new_unpaid_leave', process_payroll_advance_deduct = '$new_advance_deduct', process_payroll_adjustment = '$new_adjustment', process_payroll_net_pay = '$new_netpay' WHERE process_payroll_id = '$process_id'");
+    //count epf contribution
+    $new_epf = $new_wages + $new_bonus + $new_allowance + $new_commission + $new_claims + $new_unpaid_leave + $new_others;
+    //select all data from epf view table
+    $epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula"); 
+    //while epf view table data exists
+    while($ef = mysqli_fetch_assoc($epf_formula_sql)){
+        $ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
+        $ef_end = $ef["epf_formula_wage_end"]; //get epf ending wages value
+        
+        //if epf contribution is in between start and end wages in view table
+        if(($new_epf >= $ef_start) && ($new_epf <= $ef_end)){
+            $epf_employee_deduction = $ef["epf_formula_employee_amt"]; //get employee epf deduction value
+            $epf_employer_deduction = $ef["epf_formula_employer_amt"]; //get employer epf deduction value
+        }
+    }
+    //count socso contribution
+    $new_socso = $new_wages + $new_others + $new_overtime + $new_allowance + $new_commission;
+    //select all data from socso view table
+    $socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula");
+    //while socso view table data exists
+    while($sc = mysqli_fetch_assoc($socso_formula_sql)){
+        $sc_start = $sc["socso_formula_wage_start"]; //get socso starting wages value
+        $sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
+        $sc_employee_contribution = $sc["socso_formula_wage_end"]; //get socso fixed contribution value
+        
+        //if socso contribution is in between start and end wages in view table
+        if(($new_socso >= $sc_start) && ($new_socso <= $sc_end)){
+        $socso_employee_deduction = $sc["socso_formula_employee_amt"]; //get employee socso deduction value
+        $socso_employer_deduction = $sc["socso_formula_employer_contribution"]; //get employer socso deduction value
+        }
+    }
+    //count eis contribution
+    $new_eis = $new_wages;
+   //select all data from eis view table
+    $eis_formula_sql = mysqli_query($conn, "SELECT * FROM eis_formula");
+    //while eis view table data exists
+    while($es = mysqli_fetch_assoc($eis_formula_sql)){
+
+        $es_start = $es["eis_formula_wage_start"]; //get eis starting wages value
+        $es_end = $es["eis_formula_wage_end"]; //get eis ending wages value 
+        //if eis contribution is in between start and end wages in view table
+        if(($new_eis >= $es_start) && ($new_eis <= $es_end)){
+            $eis_employee_deduction = $es["eis_formula_employee_amt"]; //get employee eis deduction value
+            $eis_employer_deduction = $es["eis_formula_employer_amt"]; //get employer eis deduction value   
+        }
+    }
+    //count gross pay
+    $new_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance + $new_claims + $new_director_fees + $new_advance_paid + $new_bonus + $new_others;
+    //count gross deduction
+    $new_gross_deduct = $epf_employee_deduction + $socso_employee_deduction + $eis_employee_deduction + $new_deduction + $new_loan + $new_unpaid_leave + $new_advance_deduct; 
+    //count net pay
+    $new_netpay = $new_gross_pay - $new_gross_deduct + $new_adjustment;
+
+    
+    $update_sql = mysqli_query($conn, "UPDATE process_payroll SET process_payroll_wage = '$new_wages', process_payroll_overtime = '$new_overtime', process_payroll_commission = '$new_commission', process_payroll_allowance = '$new_allowance', process_payroll_claims = '$new_claims', process_payroll_director_fees = '$new_director_fees', process_payroll_advance_paid = '$new_advance_paid', process_payroll_bonus = '$new_bonus', process_payroll_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', socso_employee_deduction = '$socso_employee_deduction', socso_employer_deduction = '$socso_employer_deduction', eis_employee_deduction = '$eis_employee_deduction', eis_employer_deduction = '$eis_employer_deduction', process_payroll_deduction = '$new_deduction', process_payroll_loan = '$new_loan', process_payroll_unpaid_leave = '$new_unpaid_leave', process_payroll_advance_deduct = '$new_advance_deduct', process_payroll_adjustment = '$new_adjustment', process_payroll_net_pay = '$new_netpay' WHERE process_payroll_id = '$process_id'");
 }        
 
 $get_all_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_id = '$process_id'");
@@ -248,29 +301,29 @@ document.getElementById("total_gross_deduct").innerHTML = <?php echo $total_gros
 document.getElementById("net_pay").innerHTML = <?php echo $net_pay; ?>;    
 
 function countNetPay() {
-var wages = document.getElementById("wages").value;
-var overtime = document.getElementById("overtime").value;
-var commission = document.getElementById("commission").value;
-var allowance = document.getElementById("allowance").value;
-var claims = document.getElementById("claims").value;
-var director_fees = document.getElementById("director_fees").value;
-var advance_paid = document.getElementById("advance_paid").value;
-var bonus = document.getElementById("bonus").value;
-var others = document.getElementById("others").value;
-var total_gp = parseFloat(wages) + parseFloat(overtime) + parseFloat(commission) + parseFloat(allowance) + parseFloat(claims) + parseFloat(director_fees) + parseFloat(advance_paid) + parseFloat(bonus) + parseFloat(others);
-var epf = document.getElementById("epf").value;
-var socso = document.getElementById("socso").value;
-var eis = document.getElementById("eis").value;
-var deduction = document.getElementById("deduction").value;
-var loan = document.getElementById("loan").value;
-var unpaid_leave = document.getElementById("unpaid_leave").value;
-var advance_deduct = document.getElementById("advance_deduct").value;
-var total_gd = parseFloat(epf) + parseFloat(socso) + parseFloat(eis) + parseFloat(deduction) + parseFloat(loan) + parseFloat(unpaid_leave) + parseFloat(advance_deduct);    
-var adjustment = document.getElementById("adjustment").value;
-var net_pay = total_gp - total_gd + parseFloat(adjustment);
-document.getElementById("total_gross_pay").innerHTML = total_gp;
-document.getElementById("total_gross_deduct").innerHTML = total_gd;
-document.getElementById("net_pay").innerHTML = net_pay;
+    var wages = document.getElementById("wages").value;
+    var overtime = document.getElementById("overtime").value;
+    var commission = document.getElementById("commission").value;
+    var allowance = document.getElementById("allowance").value;
+    var claims = document.getElementById("claims").value;
+    var director_fees = document.getElementById("director_fees").value;
+    var advance_paid = document.getElementById("advance_paid").value;
+    var bonus = document.getElementById("bonus").value;
+    var others = document.getElementById("others").value;
+    var total_gp = parseFloat(wages) + parseFloat(overtime) + parseFloat(commission) + parseFloat(allowance) + parseFloat(claims) + parseFloat(director_fees) + parseFloat(advance_paid) + parseFloat(bonus) + parseFloat(others);
+    var epf = document.getElementById("epf").value;
+    var socso = document.getElementById("socso").value;
+    var eis = document.getElementById("eis").value;
+    var deduction = document.getElementById("deduction").value;
+    var loan = document.getElementById("loan").value;
+    var unpaid_leave = document.getElementById("unpaid_leave").value;
+    var advance_deduct = document.getElementById("advance_deduct").value;
+    var total_gd = parseFloat(epf) + parseFloat(socso) + parseFloat(eis) + parseFloat(deduction) + parseFloat(loan) + parseFloat(unpaid_leave) + parseFloat(advance_deduct);    
+    var adjustment = document.getElementById("adjustment").value;
+    var net_pay = total_gp - total_gd + parseFloat(adjustment);
+    document.getElementById("total_gross_pay").innerHTML = total_gp;
+    document.getElementById("total_gross_deduct").innerHTML = total_gd;
+    document.getElementById("net_pay").innerHTML = net_pay;
 }    
 </script>
 </body>

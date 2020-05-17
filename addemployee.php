@@ -7,14 +7,13 @@ if(empty($_SESSION["username"])){
 $username = $_SESSION["username"];
 ?>
 
-    <?php
-    $message='';
-    $count =0;
-    if(isset($_POST["register"])){
+<?php
+$message='';
+$count =0;
+if(isset($_POST["register"])){
 
     $emp_display_id = $_POST["emp_display_id"];
     $combined = "E" . $emp_display_id;
-
     $emp_full_name = $_POST["emp_full_name"];
     $emp_gender = $_POST["emp_gender"];
     $emp_dob = $_POST["emp_dob"];
@@ -44,12 +43,13 @@ $username = $_SESSION["username"];
     $data_created_date = date("Y/m/d");
 
     $select_sql = mysqli_query($conn, "SELECT * FROM employee_info"); 
+    
     while($data = mysqli_fetch_assoc($select_sql)){
-    if ($combined == $data["emp_display_id"])
-    {
-    $message = '<label class="text-danger">Error: ID already exist.</label>';
-    $count = $count+1;
-    }
+        if ($combined == $data["emp_display_id"])
+        {
+            $message = '<label class="text-danger">Error: ID already exist.</label>';
+            $count = $count+1;
+        }
     }
 
     if ($count==0){
@@ -64,16 +64,15 @@ $username = $_SESSION["username"];
 
     $update_sql = mysqli_query($conn, "UPDATE employee_id_count SET emp_id_count='$emp_display_id'");	
 
-    //header("Location: maintainemployee.php");
     }
 
-    }
+}
 
-    $show_sql = mysqli_query($conn, "SELECT * FROM employee_id_count");
-    $show_data = mysqli_fetch_assoc($show_sql);
-    $show_emp_id_count = $show_data['emp_id_count'] + 1;
+$show_sql = mysqli_query($conn, "SELECT * FROM employee_id_count");
+$show_data = mysqli_fetch_assoc($show_sql);
+$show_emp_id_count = $show_data['emp_id_count'] + 1;
 
-    ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,7 +92,7 @@ $username = $_SESSION["username"];
             <div class="row">
                 <div class="col-md-12">
                     <div class="p-3 bg-white rounded shadow mb-5">
-                    <form class="form-horizontal" role="form" method="post">
+                        <form class="form-horizontal" role="form" method="post">
                         <div class="row">
                             <div class="col-md-6">
                                 <p><b>Employee Profile Info</b></p>
@@ -110,11 +109,11 @@ $username = $_SESSION["username"];
                                     <input type="text" id="emp_full_name" name="emp_full_name" placeholder="Full Name" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label>Gender</label>
-                                        <select class="form-control" id="emp_gender" name="emp_gender">
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
+                                <label>Gender</label>
+                                    <select class="form-control" id="emp_gender" name="emp_gender">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Date of Birth</label>
@@ -171,32 +170,32 @@ $username = $_SESSION["username"];
                                 </div>
                                 <div class="form-group">
                                     <label>Payment Method</label>
-                                        <select class="form-control" id="emp_payment_method" name="emp_payment_method">
-                                            <option value="Bank_In">Bank_In</option>
-                                            <option value="Cash">Cash</option>
-                                            <option value="Cheque">Cheque</option>
-                                        </select>
+                                    <select class="form-control" id="emp_payment_method" name="emp_payment_method">
+                                        <option value="Bank_In">Bank_In</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Cheque">Cheque</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                <label>Bank Name</label>
-                                <select class="form-control" id="emp_bank_name" name="emp_bank_name">
-                                    <option value="Maybank">Maybank</option>
-                                    <option value="CIMB">CIMB Bank</option>
-                                    <option value="Public Bank">Public Bank Berhad</option>
-                                    <option value="RHB">RHB Bank</option>
-                                    <option value="Hong Leong">Hong Leong Bank</option>
-                                    <option value="AmBank">AmBank</option>
-                                    <option value="Bank Rakyat">Bank Rakyat</option>
-                                    <option value="HSBC">HSBC Bank Malaysia</option>
-                                    <option value="UOB">UOB Malaysia Bank</option>
-                                    <option value="OCBC">OCBC Bank Malaysia</option>
-                                    <option value="Affin">Affin Bank	</option>
-                                    <option value="Bank Islam">Bank Islam Malaysia</option>
-                                    <option value="Standard Chartered">Standard Chartered Bank Malaysia</option>
-                                    <option value="CitiBank">CitiBank Malaysia</option>
-                                    <option value="BSN">Bank Simpanan Nasional (BSN)</option>
-                                    <option value="Alliance">Alliance Bank</option>
-                                </select>
+                                    <label>Bank Name</label>
+                                    <select class="form-control" id="emp_bank_name" name="emp_bank_name">
+                                        <option value="Maybank">Maybank</option>
+                                        <option value="CIMB">CIMB Bank</option>
+                                        <option value="Public Bank">Public Bank Berhad</option>
+                                        <option value="RHB">RHB Bank</option>
+                                        <option value="Hong Leong">Hong Leong Bank</option>
+                                        <option value="AmBank">AmBank</option>
+                                        <option value="Bank Rakyat">Bank Rakyat</option>
+                                        <option value="HSBC">HSBC Bank Malaysia</option>
+                                        <option value="UOB">UOB Malaysia Bank</option>
+                                        <option value="OCBC">OCBC Bank Malaysia</option>
+                                        <option value="Affin">Affin Bank	</option>
+                                        <option value="Bank Islam">Bank Islam Malaysia</option>
+                                        <option value="Standard Chartered">Standard Chartered Bank Malaysia</option>
+                                        <option value="CitiBank">CitiBank Malaysia</option>
+                                        <option value="BSN">Bank Simpanan Nasional (BSN)</option>
+                                        <option value="Alliance">Alliance Bank</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Bank Account</label>
@@ -257,7 +256,7 @@ $username = $_SESSION["username"];
                                 </div>
                             </div>
                         </div>
-                    </form>
+                        </form>
                     </div>            
                 </div>
             </div>

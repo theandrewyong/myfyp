@@ -23,6 +23,7 @@ $username = $_SESSION["username"];
             <h1 class="mt-4">New Payroll</h1>
             <?php
             if(isset($_POST["check"])){
+                
                 $check_month = $_POST["process_payroll_process_month"];
                 $check_year = $_POST["process_payroll_process_year"];
                 $all_check_sql = mysqli_query($conn, "SELECT * FROM temp_process");
@@ -60,71 +61,98 @@ $username = $_SESSION["username"];
             
             $show_table_data = array_diff($emp_array, $process_array);
             if(isset($_POST["submit"])){
-            $process_month = $_POST["process_payroll_process_month"];
-            $process_year = $_POST["process_payroll_process_year"];
-            $process_date = $_POST["process_payroll_process_date"];
-            $process_from = $_POST["process_payroll_from"];
-            $process_to = $_POST["process_payroll_to"];
-            $process_desc1 = $_POST["process_payroll_desc_1"];
-            $process_desc2 = $_POST["process_payroll_desc_2"];
-            $process_ref1 = $_POST["process_payroll_ref_1"];
-            $process_ref2 = $_POST["process_payroll_ref_2"];
-
-            $show_table_data = array_diff($emp_array, $process_array);
-            $counter = count($show_table_data) + 1;
                 
-            for($i=1;$i<$counter;$i++){
-                if(isset($_POST["cb$i"])){
-                    ${"check_ca$i"} = $_POST["cb$i"];
-                    $epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula");
-                    
-                    while($ef = mysqli_fetch_assoc($epf_formula_sql)){
-                        $ef_start = $ef["epf_formula_wage_start"];
-                        $ef_end = $ef["epf_formula_wage_end"];  
-                        $specific_emp_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '${"check_ca$i"}'");
-                        $get_specific_result = mysqli_fetch_assoc($specific_emp_sql);
-                        $emp_wages = $get_specific_result["emp_wages"];
-                        $emp_allowance = $get_specific_result["emp_total_allowance"];
-                        
-                        if(($emp_wages >= $ef_start) && ($emp_wages <= $ef_end)){
-                            $epf_employee_deduction = $ef["epf_formula_employee_amt"];
-                            $epf_employer_deduction = $ef["epf_formula_employer_amt"];
+                $process_month = $_POST["process_payroll_process_month"];
+                $process_year = $_POST["process_payroll_process_year"];
+                $process_date = $_POST["process_payroll_process_date"];
+                $process_from = $_POST["process_payroll_from"];
+                $process_to = $_POST["process_payroll_to"];
+                $process_desc1 = $_POST["process_payroll_desc_1"];
+                $process_desc2 = $_POST["process_payroll_desc_2"];
+                $process_ref1 = $_POST["process_payroll_ref_1"];
+                $process_ref2 = $_POST["process_payroll_ref_2"];
 
-                            $socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula");
-                            while($sc = mysqli_fetch_assoc($socso_formula_sql)){
-                                $sc_start = $sc["socso_formula_wage_start"];
-                                $sc_end = $sc["socso_formula_wage_end"];
-                                $sc_employee_contribution = $sc["socso_formula_wage_end"];
-                                if(($emp_wages >= $sc_start) && ($emp_wages <= $sc_end)){
-                                $socso_employee_deduction = $sc["socso_formula_employee_amt"];
-                                $socso_employer_deduction = $sc["socso_formula_employer_contribution"];
-                                $eis_formula_sql = mysqli_query($conn, "SELECT * FROM eis_formula");
-                                    while($es = mysqli_fetch_assoc($eis_formula_sql)){
-                                        $es_start = $es["eis_formula_wage_start"];
-                                        $es_end = $es["eis_formula_wage_end"];
-                                        if(($emp_wages >= $es_start) && ($emp_wages <= $es_end)){
-                                            $eis_employee_deduction = $es["eis_formula_employee_amt"];
-                                            $eis_employer_deduction = $es["eis_formula_employer_amt"];
-                                            $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction, socso_employee_contribution) VALUES ('${"check_ca$i"}', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction', '$sc_employee_contribution')"); 
-                                        }
-                                    }                                                            
-                                }
-                            }                                                   
-                        }                                                
-                    }
-                }  
+                $show_table_data = array_diff($emp_array, $process_array);
+                $counter = count($show_table_data) + 1;
+                
+                for($i=1;$i<$counter;$i++){
+                    
+                    if(isset($_POST["cb$i"])){
+                        ${"check_ca$i"} = $_POST["cb$i"];
+                        
+                        //select all data from epf view table
+                        $epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula"); 
+                        //while epf view table data exists
+                        while($ef = mysqli_fetch_assoc($epf_formula_sql)){
+                            
+                            //get specific data from employee table table
+                            $specific_emp_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '${"check_ca$i"}'");
+                            $get_specific_result = mysqli_fetch_assoc($specific_emp_sql);
+                            
+                            //specific data into variables (for new employee info table, only wage and allowance)
+                            $emp_wages = $get_specific_result["emp_wages"]; //wages
+                            //$emp_bonus = $get_specific_result["process_payroll_bonus"]; //bonus
+                            $emp_allowance = $get_specific_result["emp_total_allowance"]; //allowance
+                            //$emp_commission = $get_specific_result["process_payroll_commission"]; //commission
+                            //$emp_claims = $get_specific_result["process_payroll_claims"]; //claims
+                            //$emp_unpaid_leave = $get_specific_result["process_payroll_unpaid_leave"]; //unpaid leave
+                            //$emp_others = $get_specific_result["process_payroll_others"]; //others
+                            //$emp_overtime = $get_specific_result["process_payroll_overtime"]; //overtime
+                            //end specific data into variables                            
+                            
+                            $ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
+                            $ef_end = $ef["epf_formula_wage_end"]; //get epf ending wages value
+                            //count epf contribution
+                            $epf_contribution = $emp_wages + $emp_allowance;
+                            //$epf_contribution = $emp_wages + $emp_bonus + $emp_allowance + $emp_commission + $emp_claims + $emp_unpaid_leave + $emp_others;
+                            
+                            //if epf contribution is in between start and end wages in view table
+                            if(($epf_contribution >= $ef_start) && ($epf_contribution <= $ef_end)){
+                                $epf_employee_deduction = $ef["epf_formula_employee_amt"]; //get employee epf deduction value
+                                $epf_employer_deduction = $ef["epf_formula_employer_amt"]; //get employer epf deduction value
+                                
+                                //select all data from socso view table
+                                $socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula"); 
+                                //while socso view table data exists
+                                while($sc = mysqli_fetch_assoc($socso_formula_sql)){
+                                    
+                                    $sc_start = $sc["socso_formula_wage_start"]; //get socso starting wages value
+                                    $sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
+                                    $sc_employee_contribution = $sc["socso_formula_wage_end"]; //get socso fixed contribution value
+                                    //count socso contribution
+                                    $socso_contribution = $emp_wages + $emp_allowance;
+                                    //$socso_contribution = $emp_wages + $emp_others + $emp_overtime + $emp_allowance + $emp_commission;
+                                    
+                                    //if socso contribution is in between start and end wages in view table
+                                    if(($socso_contribution >= $sc_start) && ($socso_contribution <= $sc_end)){
+                                    $socso_employee_deduction = $sc["socso_formula_employee_amt"]; //get employee socso deduction value
+                                    $socso_employer_deduction = $sc["socso_formula_employer_amt"]; //get employer socso deduction value
+                                    //select all data from eis view table
+                                    $eis_formula_sql = mysqli_query($conn, "SELECT * FROM eis_formula");
+                                        //while eis view table data exists
+                                        while($es = mysqli_fetch_assoc($eis_formula_sql)){
+                                            
+                                            $es_start = $es["eis_formula_wage_start"]; //get eis starting wages value
+                                            $es_end = $es["eis_formula_wage_end"]; //get eis ending wages value
+                                            //count eis contribution
+                                            $eis_contribution = $emp_wages;
+                                            
+                                            //if eis contribution is in between start and end wages in view table
+                                            if(($eis_contribution >= $es_start) && ($eis_contribution <= $es_end)){
+                                                $eis_employee_deduction = $es["eis_formula_employee_amt"]; //get employee eis deduction value
+                                                $eis_employer_deduction = $es["eis_formula_employer_amt"]; //get employer eis deduction value
+                                                
+                                                $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction, socso_employee_contribution) VALUES ('${"check_ca$i"}', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction', '$sc_employee_contribution')"); 
+                                            }
+                                        }                                                            
+                                    }
+                                }                                                   
+                            }                                                
+                        }
+                    }  
+                }
+            header("Refresh:0"); //refresh page after submit
             }
-        header("Refresh:0");
-        }
-        /*
-        $dateValue = date("Y-m-d");
-        $time=strtotime($dateValue);
-        $month=date("m",$time);
-        $year=date("Y",$time);
-        $str="09";
-        $str = ltrim($str, '0');
-        echo $str;
-        */
         ?>
         <hr>
         <form action="newpayroll.php" method="post" enctype="multipart/form-data">
