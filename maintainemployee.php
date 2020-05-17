@@ -44,8 +44,10 @@ if(!empty($_GET["delete_deduction_id"])){
 }
 
 $message ='';
+$error_rate ='';
 if(isset($_POST["submit"])){
 $count = 0;
+$error = FALSE;
 $allowance_display_id = $_POST["allowance_display_id"];
 $allowance_desc = $_POST["allowance_desc"];
 $allowance_rate = $_POST["allowance_rate"];	
@@ -56,9 +58,16 @@ if ($allowance_display_id == $data["allowance_display_id"])
 {
 $message = '<label class="text-danger">Error: ID already exist.</label>';
 $count = $count+1;
+$error = TRUE;
 }
 }
-if ($count==0){
+	
+if (empty($allowance_rate) || $allowance_rate == 0 || $allowance_rate == 0.00) {
+	$error_rate = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
+	$error = TRUE;
+}
+	
+if ($error = FALSE && $count==0){
 $new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
 $prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
 mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
@@ -68,8 +77,10 @@ mysqli_stmt_close($prepared_stmt_insert);
 }
 
 $message2 ='';
+$error_rate2 ='';
 if(isset($_POST["submit1"])){
 $count2 = 0;
+$error2 = FALSE;
 $deduction_display_id = $_POST["deduction_display_id"];
 $deduction_desc = $_POST["deduction_desc"];
 $deduction_rate = $_POST["deduction_rate"];
@@ -80,10 +91,16 @@ if ($deduction_display_id == $data["deduction_display_id"])
 {
 $message2 = '<label class="text-danger">Error: ID already exist.</label>';
 $count2 = $count2+1;
+$error2 = TRUE;
 }
+}
+	
+if (empty($deduction_rate) || $deduction_rate == 0 || $deduction_rate == 0.00) {
+	$error_rate2 = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
+	$error2 = TRUE;
 }
 
-if ($count2==0){
+if ($error2 = FALSE && $count2==0){
 $new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
 $prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
 mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
@@ -167,7 +184,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                             <div class="col-md-6 col-12">
                             <form  role="form" method="post">
                                 <div class="form-group">
-                                    <label for="allowance_display_id" class="col-sm-3 control-label">
+                                    <label for="allowance_display_id" class="col-sm-12 control-label">
                                         <h6>Item Display ID <?php echo $message ?></h6>
                                     </label>
                                     <div class="col-md-12">
@@ -175,7 +192,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="allowance_desc" class="col-sm-3 control-label">
+                                    <label for="allowance_desc" class="col-sm-12 control-label">
                                         <h6>Item Description</h6>
                                     </label>
                                     <div class="col-md-12">
@@ -183,8 +200,8 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="allowance_rate" class="col-sm-5 control-label">
-                                        <h6>Rate of Item (RM)</h6>
+                                    <label for="allowance_rate" class="col-sm-12 control-label">
+                                        <h6>Rate of Item (RM) <?php echo $error_rate ?></h6>
                                     </label>
                                     <div class="col-md-12">
                                         <input type="text" id="allowance_rate" name="allowance_rate" placeholder="Rate Example: 100" class="form-control">
@@ -233,7 +250,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                             <div class="col-md-6 col-12">
                             <form class="form-horizontal" role="form" method="post">
                                 <div class="form-group">
-                                    <label for="deduction_display_id" class="col-sm-3 control-label">
+                                    <label for="deduction_display_id" class="col-sm-12 control-label">
                                         <h6>Item Display ID <?php echo $message2 ?> </h6>
                                     </label>
                                     <div class="col-12">
@@ -241,7 +258,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="deduction_desc" class="col-sm-3 control-label">
+                                    <label for="deduction_desc" class="col-sm-12 control-label">
                                         <h6>Item Description</h6>
                                     </label>
                                     <div class="col-sm-12">
@@ -249,8 +266,8 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="deduction_rate" class="col-sm-5 control-label">
-                                        <h6>Rate of Item (RM)</h6>
+                                    <label for="deduction_rate" class="col-sm-12 control-label">
+                                        <h6>Rate of Item (RM) <?php echo $error_rate2 ?></h6>
                                     </label>
                                     <div class="col-sm-12">
                                         <input type="text" id="deduction_rate" name="deduction_rate" placeholder="Rate Example: 100" class="form-control" autofocus>

@@ -45,13 +45,13 @@
                 <div class="row">
                 <div class="col-6">
                 <div class="form-group">
-                <label for="email">Month</label>
+                <label for="month">Month</label>
                     <input type="text" class="form-control" id="month" name="month" value="<?php echo (int)date("m"); ?>">
                 </div>
                 </div>
                 <div class="col-6">
                 <div class="form-group">
-                    <label for="pwd">Year</label>
+                    <label for="year">Year</label>
                     <input type="text" class="form-control" id="year" name="year" value="<?php echo date("Y"); ?>">
                 </div>
                 </div>

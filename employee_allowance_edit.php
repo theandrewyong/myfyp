@@ -54,11 +54,21 @@
 							<div class="container">
 								
 								<?php
+								  $error = FALSE;
+								  $error_rate =''; 
 								  if(isset($_POST["submit"])){
+									
 									  
 									$allowance_rate = $_POST["allowance_rate"];
-
-									  $update_sql = mysqli_query($conn, "UPDATE employee_allowance SET allowance_rate='$allowance_rate' WHERE emp_allowance_id ='$get_emp_allowance_id'");
+									  
+									if (empty($allowance_rate) || $allowance_rate == 0 || $allowance_rate == 0.00) {
+										$error_rate = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
+										$error = TRUE;
+									}
+									  
+									  if ($error == FALSE){
+									  	$update_sql = mysqli_query($conn, "UPDATE employee_allowance SET allowance_rate='$allowance_rate' WHERE emp_allowance_id ='$get_emp_allowance_id'");
+									  }
 
 								  }
 								
@@ -74,14 +84,14 @@
 									<a id="employee_section"><h1>Edit Allowance</h1></a> 
 									
 										<div class="form-group">
-										<label for="allowance_desc" class="col-sm-3 control-label"><h6>Allowance Desc</h6></label>
+										<label for="allowance_desc" class="col-sm-12 control-label"><h6>Allowance Desc</h6></label>
 										<div class="col-sm-9">
 											<input type="text" id="allowance_desc" name="allowance_desc" class="form-control" value="<?php echo $show_allowance_desc; ?>" disabled>
 										</div>
 										</div>
 									
 									<div class="form-group">
-										<label for="allowance_rate" class="col-sm-3 control-label"><h6>Allowance Rate</h6></label>
+										<label for="allowance_rate" class="col-sm-12 control-label"><h6>Allowance Rate <?php echo $error_rate ?></h6></label>
 										<div class="col-sm-9">
 											<input type="text" id="allowance_rate" placeholder="Email" class="form-control" name= "allowance_rate" value="<?php echo $show_allowance_rate; ?>">
 										</div>

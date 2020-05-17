@@ -12,11 +12,20 @@ $get_emp_id = $_GET["emp_id"];
 ?>
 
 <?php
+$error = FALSE;
+$error_rate =''; 
 if(isset($_POST["submit"])){
 
 $deduction_rate = $_POST["deduction_rate"];
 
-  $update_sql = mysqli_query($conn, "UPDATE employee_deduction SET deduction_rate='$deduction_rate' WHERE emp_deduction_id ='$get_emp_deduction_id'");
+if (empty($deduction_rate) || $deduction_rate == 0 || $deduction_rate == 0.00) {
+$error_rate = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
+$error = TRUE;
+}
+	
+if ($error == FALSE){
+	$update_sql = mysqli_query($conn, "UPDATE employee_deduction SET deduction_rate='$deduction_rate' WHERE emp_deduction_id ='$get_emp_deduction_id'");
+}
 
 }
 
@@ -75,14 +84,14 @@ $show_deduction_rate = $show_data['deduction_rate'];
 <a id="employee_section"><h1>Edit Deduction</h1></a>
 
     <div class="form-group">
-    <label for="deduction_desc" class="col-sm-3 control-label"><h6>Deduction Desc</h6></label>
+    <label for="deduction_desc" class="col-sm-12 control-label"><h6>Deduction Desc</h6></label>
     <div class="col-sm-9">
         <input type="text" id="deduction_desc" name="deduction_desc" class="form-control" value="<?php echo $show_deduction_desc; ?>" disabled>
     </div>
     </div>
 
 <div class="form-group">
-    <label for="deduction_rate" class="col-sm-3 control-label"><h6>Deduction Rate</h6></label>
+    <label for="deduction_rate" class="col-sm-12 control-label"><h6>Deduction Rate <?php echo $error_rate ?></h6></label>
     <div class="col-sm-9">
         <input type="text" id="deduction_rate" placeholder="Email" class="form-control" name= "deduction_rate" value="<?php echo $show_deduction_rate; ?>">
     </div>
