@@ -5,7 +5,9 @@ include "conn.php";
   if(empty($_SESSION["username"])){
       header("location:index.php");
   }
-  $username = $_SESSION["username"];
+$username = $_SESSION["username"];
+	
+$get_year = $_GET["year"];
 
 date_default_timezone_set("Asia/Kuching");
 $currentdate = date('m/d/Y h:i:s a', time());
@@ -15,11 +17,6 @@ $pdf = new FPDF("L","mm","A4");
 $pdf->AliasNbPages("{pages}");
 $pdf->AddPage();
 
-//get year
-//get month
-$year = 2020;
-//$month = $_GET["month"];
-
 //count first **
 $query=@mysqli_query($conn,"select * from employee_info");
 $count = 0;
@@ -28,13 +25,14 @@ while($data=@mysqli_fetch_array($query)) {
 }
 
 //get unique employee
-$count_employee_by_year_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_year = '$year'");
+$count_employee_by_year_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_year = '$get_year'");
 while($result = mysqli_fetch_assoc($count_employee_by_year_sql)){
-//echo $result["emp_id"];
+
 //make it unique
 $employee_id_array[] = $result["emp_id"];
 $unique_employee = array_unique($employee_id_array);
 }
+
 $countJan = 0;
 $countFeb = 0;
 $countMar = 0;
@@ -47,9 +45,6 @@ $countSep = 0;
 $countOct = 0;
 $countNov = 0;
 $countDec = 0;
-$count_all = 0;
-
-
 
 foreach($unique_employee as $ua){
     
@@ -75,7 +70,7 @@ $pdf->Cell (140,5,"EIS Eligibility: " . $data["emp_eis_type"],0,1,"L");
 
 //report title
 $pdf->SetFont("Arial","B", 14);
-$pdf->Cell (0,10,"Yearly Individual Pay for Year " . $year,0,1,"C");
+$pdf->Cell (0,10,"Yearly Individual Pay for Year " . $get_year,0,1,"C");
 
 //yearly wages header
 $pdf->SetFont("Arial","", 8);
@@ -101,7 +96,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
     //show all 12 months
     for($i=1;$i<=12;$i++){
 		//if individual month echo wage for that specific month
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		
         if($i == 1){
@@ -163,7 +158,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 	//Overtime section
 	$pdf->Cell (60,5,'Overtime',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_overtime"],0,0,"R");
@@ -223,7 +218,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 	//Commission section
 	$pdf->Cell (60,5,'Commission',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_commission"],0,0,"R");
@@ -283,7 +278,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 	//Allowance section
 	$pdf->Cell (60,5,'Allowance',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_allowance"],0,0,"R");
@@ -343,7 +338,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 	//Claims section
 	$pdf->Cell (60,5,'Claims',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_claims"],0,0,"R");
@@ -403,7 +398,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 	//Director Fees section
 	$pdf->Cell (60,5,'Director Fees',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_director_fees"],0,0,"R");
@@ -463,7 +458,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 	//Advance paid section
 	$pdf->Cell (60,5,'Advance Paid',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_advance_paid"],0,0,"R");
@@ -523,7 +518,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 	//Bonus section
 	$pdf->Cell (60,5,'Bonus',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_bonus"],0,0,"R");
@@ -583,7 +578,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 	//Others section
 	$pdf->Cell (60,5,'Others',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_others"],0,0,"R");
@@ -719,7 +714,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 			$pdf->Cell (17,5,$format_total_earnings_dec,"TB",0,"R");
 		}                        
 
-}
+	}
 	
 $total_earnings_total = $count_allWage + $count_allOvertime + $count_allCommission + $count_allAllowance + $count_allClaims + $count_allDirectorFees + $count_allAdvancePaid + $count_allBonus + $count_allOthers;
 $format_total_earnings_total = number_format("$total_earnings_total",2);
@@ -731,7 +726,7 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	//Employee EPF section
 	$pdf->Cell (60,5,'Employee EPF',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
@@ -791,7 +786,7 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	//Employee SOCSO section
 	$pdf->Cell (60,5,'Employee SOCSO',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["socso_employee_deduction"],0,0,"R");
@@ -851,7 +846,7 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	//Employee EIS section
 	$pdf->Cell (60,5,'Employee EIS',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["eis_employee_deduction"],0,0,"R");
@@ -911,7 +906,7 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	//Deduction section
 	$pdf->Cell (60,5,'Deduction',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_deduction"],0,0,"R");
@@ -971,7 +966,7 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	//Loan section
 	$pdf->Cell (60,5,'Loan',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_loan"],0,0,"R");
@@ -1031,7 +1026,7 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	//Unpaid Leave section
 	$pdf->Cell (60,5,'Unpaid Leave',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_unpaid_leave"],0,0,"R");
@@ -1091,7 +1086,7 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	//Advance Deduct section
 	$pdf->Cell (60,5,'Advance Deduct',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["process_payroll_advance_deduct"],0,0,"R");
@@ -1228,7 +1223,7 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 				$pdf->Cell (17,5,$format_total_deductions_dec,"TB",0,"R");
 			}                        
 
-	}
+		}
 	
 $total_deductions_total = $count_allEmpEPF + $count_allEmpSOCSO + $count_allEmpEIS + $count_allDeduction + $count_allLoan + $count_allUnpaidLeave + $count_allAdvanceDeduct;
 $format_total_deductions_total = number_format("$total_deductions_total",2);
@@ -1239,7 +1234,7 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	$pdf->SetFont("Arial","", 8);
 	$pdf->Cell (60,10,'Adjustments',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
@@ -1296,7 +1291,7 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	
     $pdf->Cell (17,10,$format_count_allAdjustment,0,1,"R");	
 	
-//yearly individual nett pay
+	//yearly individual nett pay
 	$pdf->SetFont("Arial","B", 8);
 	$pdf->Cell (60,10,'Nett Pay',0,0);
 	
@@ -1385,7 +1380,7 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	//Employer EPF section
 	$pdf->Cell (60,5,'Employer EPF',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
@@ -1445,7 +1440,7 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	//Employer SOCSO section
 	$pdf->Cell (60,5,'Employer SOCSO',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["socso_employer_deduction"],0,0,"R");
@@ -1505,7 +1500,7 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	//Employer EIS section
 	$pdf->Cell (60,5,'Employer EIS',0,0);
 	for($i=1;$i<=12;$i++){
-		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua'");
+		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
             $pdf->Cell (17,5,$data["eis_employer_deduction"],0,0,"R");
@@ -1562,7 +1557,7 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	
     $pdf->Cell (17,5,$format_count_allEmprEIS,0,1,"R");
 	
-//yearly individual total Employer Cost 
+	//yearly individual total Employer Cost 
 	$pdf->SetFont("Arial","B", 8);
 	$pdf->Cell (60,5,'Total Employer Cost',0,0);
 	
@@ -1602,7 +1597,7 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	$employer_cost_dec = $nett_pay_dec + $countDecEmprEPF + $countDecEmprSOCSO + $countDecEmprEIS;
 	$format_employer_cost_dec = number_format("$employer_cost_dec",2);
 	
-	$employer_cost_total = $nett_pay_total + $countDecEmprEPF + $countDecEmprSOCSO + $countDecEmprEIS;
+	$employer_cost_total = $nett_pay_total + $count_allEmprEPF + $count_allEmprSOCSO + $count_allEmprEIS;
 	$format_employer_cost_total = number_format("$employer_cost_total",2);
 
 	for($x=1;$x<=12;$x++){
