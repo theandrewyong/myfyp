@@ -8,6 +8,7 @@ $username = $_SESSION["username"];
 
 $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
 $data_exists = FALSE;
+$adhoc_exists = FALSE;
 $unique_month_array = "";
 $unique_year_array = "";
 
@@ -20,6 +21,28 @@ while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
     $unique_month_array = array_unique($specific_month_array);
     $unique_year_array = array_unique($specific_year_array);
     }
+
+                                            //check if m and y has value
+                                            $check_m_y_sql = mysqli_query($conn, "SELECT * FROM process_payroll");
+                                            while($cmys = mysqli_fetch_assoc($check_m_y_sql)){
+                                                $xspecific_month = $cmys["process_payroll_process_month"];
+                                                $xspecific_year = $cmys["process_payroll_process_year"];
+                                                $xspecific_month_array[] = $xspecific_month;
+                                                $xspecific_year_array[] = $xspecific_year;
+                                                $xunique_month_array = array_unique($xspecific_month_array);
+                                                $xunique_year_array = array_unique($xspecific_year_array);
+                                            }
+                                            
+                                            foreach($xunique_month_array as $xm){
+                                               
+                                                    echo $xm;
+                                                
+                                            }
+
+                                             foreach($xunique_year_array as $xa){
+                                                 echo $xa;
+                                             }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,6 +86,7 @@ while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
                                 if($data_exists){
                                     foreach($unique_month_array as $uma){
                                         foreach($unique_year_array as $uya){
+
                                             echo '<tr>';
                                             echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
                                             echo '<td>' . $uya . '</td>';
@@ -78,7 +102,34 @@ while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
                         </div>
                     </div>
                     <div id="profile" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-1 py-3">
-                        
+                        <div class="table-responsive">
+                            <table id="example1" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>Year</th>
+                                        <th>Details</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                if($data_exists){
+                                    foreach($unique_month_array as $uma){
+                                        foreach($unique_year_array as $uya){
+                                            echo '<tr>';
+                                            echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
+                                            echo '<td>' . $uya . '</td>';
+                                            echo '<td>' . '<a href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View Details</a>' . '</td>';
+                                            echo '<td>' . '<a href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                                            echo '</tr>';
+                                        }
+                                    }
+                                }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -120,7 +171,21 @@ $(document).ready( function() {
         ],
         "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
     } );
-} );    
+} );   
+    
+$(document).ready( function() {
+    $('#example1').dataTable( {
+        language: {
+        search: "",
+        "lengthMenu": "_MENU_",
+        searchPlaceholder: "Search records",
+        },
+        columnDefs: [
+        { type: 'date-range', targets: 0 }
+        ],
+        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
+    } );
+} );     
 </script>
 </body>
 </html>
