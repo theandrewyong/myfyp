@@ -24,32 +24,44 @@ $ccb = 0; //checkbox variable
 $ecount = 0;
 $all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
 $to_process_sql = mysqli_query($conn, "SELECT * FROM adhoc_pending");
-while($to_process_result = mysqli_fetch_assoc($to_process_sql)){
-    $ecount++;
-    $show_table_data[] = $ecount;
-}
+$to_process_result = mysqli_fetch_assoc($to_process_sql);
+
 
 
 //if submited
 if(isset($_POST["submit"])){
     //geta all input values
-    /*
-    $process_month = $_POST["process_payroll_process_month"];
-    $process_year = $_POST["process_payroll_process_year"];
-    $process_date = $_POST["process_payroll_process_date"];
-    $process_from = $_POST["process_payroll_from"];
-    $process_to = $_POST["process_payroll_to"];
-    $process_desc1 = $_POST["process_payroll_desc_1"];
-    $process_desc2 = $_POST["process_payroll_desc_2"];
-    $process_ref1 = $_POST["process_payroll_ref_1"];
-    $process_ref2 = $_POST["process_payroll_ref_2"];  */  
+    
+    $process_month = $_POST["process_adhoc_process_month"];
+    $process_year = $_POST["process_adhoc_process_year"];
+    $process_date = $_POST["process_adhoc_process_date"];
+    $process_from = $_POST["process_adhoc_from"];
+    $process_to = $_POST["process_adhoc_to"];
+    $process_desc1 = $_POST["process_adhoc_desc_1"];
+    $process_desc2 = $_POST["process_adhoc_desc_2"];
+    $process_ref1 = $_POST["process_adhoc_ref_1"];
+    $process_ref2 = $_POST["process_adhoc_ref_2"];    
     //get array diff
-
-    for($i=1;$i<4;$i++){ //count must be dynamic
+    //count how many employees added in table
+    $count_emp_sql = mysqli_query($conn, "SELECT count(emp_id) as total from adhoc_pending");
+    $count_result = mysqli_fetch_assoc($count_emp_sql);
+    $counter = $count_result["total"] + 1;
+    
+    for($i=1;$i<$counter;$i++){ //count must be dynamic
         //if employee checkbox is checked where cb + number is checkbox name
         if(isset($_POST["cb$i"])){
             ${"check_ca$i"} = $_POST["cb$i"]; //get checkbox value into variable
             echo ${"check_ca$i"}; //successfully get all names in table
+            //check if epf contribution is checked
+            if(isset($_POST["cal_epf"])){ //if set to calculate epf
+                //do epf calculation for adhoc amt
+                //echo "check";
+                $adhoc_amt = $to_process_result["adhoc_wages"];
+            }else{
+                //dont do epf calculation for adhoc amt
+               // echo "no check";
+                $adhoc_amt = $to_process_result["adhoc_wages"];
+            }
             
             //select all data from epf view table
             $epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula"); 
@@ -62,7 +74,7 @@ if(isset($_POST["submit"])){
                 $get_specific_result = mysqli_fetch_assoc($specific_adhoc_sql);
                 //specific data from adhoc pending table
                 $adhoc_amt = $get_specific_result["adhoc_amt"]; //adhoc amount is solely based on itself independently
-                $adhoc_type = $get_specific_result["adhoc_type"];
+                //$adhoc_type = $get_specific_result["adhoc_type"];
                 
                 //end specific data from adhoc pending table
                 //if adhoc amount is in between start and end epf view table wages
@@ -94,7 +106,7 @@ if(isset($_POST["submit"])){
                                     $eis_employer_deduction = $es["eis_formula_employer_amt"]; //get employer eis value
                                     
                                     //query to insert in process adhoc table
-                                    $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_wage,  epf_employee_deduction, socso_employee_deduction, eis_employee_deduction, epf_employer_deduction, socso_employer_deduction, eis_employer_deduction) VALUES ('${"check_ca$i"}', '$adhoc_amt', '$epf_employee_deduction', '$socso_employee_deduction', '$eis_employee_deduction', '$epf_employer_deduction', '$socso_employer_deduction', '$eis_employer_deduction')");
+                                    $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_wage,  epf_employee_deduction, socso_employee_deduction, eis_employee_deduction, epf_employer_deduction, socso_employer_deduction, eis_employer_deduction, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_from, process_adhoc_to, process_adhoc_process_date, process_adhoc_process_month, process_adhoc_process_year) VALUES ('${"check_ca$i"}', '$adhoc_amt', '$epf_employee_deduction', '$socso_employee_deduction', '$eis_employee_deduction', '$epf_employer_deduction', '$socso_employer_deduction', '$eis_employer_deduction', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$process_from', '$process_to', '$process_date', '$process_month', '$process_year')");
                                 }
                             }                                                            
                         }
@@ -152,21 +164,30 @@ if(isset($_POST["submit"])){
                         <div class="col-md-6">
                             <div class="p-3 bg-white rounded shadow mb-5"><!-- Start of rounded shadow box -->
                                 <p><b>Process Checked AdHoc</b></p>
-
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <label for="">Month</label>
+                                        <input type="number" name="process_adhoc_process_month" class="form-control" value="<?php echo $process_date_month; ?>">
+                                    </div>                
+                                    <div class="col-md-6 col-12">
+                                        <label for="">Year</label>
+                                        <input type="text" name="process_adhoc_process_year" class="form-control" value="<?php echo $process_date_year; ?>">
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label for="">Process Date</label>
-                                        <input type="date" class="form-control" name="process_payroll_process_date" value="<?php echo date('Y-m-d'); ?>">
+                                        <input type="date" class="form-control" name="process_adhoc_process_date" value="<?php echo date('Y-m-d'); ?>">
                                     </div>    
                                 </div>    
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <label for="">Process From</label>
-                                        <input type="date" class="form-control" name="process_payroll_from" value="<?php echo date('Y-m-01'); ?>">
+                                        <input type="date" class="form-control" name="process_adhoc_from" value="<?php echo date('Y-m-01'); ?>">
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <label for="">To</label>
-                                        <input type="date" class="form-control" name="process_payroll_to" value="<?php echo date('Y-m-t'); ?>">
+                                        <input type="date" class="form-control" name="process_adhoc_to" value="<?php echo date('Y-m-t'); ?>">
                                     </div>
                                 </div>
                                 <br>
@@ -174,54 +195,36 @@ if(isset($_POST["submit"])){
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-check">
-                                            <label class="form-check-label" for="check1">
-                                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>Calculate EPF
+                                            <label class="form-check-label" for="cal_epf">
+                                            <input type="checkbox" class="form-check-input" id="cal_epf" name="cal_epf" value="yes" checked>Calculate EPF
                                         </label>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <label class="form-check-label" for="check1">
-                                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>Calculate SOCSO
-                                        </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-check">
-                                            <label class="form-check-label" for="check1">
-                                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>Calculate EIS
-                                        </label>
-                                        </div>
-                                    </div>
-                                </div>     
+                                </div>    
                                 <br>
                                 <p><b>Description</b></p>
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="">Description 1</label>
-                                        <input type="text" class="form-control" name="process_payroll_desc_1">                
+                                        <input type="text" class="form-control" name="process_adhoc_desc_1">                
                                     </div>    
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="">Description 2</label>
-                                        <input type="text" class="form-control" name="process_payroll_desc_2">                
+                                        <input type="text" class="form-control" name="process_adhoc_desc_2">                
                                     </div>    
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="">Reference 1</label>
-                                        <input type="text" class="form-control" name="process_payroll_ref_1">                
+                                        <input type="text" class="form-control" name="process_adhoc_ref_1">                
                                     </div>    
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="">Reference 2</label>
-                                        <input type="text" class="form-control" name="process_payroll_ref_2">                
+                                        <input type="text" class="form-control" name="process_adhoc_ref_2">                
                                     </div>    
                                 </div>
                                 <div class="row">
@@ -309,7 +312,7 @@ if(isset($_POST["submit"])){
                                                 echo '<tr>';
                                                 echo '<td>' . $data["emp_id"] . '</td>';
                                                 echo '<td>' . $data["emp_full_name"] . '</td>';
-                                                echo '<td>' . $data["adhoc_type"] . '</td>';
+                                                echo '<td>' . "bonus" . '</td>';
                                                 echo '<td>' . $data["adhoc_amt"] . '</td>';
                                                 echo '<td>' . $data["adhoc_status"] . '</td>';
                                                 echo '<td>' . '<a href="editadhocpending.php?adhoc_id=' . $adhoc_id . '">Edit</a>' . '</td>';

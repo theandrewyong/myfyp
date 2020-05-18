@@ -6,9 +6,9 @@ if(empty($_SESSION["username"])){
 }
 $username = $_SESSION["username"];
 
+//for process payroll history
 $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
 $data_exists = FALSE;
-$adhoc_exists = FALSE;
 $unique_month_array = "";
 $unique_year_array = "";
 
@@ -20,28 +20,24 @@ while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
     $specific_year_array[] = $specific_year;
     $unique_month_array = array_unique($specific_month_array);
     $unique_year_array = array_unique($specific_year_array);
-    }
+}
 
-                                            //check if m and y has value
-                                            $check_m_y_sql = mysqli_query($conn, "SELECT * FROM process_payroll");
-                                            while($cmys = mysqli_fetch_assoc($check_m_y_sql)){
-                                                $xspecific_month = $cmys["process_payroll_process_month"];
-                                                $xspecific_year = $cmys["process_payroll_process_year"];
-                                                $xspecific_month_array[] = $xspecific_month;
-                                                $xspecific_year_array[] = $xspecific_year;
-                                                $xunique_month_array = array_unique($xspecific_month_array);
-                                                $xunique_year_array = array_unique($xspecific_year_array);
-                                            }
-                                            
-                                            foreach($xunique_month_array as $xm){
-                                               
-                                                    echo $xm;
-                                                
-                                            }
+//for process adhoc history
+$select_all_processed_adhoc = mysqli_query($conn, "SELECT * FROM process_adhoc");
+$adhoc_data_exists = FALSE;
+$adhoc_unique_month_array = "";
+$adhoc_unique_year_array = "";
 
-                                             foreach($xunique_year_array as $xa){
-                                                 echo $xa;
-                                             }
+while($select_adhoc_result = mysqli_fetch_assoc($select_all_processed_adhoc)){
+    $adhoc_data_exists = TRUE;
+    $specific_adhoc_month = $select_adhoc_result["process_adhoc_process_month"];
+    $specific_adhoc_year = $select_adhoc_result["process_adhoc_process_year"];
+    $specific_adhoc_month_array[] = $specific_adhoc_month;
+    $specific_adhoc_year_array[] = $specific_adhoc_year;
+    $adhoc_unique_month_array = array_unique($specific_adhoc_month_array);
+    $adhoc_unique_year_array = array_unique($specific_adhoc_year_array);
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -86,13 +82,15 @@ while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
                                 if($data_exists){
                                     foreach($unique_month_array as $uma){
                                         foreach($unique_year_array as $uya){
-
-                                            echo '<tr>';
-                                            echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
-                                            echo '<td>' . $uya . '</td>';
-                                            echo '<td>' . '<a href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View Details</a>' . '</td>';
-                                            echo '<td>' . '<a href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
-                                            echo '</tr>';
+                                            $double_check_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_month = '$uma' AND process_payroll_process_year = '$uya'");
+                                            if(mysqli_num_rows($double_check_sql) != 0){
+                                                echo '<tr>';
+                                                echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
+                                                echo '<td>' . $uya . '</td>';
+                                                echo '<td>' . '<a href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View Details</a>' . '</td>';
+                                                echo '<td>' . '<a href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                                                echo '</tr>';
+                                            }
                                         }
                                     }
                                 }
@@ -115,14 +113,17 @@ while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
                                 <tbody>
                                 <?php
                                 if($data_exists){
-                                    foreach($unique_month_array as $uma){
-                                        foreach($unique_year_array as $uya){
-                                            echo '<tr>';
-                                            echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
-                                            echo '<td>' . $uya . '</td>';
-                                            echo '<td>' . '<a href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View Details</a>' . '</td>';
-                                            echo '<td>' . '<a href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
-                                            echo '</tr>';
+                                    foreach($adhoc_unique_month_array as $auma){
+                                        foreach($adhoc_unique_year_array as $auya){
+                                            $double_check_sql = mysqli_query($conn, "SELECT * FROM process_adhoc WHERE process_adhoc_process_month = '$auma' AND process_adhoc_process_year = '$auya'");
+                                            if(mysqli_num_rows($double_check_sql) != 0){
+                                                echo '<tr>';
+                                                echo '<td>' . date("F", mktime(0, 0, 0, $auma, 10)) . '</td>';
+                                                echo '<td>' . $auya . '</td>';
+                                                echo '<td>' . '<a href="historyadhoc.php?month=' . $auma . '&year=' . $auya . '">View Details</a>' . '</td>';
+                                                echo '<td>' . '<a href="deletehistory.php?month=' . $auma . '&year=' . $auya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                                                echo '</tr>';
+                                            }
                                         }
                                     }
                                 }
