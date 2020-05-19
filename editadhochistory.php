@@ -93,33 +93,17 @@ $process_to = $get_result["process_adhoc_to"];
 $process_month = $get_result["process_adhoc_process_month"];
 $process_year = $get_result["process_adhoc_process_year"];
 $employee_name = $get_result["emp_full_name"];
-$employee_wages = $get_result["process_adhoc_wage"];
-$employee_overtime = $get_result["process_adhoc_overtime"];
-$employee_commission = $get_result["process_adhoc_commission"];
-$employee_allowance = $get_result["process_adhoc_allowance"];
-$employee_claims = $get_result["process_adhoc_claims"];
-$employee_director_fees = $get_result["process_adhoc_director_fees"];
-$employee_advance_paid = $get_result["process_adhoc_advance_paid"];
-$employee_bonus = $get_result["process_adhoc_bonus"];
-$employee_others = $get_result["process_adhoc_others"];
+$adhoc_amt = $get_result["process_adhoc_wage"];
+$adhoc_commission = $get_result["process_adhoc_commission"];
+$adhoc_allowance = $get_result["process_adhoc_allowance"];
+$adhoc_claims = $get_result["process_adhoc_claims"];
+$adhoc_bonus = $get_result["process_adhoc_bonus"];
+$adhoc_others = $get_result["process_adhoc_others"];
 $employee_epf = $get_result["epf_employee_deduction"];
-$employee_socso = $get_result["socso_employee_deduction"];
-$employee_eis = $get_result["eis_employee_deduction"];
-$employee_deduction = $get_result["process_adhoc_deduction"];
-$employee_loan = $get_result["process_adhoc_loan"];
-$employee_unpaid_leave = $get_result["process_adhoc_unpaid_leave"];
-$employee_advance_deduct = $get_result["process_adhoc_advance_deduct"];
-$employee_adjustment = $get_result["process_adhoc_adjustment"];
+$adhoc_unpaid_leave = $get_result["process_adhoc_unpaid_leave"];
 $employer_epf = $get_result["epf_employer_deduction"];
-$employer_socso = $get_result["socso_employer_deduction"];
-$employer_eis = $get_result["eis_employer_deduction"];
-$adjustment = $get_result["process_adhoc_adjustment"];
 
-$total_gross_pay = $employee_wages + $employee_overtime + $employee_commission + $employee_allowance + $employee_claims + $employee_director_fees + $employee_advance_paid + $employee_bonus + $employee_others;
 
-$total_gross_deduct = $employee_epf + $employee_socso + $employee_eis + $employee_deduction + $employee_loan + $employee_unpaid_leave + $employee_advance_deduct;
-
-$net_pay = $total_gross_pay - $total_gross_deduct + $employee_adjustment;
 ?>    
 <!DOCTYPE html>
 <html lang="en">
@@ -213,7 +197,7 @@ $net_pay = $total_gross_pay - $total_gross_deduct + $employee_adjustment;
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="">AdHoc Amount</label>
-                                <input type="text" class="form-control" name="process_adhoc_ref_1"> 
+                                <input type="text" class="form-control" name="edited_adhoc_amt" value="<?php echo $adhoc_amt; ?>"> 
                             </div>
                         </div>                            
                         </div>

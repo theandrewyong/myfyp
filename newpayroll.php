@@ -222,7 +222,7 @@ $username = $_SESSION["username"];
                         <div class="row">
                             <div class="col-12">
                             <br>
-                            <input type="submit" class="btn btn-success" name="submit">
+                            <input type="submit" class="btn btn-success" name="submit" value="submit">
                             </div>    
                         </div>
                     </div>
