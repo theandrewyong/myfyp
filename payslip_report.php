@@ -39,17 +39,17 @@
 <h1 class="mt-4">Payslip Report</h1>
 <hr>
     <div class="row">
-        <div class="col-9">
-            <div class="p-5 bg-white rounded shadow mb-5">
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded shadow mb-5">
             <form action="payslip_report.php" method="post" enctype="multipart/form-data" autocomplete="off">
                 <div class="row">
-                <div class="col-6">
+                <div class="col-md-6">
                 <div class="form-group">
                 <label for="month">Month</label>
                     <input type="text" class="form-control" id="month" name="month" value="<?php echo (int)date("m"); ?>">
                 </div>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                 <div class="form-group">
                     <label for="year">Year</label>
                     <input type="text" class="form-control" id="year" name="year" value="<?php echo date("Y"); ?>">
@@ -60,8 +60,8 @@
             </form>            
             </div>        
         </div>
-        <div class="col-3">
-            <div class="p-5 bg-white rounded shadow mb-5">
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded shadow mb-5">
             <?php
                 $month = "";
                 $year = "";
@@ -75,12 +75,12 @@
                 }
                 
             ?>
-            <a target="_blank" href="payslip_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a>
+            <p><a target="_blank" href="payslip_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a></p>
             </div>
         </div>
     </div>
 
-    <div class="p-5 bg-white rounded shadow mb-5">
+    <div class="p-3 bg-white rounded shadow mb-5">
         <div class="table-responsive">
             <table id="example" class="table table-striped table-bordered">
                 <thead>

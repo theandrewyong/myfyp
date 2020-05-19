@@ -39,8 +39,8 @@
 <h1 class="mt-4">Yealy Individual Report</h1>
 <hr>
     <div class="row">
-        <div class="col-9">
-            <div class="p-5 bg-white rounded shadow mb-5">
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded shadow mb-5">
             <form action="yearly_individual_report.php" method="post" enctype="multipart/form-data" autocomplete="off">
                 <div class="row">
                 <div class="col-12">
@@ -54,8 +54,8 @@
             </form>            
             </div>        
         </div>
-        <div class="col-3">
-            <div class="p-5 bg-white rounded shadow mb-5">
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded shadow mb-5">
             <?php
                 $year = "";
                 $view_table = FALSE;
@@ -82,12 +82,12 @@
 				}
             ?>
 				
-            <a target="_blank" href="yearly_individual_report_pdf.php?year=<?php echo $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a>
+            <p><a target="_blank" href="yearly_individual_report_pdf.php?year=<?php echo $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a></p>
             </div>
         </div>
     </div>
 
-    <div class="p-5 bg-white rounded shadow mb-5">
+    <div class="p-3 bg-white rounded shadow mb-5">
         <div class="table-responsive">
             <table id="example" class="table table-striped table-bordered">
                 <thead>
