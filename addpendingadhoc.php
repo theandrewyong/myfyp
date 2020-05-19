@@ -12,14 +12,21 @@ $select_all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
 
 if(isset($_POST["submit"])){
     $get_adhoc_emp_name = $_POST["adhoc_emp_name"];
-    $get_adhoc_type = $_POST["adhoc_type"];
+    $adhoc_wages = $_POST["adhoc_wages"];
+	$adhoc_bonus = $_POST["adhoc_bonus"];
+	$adhoc_allowance = $_POST["adhoc_allowance"];
+	$adhoc_commission = $_POST["adhoc_commission"];
+	$adhoc_claims = $_POST["adhoc_claims"];
+	$adhoc_unpaid_leave = $_POST["adhoc_unpaid_leave"];
+	$adhoc_others = $_POST["adhoc_others"];
+	echo $adhoc_wages; echo $adhoc_bonus;
     $get_adhoc_amt = $_POST["adhoc_amt"];
     //get emp id where name is
     $get_id_sql = mysqli_query($conn, "SELECT emp_id FROM employee_info WHERE emp_full_name = '$get_adhoc_emp_name'");
     $id_result = mysqli_fetch_assoc($get_id_sql);
     $get_adhoc_emp_id = $id_result["emp_id"];
     $get_adhoc_status = "PENDING";
-    mysqli_query($conn, "INSERT INTO adhoc_pending (emp_id, emp_full_name, adhoc_type, adhoc_amt, adhoc_status) VALUES ('$get_adhoc_emp_id','$get_adhoc_emp_name','$get_adhoc_type','$get_adhoc_amt','$get_adhoc_status')");
+    mysqli_query($conn, "INSERT INTO adhoc_pending (emp_id, emp_full_name, adhoc_wages, adhoc_bonus, adhoc_allowance, adhoc_commission, adhoc_claims, adhoc_unpaid_leave, adhoc_others, adhoc_amt, adhoc_status) VALUES ('$get_adhoc_emp_id','$get_adhoc_emp_name','$adhoc_wages', '$adhoc_bonus', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_unpaid_leave', '$adhoc_others','$get_adhoc_amt','$get_adhoc_status')");
 }
 
 ?>
@@ -57,21 +64,42 @@ if(isset($_POST["submit"])){
                         ?>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="pwd">AdHoc Type</label>
-                    <select class="form-control" name="adhoc_type">
-                        <option>Select AdHoc Type</option>
-                        <option>Paid Leave</option>
-                        <option>Loan</option>
-                        <option>Claims</option>
-                        <option>Advance Deduct</option>
-                        <option>Allowance</option>
-                        <option>Wages</option>
-                        <option>Commission</option>
-                        <option>Advance Paid</option>
-                        <option>Unpaid Leave</option>
-                    </select>
+				
+				<div class="form-group">
+					<label>Adhoc Type</label>
                 </div>
+				
+                <div class="form-group">
+					<input type="hidden" class="checkbox-inline" name="adhoc_wages" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_wages" name="adhoc_wages" value="1">
+					<label for="adhoc_wages">Wages</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_bonus" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_bonus" name="adhoc_bonus" value="1">
+					<label for="adhoc_bonus">Bonus</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_allowance" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_allowance" name="adhoc_allowance" value="1">
+					<label for="adhoc_allowance">Allowance</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_commission" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_commission" name="adhoc_commission" value="1">
+					<label for="adhoc_commission">Commission</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_claims" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_claims" name="adhoc_claims" value="1">
+					<label for="adhoc_claims">Claims</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_unpaid_leave" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_unpaid_leave" name="adhoc_unpaid_leave" value="1">
+					<label for="adhoc_unpaid_leave">Unpaid Leave</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_others" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_others" name="adhoc_others" value="1">
+					<label for="adhoc_others">Others</label>
+					
+                </div>
+				
                 <div class="form-group">
                     <label for="pwd">Amount</label>
                     <input type="number" class="form-control" name="adhoc_amt">
