@@ -27,6 +27,8 @@ if(isset($_POST["submit"])){
     $get_adhoc_emp_id = $id_result["emp_id"];
     $get_adhoc_status = "PENDING";
     mysqli_query($conn, "INSERT INTO adhoc_pending (emp_id, emp_full_name, adhoc_wages, adhoc_bonus, adhoc_allowance, adhoc_commission, adhoc_claims, adhoc_unpaid_leave, adhoc_others, adhoc_amt, adhoc_status) VALUES ('$get_adhoc_emp_id','$get_adhoc_emp_name','$adhoc_wages', '$adhoc_bonus', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_unpaid_leave', '$adhoc_others','$get_adhoc_amt','$get_adhoc_status')");
+    
+    header("location:newadhoc.php");
 }
 
 ?>

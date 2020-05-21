@@ -30,6 +30,7 @@ if(isset($_POST["submit"])){
     //$get_adhoc_status = "PENDING";
     
     mysqli_query($conn, "UPDATE adhoc_pending SET adhoc_wages = '$adhoc_wages', adhoc_bonus = '$adhoc_bonus', adhoc_allowance = '$adhoc_allowance', adhoc_commission = '$adhoc_commission', adhoc_claims = '$adhoc_claims', adhoc_unpaid_leave = '$adhoc_unpaid_leave', adhoc_others = '$adhoc_others', adhoc_amt = '$adhoc_amt' WHERE adhoc_id = '$get_adhoc_id'");
+    header("location:newadhoc.php");
 }
 
 //select all existing adhoc pending
@@ -64,7 +65,7 @@ $s_amt = $specific_result["adhoc_amt"];
             <h1 class="mt-4">Edit AdHoc Employee info</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">    
-            <form action="editadhocpending.php?adhoc_id=18" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <form action="editadhocpending.php?adhoc_id=<?php echo $get_adhoc_id; ?>" method="POST" enctype="multipart/form-data" autocomplete="off">
                 
                 
                 <div class="form-group">
@@ -111,7 +112,7 @@ $s_amt = $specific_result["adhoc_amt"];
 				
                 <div class="form-group">
                     <label for="pwd">Amount</label>
-                    <input type="number" class="form-control" name="adhoc_amt" value="<?php echo $s_amt; ?>">
+                    <input type="text" class="form-control" name="adhoc_amt" value="<?php echo $s_amt; ?>">
                 </div>                
                 <button type="submit" name="submit" class="btn btn-primary">Submit</button>
             </form>
