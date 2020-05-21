@@ -85,14 +85,17 @@ $username = $_SESSION["username"];
                                 echo '<td>' . $epf_employer_deduction . '</td>';
                                 echo '</tr>'; 
                                 $total_epf_employee_deduction = $total_epf_employee_deduction + $epf_employee_deduction;
+								$format_total_epf_employee_deduction = number_format ("$total_epf_employee_deduction",2);
+								
                                 $total_epf_employer_deduction = $total_epf_employer_deduction + $epf_employer_deduction;
+								$format_total_epf_employer_deduction = number_format("$total_epf_employer_deduction",2);
                             }                    
                         }
                         ?> 
                             <tr>
                                 <td><b>Total</b></td>
-                                <td><b><?php if($total_epf_employee_deduction != 0){echo $total_epf_employee_deduction;}?></b></td>
-                                <td><b><?php if($total_epf_employer_deduction != 0){echo $total_epf_employer_deduction;}?></b></td>
+                                <td><b><?php if($total_epf_employee_deduction != 0){echo $format_total_epf_employee_deduction;}?></b></td>
+                                <td><b><?php if($total_epf_employer_deduction != 0){echo $format_total_epf_employer_deduction;}?></b></td>
                             </tr>                
                         </tbody>
                     </table>

@@ -28,6 +28,12 @@ $username = $_SESSION["username"];
                         <p>Payslip Report</p>
                     </a>
                 </div>
+				<div class="polaroid">
+                    <a href="adhoc_report.php">    
+                        <img src="img/adhoc.png" width="220px;">
+                        <p>Adhoc Report</p>
+                    </a>
+                </div> 
                 <div class="polaroid">
                     <a href="epf_report.php">
                         <img src="img/epf.png" width="220px;">
