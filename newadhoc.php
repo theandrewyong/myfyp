@@ -56,11 +56,11 @@ if(isset($_POST["submit"])){
             if(isset($_POST["cal_epf"])){ //if set to calculate epf
                 //do epf calculation for adhoc amt
                 //echo "check";
-                $adhoc_amt = $to_process_result["adhoc_wages"];
+                $adhoc_amt = $to_process_result["adhoc_amt"];
             }else{
                 //dont do epf calculation for adhoc amt
                // echo "no check";
-                $adhoc_amt = $to_process_result["adhoc_wages"];
+                $adhoc_amt = $to_process_result["adhoc_amt"];
             }
             
             //select all data from epf view table
@@ -74,6 +74,13 @@ if(isset($_POST["submit"])){
                 $get_specific_result = mysqli_fetch_assoc($specific_adhoc_sql);
                 //specific data from adhoc pending table
                 $adhoc_amt = $get_specific_result["adhoc_amt"]; //adhoc amount is solely based on itself independently
+                $adhoc_wages = $get_specific_result["adhoc_wages"];
+                $adhoc_bonus = $get_specific_result["adhoc_bonus"];
+                $adhoc_allowance = $get_specific_result["adhoc_allowance"];
+                $adhoc_commission = $get_specific_result["adhoc_commission"];
+                $adhoc_claims = $get_specific_result["adhoc_claims"];
+                $adhoc_unpaid_leave = $get_specific_result["adhoc_unpaid_leave"];
+                $adhoc_others = $get_specific_result["adhoc_others"];
                 //$adhoc_type = $get_specific_result["adhoc_type"];
                 
                 //end specific data from adhoc pending table
@@ -82,52 +89,12 @@ if(isset($_POST["submit"])){
                     $epf_employee_deduction = $ef["epf_formula_employee_amt"]; //get employee epf value
                     $epf_employer_deduction = $ef["epf_formula_employer_amt"]; //get employer epf value
 
-                    //select all from socso view table
-                    $socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula");
-                    //while socso view table exists
-                    while($sc = mysqli_fetch_assoc($socso_formula_sql)){
-                        $sc_start = $sc["socso_formula_wage_start"]; //get socso starting wages value
-                        $sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
-                        $sc_employee_contribution = $sc["socso_formula_wage_end"]; //get socso fixed contribution value
-                        //if adhoc amount is in between start and end socso view table wages
-                        if(($adhoc_amt >= $sc_start) && ($adhoc_amt <= $sc_end)){
-                        $socso_employee_deduction = $sc["socso_formula_employee_amt"]; //get employee socso value
-                        $socso_employer_deduction = $sc["socso_formula_employer_amt"]; //get employer socso value
-                            
-                        //select all from eis view table 
-                        $eis_formula_sql = mysqli_query($conn, "SELECT * FROM eis_formula");
-                            //while eis view table exists
-                            while($es = mysqli_fetch_assoc($eis_formula_sql)){
-                                $es_start = $es["eis_formula_wage_start"]; //get eis starting wages value
-                                $es_end = $es["eis_formula_wage_end"]; //get eis ending wages value
-                                //if adhoc amount is in between start and end eis view table wages
-                                if(($adhoc_amt >= $es_start) && ($adhoc_amt <= $es_end)){
-                                    $eis_employee_deduction = $es["eis_formula_employee_amt"]; //get employee eis value
-                                    $eis_employer_deduction = $es["eis_formula_employer_amt"]; //get employer eis value
-                                    
-                                    //query to insert in process adhoc table
-                                    $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_wage,  epf_employee_deduction, socso_employee_deduction, eis_employee_deduction, epf_employer_deduction, socso_employer_deduction, eis_employer_deduction, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_from, process_adhoc_to, process_adhoc_process_date, process_adhoc_process_month, process_adhoc_process_year) VALUES ('${"check_ca$i"}', '$adhoc_amt', '$epf_employee_deduction', '$socso_employee_deduction', '$eis_employee_deduction', '$epf_employer_deduction', '$socso_employer_deduction', '$eis_employer_deduction', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$process_from', '$process_to', '$process_date', '$process_month', '$process_year')");
-                                }
-                            }                                                            
-                        }
-                    }                                                   
-                }                                                
-            }            
-        }
-    }
+                    $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_process_date, process_adhoc_from, process_adhoc_to, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_wage, process_adhoc_allowance, process_adhoc_commission, process_adhoc_claims, process_adhoc_bonus, process_adhoc_others, process_adhoc_unpaid_leave, epf_employee_deduction, epf_employer_deduction, process_adhoc_process_month, process_adhoc_process_year, adhoc_amt) VALUES ('${"check_ca$i"}', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$adhoc_wages', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_bonus', '$adhoc_others', '$adhoc_unpaid_leave', '$epf_employee_deduction', '$epf_employer_deduction', '$process_month', '$process_year', '$adhoc_amt')");
+                }                                                           
+            }                                                   
+        }                                                
+    }            
 }
-
-//get 3 types of checkbox value, epf, socso, eis
-
-//get checkbox employee id value
-
-//$insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO ad (emp_id) VALUES ('${"check_ca$i"}')");
-
-
-
-
-
-
 
 ?>
 
@@ -196,7 +163,8 @@ if(isset($_POST["submit"])){
                                     <div class="col-md-12">
                                         <div class="form-check">
                                             <label class="form-check-label" for="cal_epf">
-                                            <input type="checkbox" class="form-check-input" id="cal_epf" name="cal_epf" value="yes" checked>Calculate EPF
+                                            <input type="hidden" class="form-check-input" id="cal_epf" name="cal_epf" value="0">
+                                            <input type="checkbox" class="form-check-input" id="cal_epf" name="cal_epf" value="1" checked>Calculate EPF
                                         </label>
                                         </div>
                                     </div>

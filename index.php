@@ -44,7 +44,7 @@
                 
                 if($mypass == $result["password"]){
                     $_SESSION["username"] = $result["username"];
-      
+                    $_SESSION["permission"] = $result["permission"];
                     header("location:dashboard.php");
                 }else{
                     

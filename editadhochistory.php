@@ -9,27 +9,29 @@ $process_id = $_GET["pid"];
 
 if(isset($_POST["submit"])){
     //get all new value from edited history
-    $new_wages = $_POST["new_wages"];
-    $new_overtime = $_POST["new_overtime"];
+    $new_wages = $_POST["new_adhoc_wages"];
+   // $new_overtime = $_POST["new_overtime"];
     $new_commission = $_POST["new_commission"];
     $new_allowance = $_POST["new_allowance"];
     $new_claims = $_POST["new_claims"];
-    $new_director_fees = $_POST["new_director_fees"];
-    $new_advance_paid = $_POST["new_advance_paid"];
+   // $new_director_fees = $_POST["new_director_fees"];
+   // $new_advance_paid = $_POST["new_advance_paid"];
     $new_bonus = $_POST["new_bonus"];
     $new_others = $_POST["new_others"];
     //$new_epf = $_POST["new_epf"];
     //$new_socso = $_POST["new_socso"];
-    $new_eis = $_POST["new_eis"];
-    $new_deduction = $_POST["new_deduction"];
-    $new_loan = $_POST["new_loan"];
+   // $new_eis = $_POST["new_eis"];
+   // $new_deduction = $_POST["new_deduction"];
+   // $new_loan = $_POST["new_loan"];
     $new_unpaid_leave = $_POST["new_unpaid_leave"];
-    $new_advance_deduct = $_POST["new_advance_deduct"];
-    $new_adjustment = $_POST["new_adjustment"];
+   // $new_advance_deduct = $_POST["new_advance_deduct"];
+   // $new_adjustment = $_POST["new_adjustment"];
+    $adhoc_amt = $_POST["adhoc_amt"];
     // end get all new value from edited history
     
     //count epf contribution
-    $new_epf = $new_wages + $new_bonus + $new_allowance + $new_commission + $new_claims + $new_unpaid_leave + $new_others;
+    //$new_epf = $new_wages + $new_bonus + $new_allowance + $new_commission + $new_claims + $new_unpaid_leave + $new_others;
+    $new_epf = $adhoc_amt;
     //select all data from epf view table
     $epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula"); 
     //while epf view table data exists
@@ -44,11 +46,11 @@ if(isset($_POST["submit"])){
         }
     }
     //count socso contribution
-    $new_socso = $new_wages + $new_others + $new_overtime + $new_allowance + $new_commission;
+    //$new_socso = $new_wages + $new_others + $new_overtime + $new_allowance + $new_commission;
     //select all data from socso view table
-    $socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula");
+   // $socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula");
     //while socso view table data exists
-    while($sc = mysqli_fetch_assoc($socso_formula_sql)){
+    /*while($sc = mysqli_fetch_assoc($socso_formula_sql)){
         $sc_start = $sc["socso_formula_wage_start"]; //get socso starting wages value
         $sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
         $sc_employee_contribution = $sc["socso_formula_wage_end"]; //get socso fixed contribution value
@@ -58,13 +60,13 @@ if(isset($_POST["submit"])){
         $socso_employee_deduction = $sc["socso_formula_employee_amt"]; //get employee socso deduction value
         $socso_employer_deduction = $sc["socso_formula_employer_contribution"]; //get employer socso deduction value
         }
-    }
+    }*/
     //count eis contribution
-    $new_eis = $new_wages;
+   // $new_eis = $new_wages;
    //select all data from eis view table
-    $eis_formula_sql = mysqli_query($conn, "SELECT * FROM eis_formula");
+   // $eis_formula_sql = mysqli_query($conn, "SELECT * FROM eis_formula");
     //while eis view table data exists
-    while($es = mysqli_fetch_assoc($eis_formula_sql)){
+    /*while($es = mysqli_fetch_assoc($eis_formula_sql)){
 
         $es_start = $es["eis_formula_wage_start"]; //get eis starting wages value
         $es_end = $es["eis_formula_wage_end"]; //get eis ending wages value 
@@ -73,16 +75,20 @@ if(isset($_POST["submit"])){
             $eis_employee_deduction = $es["eis_formula_employee_amt"]; //get employee eis deduction value
             $eis_employer_deduction = $es["eis_formula_employer_amt"]; //get employer eis deduction value   
         }
-    }
+    }*/
     //count gross pay
-    $new_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance + $new_claims + $new_director_fees + $new_advance_paid + $new_bonus + $new_others;
+    //$new_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance + $new_claims + $new_director_fees + $new_advance_paid + $new_bonus + $new_others;
     //count gross deduction
-    $new_gross_deduct = $epf_employee_deduction + $socso_employee_deduction + $eis_employee_deduction + $new_deduction + $new_loan + $new_unpaid_leave + $new_advance_deduct; 
+    //$new_gross_deduct = $epf_employee_deduction + $socso_employee_deduction + $eis_employee_deduction + $new_deduction + $new_loan + $new_unpaid_leave + $new_advance_deduct; 
     //count net pay
-    $new_netpay = $new_gross_pay - $new_gross_deduct + $new_adjustment;
+   // $new_netpay = $new_gross_pay - $new_gross_deduct + $new_adjustment;
 
     
-    $update_sql = mysqli_query($conn, "UPDATE process_adhoc SET process_adhoc_wage = '$new_wages', process_adhoc_overtime = '$new_overtime', process_adhoc_commission = '$new_commission', process_adhoc_allowance = '$new_allowance', process_adhoc_claims = '$new_claims', process_adhoc_director_fees = '$new_director_fees', process_adhoc_advance_paid = '$new_advance_paid', process_adhoc_bonus = '$new_bonus', process_adhoc_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', socso_employee_deduction = '$socso_employee_deduction', socso_employer_deduction = '$socso_employer_deduction', eis_employee_deduction = '$eis_employee_deduction', eis_employer_deduction = '$eis_employer_deduction', process_adhoc_deduction = '$new_deduction', process_adhoc_loan = '$new_loan', process_adhoc_unpaid_leave = '$new_unpaid_leave', process_adhoc_advance_deduct = '$new_advance_deduct', process_adhoc_adjustment = '$new_adjustment', process_adhoc_net_pay = '$new_netpay' WHERE process_adhoc_id = '$process_id'");
+   /* $update_sql = mysqli_query($conn, "UPDATE process_adhoc SET process_adhoc_wage = '$new_wages', process_adhoc_overtime = '$new_overtime', process_adhoc_commission = '$new_commission', process_adhoc_allowance = '$new_allowance', process_adhoc_claims = '$new_claims', process_adhoc_director_fees = '$new_director_fees', process_adhoc_advance_paid = '$new_advance_paid', process_adhoc_bonus = '$new_bonus', process_adhoc_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', socso_employee_deduction = '$socso_employee_deduction', socso_employer_deduction = '$socso_employer_deduction', eis_employee_deduction = '$eis_employee_deduction', eis_employer_deduction = '$eis_employer_deduction', process_adhoc_deduction = '$new_deduction', process_adhoc_loan = '$new_loan', process_adhoc_unpaid_leave = '$new_unpaid_leave', process_adhoc_advance_deduct = '$new_advance_deduct', process_adhoc_adjustment = '$new_adjustment', process_adhoc_net_pay = '$new_netpay' WHERE process_adhoc_id = '$process_id'");*/
+    
+    mysqli_query($conn, "UPDATE process_adhoc SET process_adhoc_wage = '$new_wages', process_adhoc_bonus = '$new_bonus', process_adhoc_allowance = '$new_allowance', process_adhoc_commission = '$new_commission', process_adhoc_claims = '$new_claims', process_adhoc_unpaid_leave = '$new_unpaid_leave', process_adhoc_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', adhoc_amt = '$adhoc_amt' WHERE process_adhoc_id = '$process_id'");
+    
+    //echo $new_unpaid_leave;
 }        
 
 $get_all_sql = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_id = '$process_id'");
@@ -93,7 +99,8 @@ $process_to = $get_result["process_adhoc_to"];
 $process_month = $get_result["process_adhoc_process_month"];
 $process_year = $get_result["process_adhoc_process_year"];
 $employee_name = $get_result["emp_full_name"];
-$adhoc_amt = $get_result["process_adhoc_wage"];
+
+$adhoc_wages = $get_result["process_adhoc_wage"];
 $adhoc_commission = $get_result["process_adhoc_commission"];
 $adhoc_allowance = $get_result["process_adhoc_allowance"];
 $adhoc_claims = $get_result["process_adhoc_claims"];
@@ -101,7 +108,12 @@ $adhoc_bonus = $get_result["process_adhoc_bonus"];
 $adhoc_others = $get_result["process_adhoc_others"];
 $employee_epf = $get_result["epf_employee_deduction"];
 $adhoc_unpaid_leave = $get_result["process_adhoc_unpaid_leave"];
+
 $employer_epf = $get_result["epf_employer_deduction"];
+
+$adhoc_amt = $get_result["adhoc_amt"];
+
+//echo $adhoc_others;
 
 
 ?>    
@@ -124,7 +136,7 @@ $employer_epf = $get_result["epf_employer_deduction"];
             <h1 class="mt-4">Edit History</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">
-            <form action="edithistory.php?pid=<?php echo $process_id; ?>" method="post" enctype="multipart/form-data" autocomplete="off">
+            <form action="editadhochistory.php?pid=<?php echo $process_id; ?>" method="post" enctype="multipart/form-data" autocomplete="off">
                 <div class="row">
                     <div class="col-md-6 col-12">
                         <div class="p-3 bg-white rounded shadow mb-5">
@@ -133,8 +145,9 @@ $employer_epf = $get_result["epf_employer_deduction"];
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-check">
-                                        <label class="form-check-label" for="check_wages">
-                                            <input type="checkbox" class="form-check-input" id="check_wages" name="check_wages" value="yes" checked>Wages
+                                        <label class="form-check-label" for="new_wages">
+                                            <input type="hidden" class="form-check-input" id="new_wages" name="new_adhoc_wages" value="0">
+                                            <input type="checkbox" class="form-check-input" id="new_wages" name="new_adhoc_wages" value="1" <?php if($adhoc_wages){echo "checked";}?>>Wages
                                         </label>
                                     </div>
                                 </div>
@@ -142,8 +155,9 @@ $employer_epf = $get_result["epf_employer_deduction"];
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-check">
-                                        <label class="form-check-label" for="check_bonus">
-                                            <input type="checkbox" class="form-check-input" id="check_bonus" name="check_bonus" value="yes" checked>Bonus
+                                        <label class="form-check-label" for="new_bonus">
+                                            <input type="hidden" class="form-check-input" id="new_bonus" name="new_bonus" value="0">
+                                            <input type="checkbox" class="form-check-input" id="new_bonus" name="new_bonus" value="1" <?php if($adhoc_bonus){echo "checked";}?>>Bonus
                                         </label>
                                     </div>
                                 </div>
@@ -151,8 +165,9 @@ $employer_epf = $get_result["epf_employer_deduction"];
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-check">
-                                        <label class="form-check-label" for="check1">
-                                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>Allowance
+                                        <label class="form-check-label" for="new_allowance">
+                                            <input type="hidden" class="form-check-input" id="new_allowance" name="new_allowance" value="0">
+                                            <input type="checkbox" class="form-check-input" id="new_allowance" name="new_allowance" value="1" <?php if($adhoc_allowance){echo "checked";}?>>Allowance
                                         </label>
                                     </div>
                                 </div>
@@ -160,8 +175,9 @@ $employer_epf = $get_result["epf_employer_deduction"];
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-check">
-                                        <label class="form-check-label" for="check1">
-                                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>Commission
+                                        <label class="form-check-label" for="new_commission">
+                                            <input type="hidden" class="form-check-input" id="new_commission" name="new_commission" value="0">
+                                            <input type="checkbox" class="form-check-input" id="new_commission" name="new_commission" value="1" <?php if($adhoc_commission){echo "checked";}?>>Commission
                                         </label>
                                     </div>
                                 </div>
@@ -169,8 +185,9 @@ $employer_epf = $get_result["epf_employer_deduction"];
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-check">
-                                        <label class="form-check-label" for="check1">
-                                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>Claims
+                                        <label class="form-check-label" for="new_claims">
+                                            <input type="hidden" class="form-check-input" id="new_claims" name="new_claims" value="0">
+                                            <input type="checkbox" class="form-check-input" id="new_claims" name="new_claims" value="1" <?php if($adhoc_claims){echo "checked";}?>>Claims
                                         </label>
                                     </div>
                                 </div>
@@ -178,8 +195,9 @@ $employer_epf = $get_result["epf_employer_deduction"];
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-check">
-                                        <label class="form-check-label" for="check1">
-                                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>Unpaid Leave
+                                        <label class="form-check-label" for="new_unpaid_leave">
+                                            <input type="hidden" class="form-check-input" id="new_unpaid_leave" name="new_unpaid_leave" value="0">
+                                            <input type="checkbox" class="form-check-input" id="new_unpaid_leave" name="new_unpaid_leave" value="1" <?php if($adhoc_unpaid_leave){echo "checked";}?>>Unpaid Leave
                                         </label>
                                     </div>
                                 </div>
@@ -187,8 +205,9 @@ $employer_epf = $get_result["epf_employer_deduction"];
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-check">
-                                        <label class="form-check-label" for="check1">
-                                            <input type="checkbox" class="form-check-input" id="check1" name="option1" value="something" checked>Others
+                                        <label class="form-check-label" for="new_others">
+                                            <input type="hidden" class="form-check-input" id="new_others" name="new_others" value="0">
+                                            <input type="checkbox" class="form-check-input" id="new_others" name="new_others" value="1" <?php if($adhoc_others){echo "checked";}?>>Others
                                         </label>
                                     </div>
                                 </div>
@@ -197,7 +216,7 @@ $employer_epf = $get_result["epf_employer_deduction"];
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="">AdHoc Amount</label>
-                                <input type="text" class="form-control" name="edited_adhoc_amt" value="<?php echo $adhoc_amt; ?>"> 
+                                <input type="text" class="form-control" name="adhoc_amt" value="<?php echo $adhoc_amt; ?>"> 
                             </div>
                         </div>                            
                         </div>

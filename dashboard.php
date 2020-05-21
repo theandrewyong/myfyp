@@ -6,10 +6,10 @@ header("location:index.php");
 }
 $username = $_SESSION["username"];
 
-$query1 = "SELECT emp_gender, count(*) as number FROM employee_info GROUP BY emp_gender";  
+$query1 = "SELECT process_payroll_wage, process_payroll_process_month, SUM(process_payroll_wage) as number FROM process_payroll WHERE process_payroll_process_year = '2020' GROUP BY process_payroll_process_month";  
 $result1 = mysqli_query($conn, $query1); 
 
-$query2 = "SELECT emp_gender, count(*) as number FROM employee_info GROUP BY emp_gender";  
+$query2 = "SELECT process_payroll_wage, emp_id, SUM(process_payroll_wage) as number FROM process_payroll GROUP BY emp_id";  
 $result2 = mysqli_query($conn, $query2); 
 
 
@@ -38,32 +38,37 @@ google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(drawChart1);
 function drawChart1() {
 var data = google.visualization.arrayToDataTable([  
-['Gender', 'Number'],  
+['Month', 'Wages'],  
 <?php  
 while($row = mysqli_fetch_array($result1)){  
-echo "['".$row["emp_gender"]."', ".$row["number"]."],";  
+echo "['".$row["process_payroll_process_month"]."', ".$row["number"]."],";  
 }  
 ?>  
 ]); 
 
 var options = {
-title: 'Gender in Company',
+title: 'Total NetPay(NP) by Month',
 colors: ['#e0440e', '#e6693e'],
-//hAxis: {title: 'Year', titleTextStyle: {color: '#333'}}
+hAxis: {title: 'Month', titleTextStyle: {color: '#333'}}
 };
 
-var chart = new google.visualization.PieChart(document.getElementById('chart_div1'));
+var chart = new google.visualization.LineChart(document.getElementById('chart_div1'));
 chart.draw(data, options);
 }
 
+    
+    
+//--------    
+    
+    
 google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(drawChart2);
 function drawChart2() {
 var data = google.visualization.arrayToDataTable([  
-['Gender', 'Number'],  
+['Employee', 'NetPay'],  
 <?php  
 while($row = mysqli_fetch_array($result2)){  
-echo "['".$row["emp_gender"]."', ".$row["number"]."],";  
+echo "['".$row["emp_id"]."', ".$row["number"]."],";  
 }  
 ?>  
 ]); 

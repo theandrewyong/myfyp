@@ -74,6 +74,14 @@ $username = $_SESSION["username"];
                                     }
                                     ?>            
                                     </tbody>
+                                    <tfoot>
+                                    <tr>
+                                    <th>Wages Start With</th>
+                                    <th>Wages End With</th>
+                                    <th>Employee EPF</th>
+                                    <th>Employer EPF</th>
+                                    </tr>
+                                    </tfoot>
                                     </table>
                                 </div>        
                             </div>
@@ -178,6 +186,11 @@ $username = $_SESSION["username"];
         </div>
     </div>
 </div>
+<style>
+  
+
+    
+    </style>
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -188,7 +201,44 @@ $("#menu-toggle").click(function(e) {
     $("#wrapper").toggleClass("toggled");
 });
 
-$(document).ready( function() {
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#example tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+ 
+    // DataTable
+    var table = $('#example').DataTable({
+        responsive: true,
+        language: {
+        search: "",
+        "lengthMenu": "_MENU_",
+        searchPlaceholder: "Search records"
+        },
+        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">',
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+        }
+    });
+    
+ 
+} );    
+
+
+    
+/*$(document).ready( function() {
     $('#example').dataTable( {
         responsive: true,
         language: {
@@ -199,7 +249,7 @@ $(document).ready( function() {
         "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
     } );   
 } );
-
+*/
 $(document).ready( function() {
     $('#example2').dataTable( {
         responsive: true,

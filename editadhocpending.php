@@ -8,19 +8,43 @@ $username = $_SESSION["username"];
 
 $get_adhoc_id = $_GET["adhoc_id"];
 
-
+//while loop select option
+//$select_all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
 
 
 if(isset($_POST["submit"])){
-    //$get_edited_adhoc_emp_name = $_POST["adhoc_emp_name"];
-    $get_edited_adhoc_type = $_POST["edited_adhoc_type"];
-    $get_edited_adhoc_amt = $_POST["edited_adhoc_amt"];
+   // $get_adhoc_emp_name = $_POST["adhoc_emp_name"];
+    $adhoc_wages = $_POST["adhoc_wages"];
+	$adhoc_bonus = $_POST["adhoc_bonus"];
+	$adhoc_allowance = $_POST["adhoc_allowance"];
+	$adhoc_commission = $_POST["adhoc_commission"];
+	$adhoc_claims = $_POST["adhoc_claims"];
+	$adhoc_unpaid_leave = $_POST["adhoc_unpaid_leave"];
+	$adhoc_others = $_POST["adhoc_others"];
+	//echo $adhoc_wages; echo $adhoc_bonus;
+    $adhoc_amt = $_POST["adhoc_amt"];
+    //get emp id where name is
+    //$get_id_sql = mysqli_query($conn, "SELECT emp_id FROM employee_info WHERE emp_full_name = '$get_adhoc_emp_name'");
+    //$id_result = mysqli_fetch_assoc($get_id_sql);
+    //$get_adhoc_emp_id = $id_result["emp_id"];
+    //$get_adhoc_status = "PENDING";
     
-    mysqli_query($conn, "UPDATE adhoc_pending SET adhoc_type = '$get_edited_adhoc_type', adhoc_amt = '$get_edited_adhoc_amt'");
+    mysqli_query($conn, "UPDATE adhoc_pending SET adhoc_wages = '$adhoc_wages', adhoc_bonus = '$adhoc_bonus', adhoc_allowance = '$adhoc_allowance', adhoc_commission = '$adhoc_commission', adhoc_claims = '$adhoc_claims', adhoc_unpaid_leave = '$adhoc_unpaid_leave', adhoc_others = '$adhoc_others', adhoc_amt = '$adhoc_amt' WHERE adhoc_id = '$get_adhoc_id'");
 }
 
-$select_all_employee_sql = mysqli_query($conn, "SELECT * FROM adhoc_pending WHERE adhoc_id = '$get_adhoc_id'");
-$specific_result = mysqli_fetch_assoc($select_all_employee_sql);
+//select all existing adhoc pending
+$select_all_sql = mysqli_query($conn, "SELECT * FROM adhoc_pending");
+$specific_result = mysqli_fetch_assoc($select_all_sql);
+
+$s_name = $specific_result["emp_full_name"];
+$s_wages = $specific_result["adhoc_wages"];
+$s_bonus = $specific_result["adhoc_bonus"];
+$s_allowance = $specific_result["adhoc_allowance"];
+$s_commission = $specific_result["adhoc_commission"];
+$s_claims = $specific_result["adhoc_claims"];
+$s_unpaid_leave = $specific_result["adhoc_unpaid_leave"];
+$s_others = $specific_result["adhoc_others"];
+$s_amt = $specific_result["adhoc_amt"];
 
 ?>
 <!DOCTYPE html>
@@ -28,7 +52,7 @@ $specific_result = mysqli_fetch_assoc($select_all_employee_sql);
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Payroll Software - Edit Pending AdHoc</title>
+<title>Payroll Software - Add New AdHoc</title>
 <?php include "all_css.php"; ?>
 </head>
 <body>
@@ -37,41 +61,57 @@ $specific_result = mysqli_fetch_assoc($select_all_employee_sql);
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">Edit Pending AdHoc</h1>
+            <h1 class="mt-4">Edit AdHoc Employee info</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">    
-            <form action="editadhocpending.php?adhoc_id=<?php echo $get_adhoc_id; ?>" method="POST" enctype="multipart/form-data" autocomplete="off">
+            <form action="editadhocpending.php?adhoc_id=18" method="POST" enctype="multipart/form-data" autocomplete="off">
                 
                 
                 <div class="form-group">
                     <label>Employee Name</label>
                     <select id="" class="form-control" name="adhoc_emp_name" disabled>
-
-                        <?php
-                            echo '<option>';
-                            echo $specific_result["emp_full_name"];
-                            echo '</option>';
-                        ?>
+                        <option><?php echo $s_name; ?></option>
                     </select>
                 </div>
+				
+				<div class="form-group">
+					<label>Adhoc Type</label>
+                </div>
+				
                 <div class="form-group">
-                    <label for="pwd">AdHoc Type</label>
-                    <select class="form-control" name="edited_adhoc_type">
-                        <option <?php if($specific_result["adhoc_type"] == "Select AdHoc Type"){echo "selected";} ?>>Select AdHoc Type</option>
-                        <option <?php if($specific_result["adhoc_type"] == "Paid Leave"){echo "selected";} ?>>Paid Leave</option>
-                        <option <?php if($specific_result["adhoc_type"] == "Loan"){echo "selected";} ?>>Loan</option>
-                        <option <?php if($specific_result["adhoc_type"] == "Claims"){echo "selected";} ?>>Claims</option>
-                        <option <?php if($specific_result["adhoc_type"] == "Advance Deduct"){echo "selected";} ?>>Advance Deduct</option>
-                        <option <?php if($specific_result["adhoc_type"] == "Allowance"){echo "selected";} ?>>Allowance</option>
-                        <option <?php if($specific_result["adhoc_type"] == "Wages"){echo "selected";} ?>>Wages</option>
-                        <option <?php if($specific_result["adhoc_type"] == "Commission"){echo "selected";} ?>>Commission</option>
-                        <option <?php if($specific_result["adhoc_type"] == "Advance Paid"){echo "selected";} ?>>Advance Paid</option>
-                        <option <?php if($specific_result["adhoc_type"] == "Unpaid Leave"){echo "selected";} ?>>Unpaid Leave</option>
-                    </select>
+					<input type="hidden" class="checkbox-inline" name="adhoc_wages" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_wages" name="adhoc_wages" value="1" <?php if($s_wages){echo "checked";}?>>
+					<label for="adhoc_wages">Wages</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_bonus" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_bonus" name="adhoc_bonus" value="1" <?php if($s_bonus){echo "checked";}?>>
+					<label for="adhoc_bonus">Bonus</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_allowance" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_allowance" name="adhoc_allowance" value="1" <?php if($s_allowance){echo "checked";}?>>
+					<label for="adhoc_allowance">Allowance</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_commission" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_commission" name="adhoc_commission" value="1" <?php if($s_commission){echo "checked";}?>>
+					<label for="adhoc_commission">Commission</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_claims" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_claims" name="adhoc_claims" value="1" <?php if($s_claims){echo "checked";}?>>
+					<label for="adhoc_claims">Claims</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_unpaid_leave" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_unpaid_leave" name="adhoc_unpaid_leave" value="1" <?php if($s_unpaid_leave){echo "checked";}?>>
+					<label for="adhoc_unpaid_leave">Unpaid Leave</label><br/>
+					
+					<input type="hidden" class="checkbox-inline" name="adhoc_others" value="0">
+                    <input type="checkbox" class="checkbox-inline" id="adhoc_others" name="adhoc_others" value="1" <?php if($s_others){echo "checked";}?>>
+					<label for="adhoc_others">Others</label>
+					
                 </div>
+				
                 <div class="form-group">
                     <label for="pwd">Amount</label>
-                    <input type="number" class="form-control" name="edited_adhoc_amt" value="<?php echo $specific_result["adhoc_amt"]; ?>">
+                    <input type="number" class="form-control" name="adhoc_amt" value="<?php echo $s_amt; ?>">
                 </div>                
                 <button type="submit" name="submit" class="btn btn-primary">Submit</button>
             </form>

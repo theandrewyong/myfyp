@@ -69,6 +69,10 @@
                 mysqli_query($conn, "UPDATE account SET username = '$edited_admin_username', password = '$edited_admin_password', permission = '$edited_admin_permission' WHERE username_id = '$admin_id'"); 
                 
                 echo '<script>alert("Updated Successfully");</script>';
+                if($edited_admin_username == $username){
+                   header("location:index.php"); 
+                }
+                
             }
         }
         $show_sql = mysqli_query($conn, "SELECT * FROM account WHERE username_id = '$admin_id'");
@@ -91,7 +95,6 @@
             <div class="form-group">
                 <label for="sel1">Permission level (1 for Admin | 2 for Employee):</label>
                 <select class="form-control" id="sel1" name="edited_permission">
-                    <option>Select Permission</option>
                     <option value="1" <?php if($admin_permission == 1){echo 'selected="' . "selected" . '"';}?>>1</option>
                     <option value="2" <?php if($admin_permission == 2){echo 'selected="' . "selected" . '"';}?>>2</option>
                 </select>
