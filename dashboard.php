@@ -9,7 +9,7 @@ $username = $_SESSION["username"];
 $query1 = "SELECT process_payroll_wage, process_payroll_process_month, SUM(process_payroll_wage) as number FROM process_payroll WHERE process_payroll_process_year = '2020' GROUP BY process_payroll_process_month";  
 $result1 = mysqli_query($conn, $query1); 
 
-$query2 = "SELECT process_payroll_wage, emp_id, SUM(process_payroll_wage) as number FROM process_payroll GROUP BY emp_id";  
+$query2 = "SELECT process_payroll_wage, emp_id, SUM(process_payroll_wage) as number FROM process_payroll WHERE process_payroll_process_year = '2020' GROUP BY emp_id";  
 $result2 = mysqli_query($conn, $query2); 
 
 
@@ -101,12 +101,48 @@ drawChart2();
 <hr>
 
 <div class="row">
-
+    <div class="col-md-6">
+        <div class="p-3 bg-white rounded shadow mb-3">
+            <h2>Welcome, <?php echo $username; ?></h2>
+            <h3><div id="para1"></div></h3>
+        </div>
+    </div>    
+    <div class="col-md-6">
+        <div class="p-3 bg-white rounded shadow mb-3">
+            <div class="form-group">
+                <label for="select_year">Select Year</label>
+                <div class="form-inline">
+                    <input type="text" class="form-control" name="select_year" value="<?php echo date('Y'); ?>">
+                    <button class="btn btn-primary">Select Year</button>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>    
+    
+<div class="row">
 <div class="col-md-6">
+<div class="p-3 bg-white rounded shadow mb-3">
 <div id="chart_div1" class="chart"></div>
+    </div>
 </div>
 <div class="col-md-6">
+<div class="p-3 bg-white rounded shadow mb-3">
 <div id="chart_div2" class="chart"></div>
+    </div>
+</div>
+</div>
+    
+<div class="row">
+<div class="col-md-6">
+<div class="p-3 bg-white rounded shadow mb-3">
+    <p><b>Previous Month Processed Employee</b></p>
+    </div>
+</div>
+<div class="col-md-6">
+<div class="p-3 bg-white rounded shadow mb-3">
+    <p><b>Pending AdHoc List</b></p>
+    </div>
 </div>
 </div>
 
@@ -131,6 +167,23 @@ $('#sidebar').collapse({
 toggle: true
 });
 }
+
+    
+    
+    
+document.getElementById("para1").innerHTML = formatAMPM();
+
+function formatAMPM() {
+var d = new Date(),
+    minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
+    hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
+    ampm = d.getHours() >= 12 ? 'pm' : 'am',
+    months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+return days[d.getDay()]+' , '+months[d.getMonth()]+' '+d.getDate()+' , '+d.getFullYear()+' - '+hours+':'+minutes+ampm;
+}    
+    
+    
 </script>
 </body>
 </html>
