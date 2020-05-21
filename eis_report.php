@@ -88,14 +88,18 @@ $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FRO
                     echo '<td>' . $eis_employer_deduction . '</td>';
                     echo '</tr>'; 
                     $total_eis_employee_deduction = $total_eis_employee_deduction + $eis_employee_deduction;
+					$format_total_eis_employee_deduction = number_format("$total_eis_employee_deduction",2);
+						
                     $total_eis_employer_deduction = $total_eis_employer_deduction + $eis_employer_deduction;
+					$format_total_eis_employer_deduction = number_format("$total_eis_employer_deduction",2);
+						
                     }                    
                     }
                     ?> 
                     <tr>
                     <td><b>Total</b></td>
-                    <td><b><?php if($total_eis_employee_deduction != 0){echo $total_eis_employee_deduction;}?></b></td>
-                    <td><b><?php if($total_eis_employer_deduction != 0){echo $total_eis_employer_deduction;}?></b></td>
+                    <td><b><?php if($total_eis_employee_deduction != 0){echo $format_total_eis_employee_deduction;}?></b></td>
+                    <td><b><?php if($total_eis_employer_deduction != 0){echo $format_total_eis_employer_deduction;}?></b></td>
                     </tr>
                     </tbody>
                 </table>

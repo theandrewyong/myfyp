@@ -91,16 +91,24 @@ if(isset($_POST["submit"])){
                                 echo '<td>' . $socso_employer_contribution . '</td>';
                                 echo '</tr>'; 
                                 $total_socso_employee_deduction = $total_socso_employee_deduction + $socso_employee_deduction;
-                                $total_socso_employer_deduction = $total_socso_employer_deduction + $socso_employer_deduction;                     
-                                $total_socso_employer_contribution = $total_socso_employer_contribution + $socso_employer_contribution;              
+								$format_total_socso_employee_deduction = number_format("$total_socso_employee_deduction",2);
+								
+                                $total_socso_employer_deduction = $total_socso_employer_deduction + $socso_employer_deduction; 
+								$format_total_socso_employer_deduction = number_format("$total_socso_employer_deduction",2);
+								
+								
+                                $total_socso_employer_contribution = $total_socso_employer_contribution + $socso_employer_contribution;
+								$format_total_socso_employer_contribution = number_format("$total_socso_employer_contribution",2);
+								
+								
                             }                    
                         }
                         ?> 
                             <tr>
                                 <td><b>Total</b></td>
-                                <td><b><?php if($total_socso_employee_deduction != 0){echo $total_socso_employee_deduction;}?></b></td>
-                                <td><b><?php if($total_socso_employer_deduction != 0){echo $total_socso_employer_deduction;}?></b></td>
-                                <td><b><?php if($total_socso_employer_contribution != 0){echo $total_socso_employer_contribution;}?></b></td>
+                                <td><b><?php if($total_socso_employee_deduction != 0){echo $format_total_socso_employee_deduction;}?></b></td>
+                                <td><b><?php if($total_socso_employer_deduction != 0){echo $format_total_socso_employer_deduction;}?></b></td>
+                                <td><b><?php if($total_socso_employer_contribution != 0){echo $format_total_socso_employer_contribution;}?></b></td>
                             </tr>  
                         </tbody>
                     </table>

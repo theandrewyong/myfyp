@@ -244,20 +244,29 @@ else {
 	$pdf->Cell (35,4.5,'',"LR",1,"C");
 }
 
+$total_earnings = $data["process_payroll_wage"]+ $data["process_payroll_overtime"]+ $data["process_payroll_commission"]+ $data["process_payroll_allowance"]+ $data["process_payroll_claims"]+ $data["process_payroll_director_fees"]+ $data["process_payroll_advance_paid"]+ $data["process_payroll_bonus"]+ $data["process_payroll_others"];
+$format_total_earnings = number_format("$total_earnings",2);
+	
 $pdf->Cell (60,4.5,'	TOTAL EARNINGS',"1",0);
-$pdf->Cell (35,4.5,$data["process_payroll_wage"]+ $data["process_payroll_overtime"]+ $data["process_payroll_commission"]+ $data["process_payroll_allowance"]+ $data["process_payroll_claims"]+ $data["process_payroll_director_fees"]+ $data["process_payroll_advance_paid"]+ $data["process_payroll_bonus"]+ $data["process_payroll_others"],"TB",0,"C");//error, need to store in sql for 2 deci
+$pdf->Cell (35,4.5,$format_total_earnings,"TB",0,"C");
+
+$total_deductions = $data["epf_employee_deduction"]+ $data["socso_employee_deduction"]+ $data["eis_employee_deduction"]+ $data["process_payroll_deduction"]+ $data["process_payroll_loan"]+ $data["process_payroll_unpaid_leave"]+ $data["process_payroll_advance_deduct"];
+$format_total_deductions = number_format("$total_deductions",2);
 	
 $pdf->Cell (60,4.5,'	TOTAL DEDUCTIONS',"1",0);
-$pdf->Cell (35,4.5,$data["epf_employee_deduction"]+ $data["socso_employee_deduction"]+ $data["eis_employee_deduction"]+ $data["process_payroll_deduction"]+ $data["process_payroll_loan"]+ $data["process_payroll_unpaid_leave"]+ $data["process_payroll_advance_deduct"],"1",1,"C");//need to store in sql for 2 deci
+$pdf->Cell (35,4.5,$format_total_deductions,"1",1,"C");//need to store in sql for 2 deci
 	
 $pdf->Cell (60,6,'	Adjustments',"L",0);
 $pdf->Cell (35,6,$data["process_payroll_adjustment"],"LR",0,"C");
 $pdf->Cell (60,6,'	EPF',"",0);
 $pdf->Cell (35,6,$data["epf_employer_deduction"],"LR",1,"C");
 
+$nett_pay = $total_earnings - $total_deductions + $data["process_payroll_adjustment"];
+$format_nett_pay = number_format("$nett_pay",2);
+	
 $pdf->SetFont("Arial","B", 9);
 $pdf->Cell (60,4.5,'	NETT PAY',"L",0);
-$pdf->Cell (35,4.5,$data["process_payroll_net_pay"],"LR",0,"C");//**
+$pdf->Cell (35,4.5,$format_nett_pay,"LR",0,"C");//**
 $pdf->SetFont("Arial","", 9);
 $pdf->Cell (60,4.5,'	SOCSO',"0",0);
 $pdf->Cell (35,4.5,$data["socso_employer_deduction"],"LR",1,"C");//**

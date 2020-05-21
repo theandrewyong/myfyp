@@ -19,7 +19,6 @@ if(isset($_POST["submit"])){
 	$adhoc_claims = $_POST["adhoc_claims"];
 	$adhoc_unpaid_leave = $_POST["adhoc_unpaid_leave"];
 	$adhoc_others = $_POST["adhoc_others"];
-	echo $adhoc_wages; echo $adhoc_bonus;
     $get_adhoc_amt = $_POST["adhoc_amt"];
     //get emp id where name is
     $get_id_sql = mysqli_query($conn, "SELECT emp_id FROM employee_info WHERE emp_full_name = '$get_adhoc_emp_name'");

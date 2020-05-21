@@ -70,7 +70,7 @@ $username = $_SESSION["username"];
                     <table id="example" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Employee</th>
                                 <th>January</th>
                                 <th>Febuary</th>
                                 <th>March</th>
@@ -109,7 +109,11 @@ $username = $_SESSION["username"];
                             $countDec = 0;
                             foreach($unique_employee as $ua){
                             echo '<tr>';
-                            echo '<td>' . $ua . '</td>';
+								
+							$name_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$ua'");
+							$result = mysqli_fetch_assoc($name_sql);
+                            echo '<td>' . $result["emp_full_name"] . '</td>';
+								
                             for($i=1;$i<=12;$i++){
                             $each_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll.emp_id = '$ua' AND process_payroll_process_month = '$i'");
 
@@ -117,50 +121,62 @@ $username = $_SESSION["username"];
                             if($i == 1){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countJan = $countJan + $esresult["process_payroll_wage"];
+							$format_countJan = number_format("$countJan",2);
                             }
                             if($i == 2){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countFeb = $countFeb + $esresult["process_payroll_wage"];
+							$format_countFeb = number_format("$countFeb",2);
                             }
                             if($i == 3){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countMar = $countMar + $esresult["process_payroll_wage"];
+							$format_countMar = number_format("$countMar",2);
                             }
                             if($i == 4){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countApr = $countApr + $esresult["process_payroll_wage"];
+							$format_countApr = number_format("$countApr",2);
                             }
                             if($i == 5){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countMay = $countMay + $esresult["process_payroll_wage"];
+							$format_countMay = number_format("$countMay",2);
                             }
                             if($i == 6){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countJun = $countJun + $esresult["process_payroll_wage"];
+							$format_countJun = number_format("$countJun",2);
                             }
                             if($i == 7){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countJul = $countJul + $esresult["process_payroll_wage"];
+							$format_countJul = number_format("$countJul",2);
                             }
                             if($i == 8){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countAug = $countAug + $esresult["process_payroll_wage"];
+							$format_countAug = number_format("$countAug",2);
                             }
                             if($i == 9){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countSep = $countSep + $esresult["process_payroll_wage"];
+							$format_countSep = number_format("$countSep",2);
                             }
                             if($i == 10){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countOct = $countOct + $esresult["process_payroll_wage"];
+							$format_countOct = number_format("$countOct",2);
                             }
                             if($i == 11){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countNov = $countNov + $esresult["process_payroll_wage"];
+							$format_countNov = number_format("$countNov",2);
                             }
                             if($i == 12){
                             echo '<td>' . $esresult["process_payroll_wage"] . '</td>';
                             $countDec = $countDec + $esresult["process_payroll_wage"];
+							$format_countDec = number_format("$countDec",2);
                             }                                                  
                             }                        
                             echo '</tr>';
@@ -170,40 +186,40 @@ $username = $_SESSION["username"];
                             echo '<td><b>' . "Total" . '</b></td>';
                             for($x=1;$x<=12;$x++){
                             if($x == 1){
-                            echo '<td><b>' . $countJan . '</b></td>';
+                            echo '<td><b>' . $format_countJan . '</b></td>';
                             }
                             if($x == 2){
-                            echo '<td><b>' . $countFeb . '</b></td>';
+                            echo '<td><b>' . $format_countFeb . '</b></td>';
                             }
                             if($x == 3){
-                            echo '<td><b>' . $countMar . '</b></td>';
+                            echo '<td><b>' . $format_countMar . '</b></td>';
                             }
                             if($x == 4){
-                            echo '<td><b>' . $countApr . '</b></td>';
+                            echo '<td><b>' . $format_countApr . '</b></td>';
                             }
                             if($x == 5){
-                            echo '<td><b>' . $countMay . '</b></td>';
+                            echo '<td><b>' . $format_countMay . '</b></td>';
                             }
                             if($x == 6){
-                            echo '<td><b>' . $countJun . '</b></td>';
+                            echo '<td><b>' . $format_countJun . '</b></td>';
                             }
                             if($x == 7){
-                            echo '<td><b>' . $countJul . '</b></td>';
+                            echo '<td><b>' . $format_countJul . '</b></td>';
                             }
                             if($x == 8){
-                            echo '<td><b>' . $countAug . '</b></td>';
+                            echo '<td><b>' . $format_countAug . '</b></td>';
                             }
                             if($x == 9){
-                            echo '<td><b>' . $countSep . '</b></td>';
+                            echo '<td><b>' . $format_countSep . '</b></td>';
                             }
                             if($x == 10){
-                            echo '<td><b>' . $countOct . '</b></td>';
+                            echo '<td><b>' . $format_countOct . '</b></td>';
                             }
                             if($x == 11){
-                            echo '<td><b>' . $countNov . '</b></td>';
+                            echo '<td><b>' . $format_countNov . '</b></td>';
                             }
                             if($x == 12){
-                            echo '<td><b>' . $countDec . '</b></td>';
+                            echo '<td><b>' . $format_countDec . '</b></td>';
                             }                        
 
                             }
