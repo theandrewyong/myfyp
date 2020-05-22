@@ -6,11 +6,51 @@ header("location:index.php");
 }
 $username = $_SESSION["username"];
 
+//get current month
+$current_month = date("m");
+//get previous month
+if($current_month != 1){
+    $previous_month = $current_month - 1;
+    echo $previous_month;
+}else{
+    $previous_month = 1;
+}
+
+
 $query1 = "SELECT process_payroll_wage, process_payroll_process_month, SUM(process_payroll_wage) as number FROM process_payroll WHERE process_payroll_process_year = '2020' GROUP BY process_payroll_process_month";  
 $result1 = mysqli_query($conn, $query1); 
 
 $query2 = "SELECT process_payroll_wage, emp_id, SUM(process_payroll_wage) as number FROM process_payroll WHERE process_payroll_process_year = '2020' GROUP BY emp_id";  
 $result2 = mysqli_query($conn, $query2); 
+
+
+
+//do comparison
+$all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
+$to_process_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_month = '$previous_month' AND process_payroll_process_year = '2020'");
+
+if(mysqli_num_rows($all_employee_sql) != 0){
+    //get all employee from employee info table
+    while($all_emp_data = mysqli_fetch_assoc($all_employee_sql)){
+        $emp_array[] = $all_emp_data["emp_id"];
+    }
+}else{
+    $emp_array[] = "";
+}
+if(mysqli_num_rows($to_process_sql) != 0){
+    //get all processed employee from process payroll
+    while( $compare_data = mysqli_fetch_assoc($to_process_sql)){
+        $process_array[] = $compare_data["emp_id"];
+    }
+}else{
+    $process_array[] = "";
+}
+
+
+$show_table_data = array_diff($emp_array, $process_array);
+
+echo print_r($process_array);
+
 
 
 ?>
@@ -137,11 +177,72 @@ drawChart2();
 <div class="col-md-6">
 <div class="p-3 bg-white rounded shadow mb-3">
     <p><b>Previous Month Processed Employee</b></p>
+                <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Employee Name</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                    <?php
+                    foreach($emp_array as $ea){
+                        
+                        echo '<tr>';
+                        echo '<td>' . $ea . '</td>';
+                        echo '</tr>';
+                    }       
+                    ?>
+                    </tbody>
+                    </table>
+                </div>     
     </div>
 </div>
 <div class="col-md-6">
 <div class="p-3 bg-white rounded shadow mb-3">
     <p><b>Pending AdHoc List</b></p>
+                                <div class="table-responsive">
+                                    <table id="example1" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Employee ID</th>
+                                                <th>Employee Name</th>
+                                                <th>AdHoc Type</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        $adhoc_pending_sql = "SELECT * FROM adhoc_pending";
+                                        $epf_formula_prepared_stmt_insert = mysqli_prepare($conn, $adhoc_pending_sql);
+                                        mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
+                                        $epf_result = $epf_formula_prepared_stmt_insert->get_result(); 
+
+                                        if($epf_result->num_rows > 0) { 
+                                            while ($data = $epf_result->fetch_assoc()) {
+                                                $adhoc_id = $data["adhoc_id"];
+                                                $delete_adhoc_id = $data["adhoc_id"];
+                                                echo '<tr>';
+                                                echo '<td>' . $data["emp_id"] . '</td>';
+                                                echo '<td>' . $data["emp_full_name"] . '</td>';
+                                                echo '<td>' . "bonus" . '</td>';
+                                                echo '<td>' . $data["adhoc_amt"] . '</td>';
+                                                echo '<td>' . $data["adhoc_status"] . '</td>';
+                                                echo '<td>' . '<a href="editadhocpending.php?adhoc_id=' . $adhoc_id . '">Edit</a>' . '</td>';
+                                                echo '<td>' . '<a href="newadhoc.php?delete_adhoc_id=' . $delete_adhoc_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                                                echo '</tr>';
+                                            }
+                                        }
+                                        ?> 
+                                        </tbody>
+                                    </table>
+                                </div>     
     </div>
 </div>
 </div>
