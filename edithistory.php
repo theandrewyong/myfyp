@@ -21,7 +21,7 @@ if(isset($_POST["submit"])){
     //$new_epf = $_POST["new_epf"];
     //$new_socso = $_POST["new_socso"];
     $new_eis = $_POST["new_eis"];
-    $new_deduction = $_POST["new_deduction"];
+    $new_additional_deduction = $_POST["new_additional_deduction"];
     $new_loan = $_POST["new_loan"];
     $new_unpaid_leave = $_POST["new_unpaid_leave"];
     $new_advance_deduct = $_POST["new_advance_deduct"];
@@ -77,12 +77,12 @@ if(isset($_POST["submit"])){
     //count gross pay
     $new_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance + $new_claims + $new_director_fees + $new_advance_paid + $new_bonus + $new_others;
     //count gross deduction
-    $new_gross_deduct = $epf_employee_deduction + $socso_employee_deduction + $eis_employee_deduction + $new_deduction + $new_loan + $new_unpaid_leave + $new_advance_deduct; 
+    $new_gross_deduct = $epf_employee_deduction + $socso_employee_deduction + $eis_employee_deduction + $new_additional_deduction + $new_loan + $new_unpaid_leave + $new_advance_deduct; 
     //count net pay
     $new_netpay = $new_gross_pay - $new_gross_deduct + $new_adjustment;
 
     
-    $update_sql = mysqli_query($conn, "UPDATE process_payroll SET process_payroll_wage = '$new_wages', process_payroll_overtime = '$new_overtime', process_payroll_commission = '$new_commission', process_payroll_allowance = '$new_allowance', process_payroll_claims = '$new_claims', process_payroll_director_fees = '$new_director_fees', process_payroll_advance_paid = '$new_advance_paid', process_payroll_bonus = '$new_bonus', process_payroll_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', socso_employee_deduction = '$socso_employee_deduction', socso_employer_deduction = '$socso_employer_deduction', eis_employee_deduction = '$eis_employee_deduction', eis_employer_deduction = '$eis_employer_deduction', process_payroll_deduction = '$new_deduction', process_payroll_loan = '$new_loan', process_payroll_unpaid_leave = '$new_unpaid_leave', process_payroll_advance_deduct = '$new_advance_deduct', process_payroll_adjustment = '$new_adjustment', process_payroll_net_pay = '$new_netpay' WHERE process_payroll_id = '$process_id'");
+    $update_sql = mysqli_query($conn, "UPDATE process_payroll SET process_payroll_wage = '$new_wages', process_payroll_overtime = '$new_overtime', process_payroll_commission = '$new_commission', process_payroll_allowance = '$new_allowance', process_payroll_claims = '$new_claims', process_payroll_director_fees = '$new_director_fees', process_payroll_advance_paid = '$new_advance_paid', process_payroll_bonus = '$new_bonus', process_payroll_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', socso_employee_deduction = '$socso_employee_deduction', socso_employer_deduction = '$socso_employer_deduction', eis_employee_deduction = '$eis_employee_deduction', eis_employer_deduction = '$eis_employer_deduction', process_payroll_additional_deduction = '$new_additional_deduction', process_payroll_loan = '$new_loan', process_payroll_unpaid_leave = '$new_unpaid_leave', process_payroll_advance_deduct = '$new_advance_deduct', process_payroll_adjustment = '$new_adjustment', process_payroll_net_pay = '$new_netpay' WHERE process_payroll_id = '$process_id'");
 }        
 
 $get_all_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_id = '$process_id'");
@@ -105,7 +105,7 @@ $employee_others = $get_result["process_payroll_others"];
 $employee_epf = $get_result["epf_employee_deduction"];
 $employee_socso = $get_result["socso_employee_deduction"];
 $employee_eis = $get_result["eis_employee_deduction"];
-$employee_deduction = $get_result["process_payroll_deduction"];
+$additional_employee_deduction = $get_result["process_payroll_additional_deduction"];
 $employee_loan = $get_result["process_payroll_loan"];
 $employee_unpaid_leave = $get_result["process_payroll_unpaid_leave"];
 $employee_advance_deduct = $get_result["process_payroll_advance_deduct"];
@@ -117,7 +117,7 @@ $adjustment = $get_result["process_payroll_adjustment"];
 
 $total_gross_pay = $employee_wages + $employee_overtime + $employee_commission + $employee_allowance + $employee_claims + $employee_director_fees + $employee_advance_paid + $employee_bonus + $employee_others;
 
-$total_gross_deduct = $employee_epf + $employee_socso + $employee_eis + $employee_deduction + $employee_loan + $employee_unpaid_leave + $employee_advance_deduct;
+$total_gross_deduct = $employee_epf + $employee_socso + $employee_eis + $additional_employee_deduction + $employee_loan + $employee_unpaid_leave + $employee_advance_deduct;
 
 $net_pay = $total_gross_pay - $total_gross_deduct + $employee_adjustment;
 ?>    
@@ -194,8 +194,8 @@ $net_pay = $total_gross_pay - $total_gross_deduct + $employee_adjustment;
                             </div>
                             <div class="col-md-6 col-6 text-danger">
                                 <div class="form-group">
-                                    <label for="new_deduction"><h5 class="pt-2">Deduction:</h5></label>
-                                    <input type="text" class="form-control" id="deduction" onchange="countNetPay()" name="new_deduction" value="<?php echo $employee_deduction; ?>">
+                                    <label for="new_additional_deduction"><h5 class="pt-2">Deduction:</h5></label>
+                                    <input type="text" class="form-control" id="deduction" onchange="countNetPay()" name="new_additional_deduction" value="<?php echo $additional_employee_deduction; ?>">
                                 </div>
                             </div>               
                         </div> 

@@ -5,6 +5,7 @@ if(empty($_SESSION["username"])){
     header("location:index.php");
 }
 $username = $_SESSION["username"];
+error_reporting(0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,6 +96,7 @@ $username = $_SESSION["username"];
                             $emp_wages = $get_specific_result["emp_wages"]; //wages
                             //$emp_bonus = $get_specific_result["process_payroll_bonus"]; //bonus
                             $emp_allowance = $get_specific_result["emp_total_allowance"]; //allowance
+                            $emp_deduction = $get_specific_result["emp_total_deduction"]; //allowance
                             //$emp_commission = $get_specific_result["process_payroll_commission"]; //commission
                             //$emp_claims = $get_specific_result["process_payroll_claims"]; //claims
                             //$emp_unpaid_leave = $get_specific_result["process_payroll_unpaid_leave"]; //unpaid leave
@@ -105,8 +107,7 @@ $username = $_SESSION["username"];
                             $ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
                             $ef_end = $ef["epf_formula_wage_end"]; //get epf ending wages value
                             //count epf contribution
-                            $epf_contribution = $emp_wages + $emp_allowance;
-                            //$epf_contribution = $emp_wages + $emp_bonus + $emp_allowance + $emp_commission + $emp_claims + $emp_unpaid_leave + $emp_others;
+                            $epf_contribution = $emp_wages + $emp_allowance - $emp_deduction;
                             
                             //if epf contribution is in between start and end wages in view table
                             if(($epf_contribution >= $ef_start) && ($epf_contribution <= $ef_end)){
@@ -122,8 +123,7 @@ $username = $_SESSION["username"];
                                     $sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
                                     
                                     //count socso contribution
-                                    $socso_contribution = $emp_wages + $emp_allowance;
-                                    //$socso_contribution = $emp_wages + $emp_others + $emp_overtime + $emp_allowance + $emp_commission;
+                                    $socso_contribution = $emp_wages + $emp_allowance - $emp_deduction;
                                     
                                     //if socso contribution is in between start and end wages in view table
                                     if(($socso_contribution >= $sc_start) && ($socso_contribution <= $sc_end)){
@@ -145,7 +145,13 @@ $username = $_SESSION["username"];
                                                 $eis_employee_deduction = $es["eis_formula_employee_amt"]; //get employee eis deduction value
                                                 $eis_employer_deduction = $es["eis_formula_employer_amt"]; //get employer eis deduction value
                                                 
-                                                $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction, socso_employee_contribution) VALUES ('${"check_ca$i"}', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction', '$sc_employee_contribution')"); 
+                                                //straight minus deduction from allowance
+                                                $emp_allowance = $emp_allowance - $emp_deduction;
+                                                
+                                                //count net pay for insert
+                                                $process_payroll_net_pay = $emp_wages + $emp_allowance - $emp_deduction - $epf_employee_deduction - $socso_employee_deduction - $eis_employee_deduction;
+                                                
+                                                $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, process_payroll_deduction, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction, socso_employee_contribution, process_payroll_net_pay) VALUES ('${"check_ca$i"}', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$additional_emp_deduction', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction', '$sc_employee_contribution', '$process_payroll_net_pay')"); 
                                             }
                                         }                                                            
                                     }

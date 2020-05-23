@@ -11,23 +11,29 @@ $current_month = date("m");
 //get previous month
 if($current_month != 1){
     $previous_month = $current_month - 1;
-    echo $previous_month;
+    //echo $previous_month;
 }else{
     $previous_month = 1;
 }
 
+//get year 
+$get_year = date("Y");
 
-$query1 = "SELECT process_payroll_wage, process_payroll_process_month, SUM(process_payroll_wage) as number FROM process_payroll WHERE process_payroll_process_year = '2020' GROUP BY process_payroll_process_month";  
+if(isset($_POST["submit_year"])){
+    $get_year = $_POST["select_year"];
+}
+
+$query1 = "SELECT process_payroll_net_pay, process_payroll_process_month, SUM(process_payroll_net_pay) as number FROM process_payroll WHERE process_payroll_process_year = '$get_year' GROUP BY process_payroll_process_month";  
 $result1 = mysqli_query($conn, $query1); 
 
-$query2 = "SELECT process_payroll_wage, emp_id, SUM(process_payroll_wage) as number FROM process_payroll WHERE process_payroll_process_year = '2020' GROUP BY emp_id";  
+$query2 = "SELECT process_payroll_net_pay, emp_id, SUM(process_payroll_net_pay) as number FROM process_payroll WHERE process_payroll_process_year = '$get_year' GROUP BY emp_id";  
 $result2 = mysqli_query($conn, $query2); 
 
 
 
 //do comparison
 $all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
-$to_process_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_month = '$previous_month' AND process_payroll_process_year = '2020'");
+$to_process_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_month = '$previous_month' AND process_payroll_process_year = '$get_year'");
 
 if(mysqli_num_rows($all_employee_sql) != 0){
     //get all employee from employee info table
@@ -49,7 +55,7 @@ if(mysqli_num_rows($to_process_sql) != 0){
 
 $show_table_data = array_diff($emp_array, $process_array);
 
-echo print_r($process_array);
+//echo print_r($process_array);
 
 
 
@@ -80,9 +86,16 @@ function drawChart1() {
 var data = google.visualization.arrayToDataTable([  
 ['Month', 'Wages'],  
 <?php  
+    
+if($result1){
 while($row = mysqli_fetch_array($result1)){  
 echo "['".$row["process_payroll_process_month"]."', ".$row["number"]."],";  
-}  
+}      
+}else{
+    echo "['',0],";
+}
+  
+
 ?>  
 ]); 
 
@@ -105,7 +118,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(drawChart2);
 function drawChart2() {
 var data = google.visualization.arrayToDataTable([  
-['Employee', 'NetPay'],  
+['Employee', 'NetPay'], 
 <?php  
 while($row = mysqli_fetch_array($result2)){  
 echo "['".$row["emp_id"]."', ".$row["number"]."],";  
@@ -143,8 +156,8 @@ drawChart2();
 <div class="row">
     <div class="col-md-6">
         <div class="p-3 bg-white rounded shadow mb-3">
-            <h2>Welcome, <?php echo $username; ?></h2>
-            <h3><div id="para1"></div></h3>
+            <h3>Welcome, <?php echo $username; ?></h3><br>
+            <h4><div id="para1"></div></h4>
         </div>
     </div>    
     <div class="col-md-6">
@@ -152,8 +165,10 @@ drawChart2();
             <div class="form-group">
                 <label for="select_year">Select Year</label>
                 <div class="form-inline">
+                    <form action="dashboard.php" method="POST">
                     <input type="text" class="form-control" name="select_year" value="<?php echo date('Y'); ?>">
-                    <button class="btn btn-primary">Select Year</button>
+                    <input type="submit" class="btn btn-primary" name="submit_year">
+                    </form>
                 </div>
             </div>  
         </div>
@@ -183,17 +198,20 @@ drawChart2();
                         <tr>
                             <th>ID</th>
                             <th>Employee Name</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
                         </tr>
                         </thead>
                     <tbody>
                     <?php
                     foreach($emp_array as $ea){
-                        
+                        $find_done = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll.process_payroll_process_month = '$previous_month' AND process_payroll.process_payroll_process_year = '$get_year' AND process_payroll.emp_id = '$ea'");
+                        $find_done_result = mysqli_fetch_assoc($find_done);
+                        if($find_done_result){
                         echo '<tr>';
-                        echo '<td>' . $ea . '</td>';
-                        echo '</tr>';
+                        echo '<td>' . $find_done_result["emp_id"] . '</td>';
+                        echo '<td>' . $find_done_result["emp_full_name"] . '</td>';
+                        echo '</tr>';                            
+                        }
+
                     }       
                     ?>
                     </tbody>

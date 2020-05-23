@@ -112,6 +112,9 @@ while($select_adhoc_result = mysqli_fetch_assoc($select_all_processed_adhoc)){
                                 </thead>
                                 <tbody>
                                 <?php
+                                if(){
+                                    
+                                }
                                 if($data_exists){
                                     foreach($adhoc_unique_month_array as $auma){
                                         foreach($adhoc_unique_year_array as $auya){
