@@ -178,19 +178,6 @@ drawChart2();
 <div class="row">
 <div class="col-md-6">
 <div class="p-3 bg-white rounded shadow mb-3">
-<div id="chart_div1" class="chart"></div>
-    </div>
-</div>
-<div class="col-md-6">
-<div class="p-3 bg-white rounded shadow mb-3">
-<div id="chart_div2" class="chart"></div>
-    </div>
-</div>
-</div>
-    
-<div class="row">
-<div class="col-md-6">
-<div class="p-3 bg-white rounded shadow mb-3">
     <p><b>Previous Month Processed Employee</b></p>
                 <div class="table-responsive">
                     <table id="example" class="table table-striped table-bordered">
@@ -222,45 +209,58 @@ drawChart2();
 <div class="col-md-6">
 <div class="p-3 bg-white rounded shadow mb-3">
     <p><b>Pending AdHoc List</b></p>
-                                <div class="table-responsive">
-                                    <table id="example1" class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Employee ID</th>
-                                                <th>Employee Name</th>
-                                                <th>AdHoc Type</th>
-                                                <th>Amount</th>
-                                                <th>Status</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php
-                                        $adhoc_pending_sql = "SELECT * FROM adhoc_pending";
-                                        $epf_formula_prepared_stmt_insert = mysqli_prepare($conn, $adhoc_pending_sql);
-                                        mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
-                                        $epf_result = $epf_formula_prepared_stmt_insert->get_result(); 
+    <div class="table-responsive">
+        <table id="example1" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>AdHoc Type</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            $adhoc_pending_sql = "SELECT * FROM adhoc_pending";
+            $epf_formula_prepared_stmt_insert = mysqli_prepare($conn, $adhoc_pending_sql);
+            mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
+            $epf_result = $epf_formula_prepared_stmt_insert->get_result(); 
 
-                                        if($epf_result->num_rows > 0) { 
-                                            while ($data = $epf_result->fetch_assoc()) {
-                                                $adhoc_id = $data["adhoc_id"];
-                                                $delete_adhoc_id = $data["adhoc_id"];
-                                                echo '<tr>';
-                                                echo '<td>' . $data["emp_id"] . '</td>';
-                                                echo '<td>' . $data["emp_full_name"] . '</td>';
-                                                echo '<td>' . "bonus" . '</td>';
-                                                echo '<td>' . $data["adhoc_amt"] . '</td>';
-                                                echo '<td>' . $data["adhoc_status"] . '</td>';
-                                                echo '<td>' . '<a href="editadhocpending.php?adhoc_id=' . $adhoc_id . '">Edit</a>' . '</td>';
-                                                echo '<td>' . '<a href="newadhoc.php?delete_adhoc_id=' . $delete_adhoc_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
-                                                echo '</tr>';
-                                            }
-                                        }
-                                        ?> 
-                                        </tbody>
-                                    </table>
-                                </div>     
+            if($epf_result->num_rows > 0) { 
+                while ($data = $epf_result->fetch_assoc()) {
+                    $adhoc_id = $data["adhoc_id"];
+                    $delete_adhoc_id = $data["adhoc_id"];
+                    echo '<tr>';
+                    echo '<td>' . $data["emp_id"] . '</td>';
+                    echo '<td>' . $data["emp_full_name"] . '</td>';
+                    echo '<td>' . "bonus" . '</td>';
+                    echo '<td>' . $data["adhoc_amt"] . '</td>';
+                    echo '<td>' . $data["adhoc_status"] . '</td>';
+                    echo '<td>' . '<a class="btn btn-primary" href="editadhocpending.php?adhoc_id=' . $adhoc_id . '">Edit</a>' . '</td>';
+                    echo '<td>' . '<a class="btn btn-danger" href="newadhoc.php?delete_adhoc_id=' . $delete_adhoc_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                    echo '</tr>';
+                }
+            }
+            ?> 
+            </tbody>
+        </table>
+    </div>     
+    </div>
+</div>
+</div>
+    
+<div class="row">
+<div class="col-md-6">
+<div class="p-3 bg-white rounded shadow mb-3">
+<div id="chart_div1" class="chart"></div>
+    </div>
+</div>
+<div class="col-md-6">
+<div class="p-3 bg-white rounded shadow mb-3">
+<div id="chart_div2" class="chart"></div>
     </div>
 </div>
 </div>

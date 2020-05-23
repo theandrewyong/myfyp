@@ -135,13 +135,13 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
             <div class="p-3 bg-white rounded shadow mb-5">
                 <ul id="myTab" role="tablist" class="nav nav-tabs nav-pills flex-column flex-sm-row text-center bg-light border-0 rounded-nav">
                     <li class="nav-item flex-sm-fill">
-                        <a id="employee-tab" data-toggle="tab" href="#employee" role="tab" aria-controls="employee" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">Employee</a>
+                        <a id="employee-tab" data-toggle="tab" href="#employee" role="tab" aria-controls="employee" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">All Employee Info</a>
                     </li>
                     <li class="nav-item flex-sm-fill">
-                        <a id="allowance-tab" data-toggle="tab" href="#allowance" role="tab" aria-controls="allowance" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold false">Allowance</a>
+                        <a id="allowance-tab" data-toggle="tab" href="#allowance" role="tab" aria-controls="allowance" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold false">All Allowance Info</a>
                     </li>
                     <li class="nav-item flex-sm-fill">
-                        <a id="deduction-tab" data-toggle="tab" href="#deduction" role="tab" aria-controls="deduction" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Deduction</a>
+                        <a id="deduction-tab" data-toggle="tab" href="#deduction" role="tab" aria-controls="deduction" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">All Deduction Info</a>
                     </li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
@@ -149,7 +149,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <p><a href="addemployee.php" class="btn btn-success" role="button">Add Employee</a></p>
+                                    <p><a href="addemployee.php" class="btn btn-success" role="button">Add New Employee</a></p>
                                     <table id="example" class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -168,8 +168,8 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["emp_display_id"] . "</td>";
                                                 echo "<td>" . $data["emp_full_name"] . "</td>";
                                                 echo "<td>" . $data["emp_title"] . "</td>";
-                                                echo "<td>" . '<a href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit</a>' . "</td>";
-                                                echo "<td>" . '<a href="maintainemployee.php?delete_emp_id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-primary" href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit Employee Info</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-danger" href="maintainemployee.php?delete_emp_id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  
@@ -234,8 +234,8 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["allowance_display_id"] . "</td>";
                                                 echo "<td>" . $data["allowance_desc"] . "</td>";
                                                 echo "<td>" . $data["allowance_rate"] . "</td>";
-                                                echo "<td>" . '<a href="editallowance.php?id=' . $data["allowance_id"] . '&desc=' . $data["allowance_desc"] . '&rate=' . $data["allowance_rate"] . '">Edit</a>' . "</td>";
-                                                echo "<td>" . '<a href="maintainemployee.php?delete_allowance_id=' . $data["allowance_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-primary" href="editallowance.php?id=' . $data["allowance_id"] . '&desc=' . $data["allowance_desc"] . '&rate=' . $data["allowance_rate"] . '">Edit Allowance</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-danger" href="maintainemployee.php?delete_allowance_id=' . $data["allowance_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Allowance</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  
@@ -300,8 +300,8 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["deduction_display_id"] . "</td>";
                                                 echo "<td>" . $data["deduction_desc"] . "</td>";
                                                 echo "<td>" . $data["deduction_rate"] . "</td>";
-                                                echo "<td>" . '<a href="editdeduction.php?id=' . $data["deduction_id"] . '&desc=' . $data["deduction_desc"] . '&rate=' . $data["deduction_rate"] . '">Edit</a>' . "</td>";
-                                                echo "<td>" . '<a href="maintainemployee.php?delete_deduction_id=' . $data["deduction_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-primary" href="editdeduction.php?id=' . $data["deduction_id"] . '&desc=' . $data["deduction_desc"] . '&rate=' . $data["deduction_rate"] . '">Edit Deduction</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-danger" href="maintainemployee.php?delete_deduction_id=' . $data["deduction_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Deduction</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  

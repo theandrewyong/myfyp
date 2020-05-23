@@ -115,8 +115,8 @@ function test_input($data) {
                                             echo "<td>" . $username_id . "</td>";
                                             echo "<td>" . $data["username"] . "</td>";
                                             echo "<td>" . $data["permission"] . "</td>";
-                                            echo "<td>" . '<a href="editadmin.php?id=' . $username_id . '">Edit</a>' . "</td>";
-                                            echo "<td>" . '<a href="deleteadmin.php?id=' . $username_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>'. "</td>";
+                                            echo "<td>" . '<a class="btn btn-primary" href="editadmin.php?id=' . $username_id . '">Edit User</a>' . "</td>";
+                                            echo "<td>" . '<a class="btn btn-danger" href="deleteadmin.php?id=' . $username_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete User</a>'. "</td>";
                                             echo "</tr>";
                                         }        
                                         ?>

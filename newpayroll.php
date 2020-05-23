@@ -182,7 +182,7 @@ error_reporting(0);
                         <br>
                         <div class="row">
                             <div class="col-12">
-                                <input type="submit" class="btn btn-success" name="check">
+                                <input type="submit" class="btn btn-success" name="check" value="Check">
                             </div>    
                         </div>
                         <br>
@@ -231,7 +231,7 @@ error_reporting(0);
                         <div class="row">
                             <div class="col-12">
                             <br>
-                            <input type="submit" class="btn btn-success" name="submit" value="submit">
+                            <input type="submit" class="btn btn-success" name="submit" value="Process">
                             </div>    
                         </div>
                     </div>

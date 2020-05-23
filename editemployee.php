@@ -273,13 +273,13 @@ $show_emp_resign_date = $show_data['emp_resign_date'];
 <div class="p-3 bg-white rounded shadow mb-5">
 <ul id="myTab" role="tablist" class="nav nav-tabs nav-pills flex-column flex-md-row text-center bg-light border-0 rounded-nav">
 <li class="nav-item flex-md-fill">
-<a id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">Employee Info</a>
+<a id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">Edit Employee Info</a>
 </li>
 <li class="nav-item flex-md-fill">
-<a id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Allowance</a>
+<a id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Edit Employee Allowance</a>
 </li>
 <li class="nav-item flex-md-fill">
-<a id="profilex-tab" data-toggle="tab" href="#profilex" role="tab" aria-controls="profilex" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Deduction</a>
+<a id="profilex-tab" data-toggle="tab" href="#profilex" role="tab" aria-controls="profilex" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">Edit Employee Deduction</a>
 </li>
 </ul>
 <div id="myTabContent" class="tab-content">
@@ -515,6 +515,7 @@ echo '<option value="' . $data["allowance_desc"] . '">' . $data["allowance_desc"
 <th>Allowance Name</th>
 <th>Alowance Rate (RM)</th>
 <th>Edit Rate</th>
+<th>Delete</th>
 
 </tr>
 </thead>
@@ -530,7 +531,8 @@ while($data = mysqli_fetch_assoc($table_sql)){
 echo '<tr>';
 echo '<td>' . $data["allowance_desc"] . '</td>';
 echo '<td>' . $data["allowance_rate"] . '</td>';
-echo "<td>" . '<a href="employee_allowance_edit.php?emp_allowance_id=' . $data["emp_allowance_id"] . '&emp_id=' . $data["emp_id"] . '">Edit</a>' . "</td>";
+echo "<td>" . '<a class="btn btn-primary" href="employee_allowance_edit.php?emp_allowance_id=' . $data["emp_allowance_id"] . '&emp_id=' . $data["emp_id"] . '">Edit Allownace</a>' . "</td>";
+echo '<td>' . '<a class="btn btn-danger" href="">' . 'Delete Allowance' . '</a></td>';
 echo '</tr>';
 
 $allowance_rate = $data["allowance_rate"];
@@ -607,6 +609,7 @@ echo '<option value="' . $data["deduction_desc"] . '">' . $data["deduction_desc"
 <th>Deduction Name</th>
 <th>Deduction Rate (RM)</th>
 <th>Edit Rate</th>
+<th>Delete</th>
 
 </tr>
 </thead>
@@ -622,7 +625,8 @@ while($data = mysqli_fetch_assoc($table_sql_d)){
 echo '<tr>';
 echo '<td>' . $data["deduction_desc"] . '</td>';
 echo '<td>' . $data["deduction_rate"] . '</td>';
-echo "<td>" . '<a href="employee_deduction_edit.php?emp_deduction_id=' . $data["emp_deduction_id"] . '&emp_id=' . $data["emp_id"] . '">Edit</a>' . "</td>";
+echo "<td>" . '<a class="btn btn-primary" href="employee_deduction_edit.php?emp_deduction_id=' . $data["emp_deduction_id"] . '&emp_id=' . $data["emp_id"] . '">Edit Deduction</a>' . "</td>";
+echo "<td>" . '<a class="btn btn-danger" href="employee_deduction_edit.php?emp_deduction_id=' . $data["emp_deduction_id"] . '&emp_id=' . $data["emp_id"] . '">Delete Deduction</a>' . "</td>";
 echo '</tr>';
 
 $deduction_rate = $data["deduction_rate"];

@@ -43,8 +43,8 @@ $get_year = $_GET["year"];
                             echo "<tr>";
                             echo "<td>" . $data["emp_display_id"] . "</td>";
                             echo "<td>" . $data["emp_full_name"] . "</td>";
-                            echo "<td>" . '<a href="edithistory.php?pid=' . $process_id . '">Edit</a>' . "</td>";
-                            echo "<td>" . '<a href="deleteemployeehistory.php?pid=' . $process_id . '&month=' . $get_month . '&year=' . $get_year . '" onclick="return confirm(\'Confirm Delete?\')">Delete</a>' . "</td>";
+                            echo "<td>" . '<a class="btn btn-primary" href="edithistory.php?pid=' . $process_id . '">Edit History</a>' . "</td>";
+                            echo "<td>" . '<a class="btn btn-danger" href="deleteemployeehistory.php?pid=' . $process_id . '&month=' . $get_month . '&year=' . $get_year . '" onclick="return confirm(\'Confirm Delete?\')">Delete History</a>' . "</td>";
                             echo "</tr>";
                         }        
                     ?>

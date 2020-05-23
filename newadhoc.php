@@ -83,7 +83,7 @@ if(isset($_POST["submit"])){
 
                         $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_process_date, process_adhoc_from, process_adhoc_to, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_wage, process_adhoc_allowance, process_adhoc_commission, process_adhoc_claims, process_adhoc_bonus, process_adhoc_others, process_adhoc_unpaid_leave, epf_employee_deduction, epf_employer_deduction, process_adhoc_process_month, process_adhoc_process_year, adhoc_amt, cal_epf) VALUES ('${"check_ca$i"}', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$adhoc_wages', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_bonus', '$adhoc_others', '$adhoc_unpaid_leave', '$epf_employee_deduction', '$epf_employer_deduction', '$process_month', '$process_year', '$adhoc_amt', '$cal_epf')");
                         
-                        //mysqli_query($conn, "UPDATE adhoc_pending SET adhoc_status = 'DONE'");
+                        mysqli_query($conn, "UPDATE adhoc_pending SET adhoc_status = 'DONE' WHERE emp_id = '${"check_ca$i"}'");
                     }    
                 
                     if(($adhoc_amt >= $ef_start) && ($adhoc_amt <= $ef_end) && $cal_epf == 0){
@@ -92,7 +92,7 @@ if(isset($_POST["submit"])){
 
                         $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_process_date, process_adhoc_from, process_adhoc_to, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_wage, process_adhoc_allowance, process_adhoc_commission, process_adhoc_claims, process_adhoc_bonus, process_adhoc_others, process_adhoc_unpaid_leave, epf_employee_deduction, epf_employer_deduction, process_adhoc_process_month, process_adhoc_process_year, adhoc_amt, cal_epf) VALUES ('${"check_ca$i"}', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$adhoc_wages', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_bonus', '$adhoc_others', '$adhoc_unpaid_leave', '$epf_employee_deduction', '$epf_employer_deduction', '$process_month', '$process_year', '$adhoc_amt', '$cal_epf')");
                         
-                        //mysqli_query($conn, "UPDATE adhoc_pending SET adhoc_status = 'DONE'");
+                        mysqli_query($conn, "UPDATE adhoc_pending SET adhoc_status = 'DONE' WHERE emp_id = '${"check_ca$i"}'");
                     }        
             
                                                          
@@ -227,11 +227,11 @@ if(isset($_POST["submit"])){
                                                 
                                                 if(mysqli_num_rows($to_process_sql) >= 0){
 
-                                                    $adhoc_pending_list_sql = mysqli_query($conn, "SELECT * FROM adhoc_pending");
+                                                    $adhoc_pending_list_sql = mysqli_query($conn, "SELECT * FROM employee_info");
                                                     while($result = mysqli_fetch_assoc($adhoc_pending_list_sql)){
                                                         $ccb++;
                                                         echo "<tr>";
-                                                        echo "<td>" . $result["emp_id"] . "</td>";
+                                                        echo "<td>" . $result["emp_display_id"] . "</td>";
                                                         echo "<td>" . $result["emp_full_name"] . "</td>";
                                                         echo "<td>" . '<input value="' . $result["emp_id"] . '" type="checkbox" name="cb' . $ccb . '" checked>' . "</td>";
                                                         echo "</tr>"; 
@@ -273,7 +273,7 @@ if(isset($_POST["submit"])){
                                         </thead>
                                         <tbody>
                                         <?php
-                                        $adhoc_pending_sql = "SELECT * FROM adhoc_pending";
+                                        $adhoc_pending_sql = "SELECT adhoc_pending.*, employee_info.* FROM adhoc_pending INNER JOIN employee_info ON adhoc_pending.emp_id = employee_info.emp_id";
                                         $epf_formula_prepared_stmt_insert = mysqli_prepare($conn, $adhoc_pending_sql);
                                         mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
                                         $epf_result = $epf_formula_prepared_stmt_insert->get_result(); 
@@ -283,13 +283,13 @@ if(isset($_POST["submit"])){
                                                 $adhoc_id = $data["adhoc_id"];
                                                 $delete_adhoc_id = $data["adhoc_id"];
                                                 echo '<tr>';
-                                                echo '<td>' . $data["emp_id"] . '</td>';
+                                                echo '<td>' . $data["emp_display_id"] . '</td>';
                                                 echo '<td>' . $data["emp_full_name"] . '</td>';
                                                 echo '<td>' . "bonus" . '</td>';
-                                                echo '<td>' . $data["adhoc_amt"] . '</td>';
+                                                echo '<td>' . number_format($data["adhoc_amt"], 2) . '</td>';
                                                 echo '<td>' . $data["adhoc_status"] . '</td>';
-                                                echo '<td>' . '<a href="editadhocpending.php?adhoc_id=' . $adhoc_id . '">Edit</a>' . '</td>';
-                                                echo '<td>' . '<a href="newadhoc.php?delete_adhoc_id=' . $delete_adhoc_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                                                echo '<td>' . '<a class="btn btn-primary" href="editadhocpending.php?adhoc_id=' . $adhoc_id . '">Edit Employee AdHoc</a>' . '</td>';
+                                                echo '<td>' . '<a class="btn btn-danger" href="newadhoc.php?delete_adhoc_id=' . $delete_adhoc_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee AdHoc</a>' . '</td>';
                                                 echo '</tr>';
                                             }
                                         }

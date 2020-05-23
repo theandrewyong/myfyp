@@ -5,6 +5,7 @@ if(empty($_SESSION["username"])){
     header("location:index.php");
 }
 $username = $_SESSION["username"];
+error_reporting(0);
 
 //for process payroll history
 $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
@@ -27,6 +28,7 @@ $select_all_processed_adhoc = mysqli_query($conn, "SELECT * FROM process_adhoc")
 $adhoc_data_exists = FALSE;
 $adhoc_unique_month_array = "";
 $adhoc_unique_year_array = "";
+
 
 while($select_adhoc_result = mysqli_fetch_assoc($select_all_processed_adhoc)){
     $adhoc_data_exists = TRUE;
@@ -87,8 +89,8 @@ while($select_adhoc_result = mysqli_fetch_assoc($select_all_processed_adhoc)){
                                                 echo '<tr>';
                                                 echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
                                                 echo '<td>' . $uya . '</td>';
-                                                echo '<td>' . '<a href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View Details</a>' . '</td>';
-                                                echo '<td>' . '<a href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                                                echo '<td>' . '<a class="btn btn-primary" href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View History Details</a>' . '</td>';
+                                                echo '<td>' . '<a class="btn btn-danger" href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete History</a>' . '</td>';
                                                 echo '</tr>';
                                             }
                                         }
@@ -112,10 +114,8 @@ while($select_adhoc_result = mysqli_fetch_assoc($select_all_processed_adhoc)){
                                 </thead>
                                 <tbody>
                                 <?php
-                                if(){
-                                    
-                                }
-                                if($data_exists){
+                                
+                                
                                     foreach($adhoc_unique_month_array as $auma){
                                         foreach($adhoc_unique_year_array as $auya){
                                             $double_check_sql = mysqli_query($conn, "SELECT * FROM process_adhoc WHERE process_adhoc_process_month = '$auma' AND process_adhoc_process_year = '$auya'");
@@ -123,13 +123,13 @@ while($select_adhoc_result = mysqli_fetch_assoc($select_all_processed_adhoc)){
                                                 echo '<tr>';
                                                 echo '<td>' . date("F", mktime(0, 0, 0, $auma, 10)) . '</td>';
                                                 echo '<td>' . $auya . '</td>';
-                                                echo '<td>' . '<a href="historyadhoc.php?month=' . $auma . '&year=' . $auya . '">View Details</a>' . '</td>';
-                                                echo '<td>' . '<a href="deletehistory.php?month=' . $auma . '&year=' . $auya . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                                                echo '<td>' . '<a class="btn btn-primary" href="historyadhoc.php?month=' . $auma . '&year=' . $auya . '">View History Details</a>' . '</td>';
+                                                echo '<td>' . '<a class="btn btn-danger" href="deletehistory.php?month=' . $auma . '&year=' . $auya . '" onclick="return confirm(\'Confirm Delete?\');">Delete History</a>' . '</td>';
                                                 echo '</tr>';
                                             }
                                         }
                                     }
-                                }
+                                
                                 ?>
                                 </tbody>
                             </table>
