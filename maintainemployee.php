@@ -68,7 +68,7 @@ if (empty($allowance_rate) || $allowance_rate == 0 || $allowance_rate == 0.00) {
 	$error = TRUE;
 }
 	
-if ($error = FALSE && $count==0){
+if ($error == FALSE && $count==0){
 $new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
 $prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
 mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
@@ -101,7 +101,7 @@ if (empty($deduction_rate) || $deduction_rate == 0 || $deduction_rate == 0.00) {
 	$error2 = TRUE;
 }
 
-if ($error2 = FALSE && $count2==0){
+if ($error2 == FALSE && $count2==0){
 $new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
 $prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
 mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
