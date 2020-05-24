@@ -1,15 +1,15 @@
 <?php
 session_start();
 include "conn.php";
-    if(empty($_SESSION["username"])){
-header("location:index.php");
+if(empty($_SESSION["username"])){
+    header("location:index.php");
 }
 $username = $_SESSION["username"];
 
 $error = FALSE;
 $error_username = "";
 $error_password = "";
-$username = "";
+$username1 = "";
 $password = "";
 $permission = ""; 
 
@@ -18,7 +18,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $error_username = '<span class="text-danger"> *Invalid Username</span>';
         $error = TRUE;
     }else{
-        $username = mysqli_escape_string($conn,  test_input($_POST["username"]));
+        $username1 = mysqli_escape_string($conn,  test_input($_POST["username"]));
     }
     if(empty($_POST["password"])){
         $error_password = '<span class="text-danger"> *Invalid Password</span>';
@@ -31,7 +31,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if($error == FALSE){
         $new_user_sql = "INSERT INTO account (username, password, permission) VALUES (?,?,?)";
         $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
-        mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $username, $password, $permission);
+        mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $username1, $password, $permission);
         mysqli_stmt_execute($prepared_stmt_insert);
         mysqli_stmt_close($prepared_stmt_insert);
         echo '<script>alert("Created Successfully");</script>';
@@ -44,6 +44,8 @@ function test_input($data) {
     $data = htmlspecialchars($data);
     return $data;
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,13 +112,13 @@ function test_input($data) {
                                         $select_all_sql = mysqli_query($conn, "SELECT * FROM account");
                                             
                                         while($data = mysqli_fetch_assoc($select_all_sql)){
-                                            $username_id = $data["username_id"];
+                                            $username1_id = $data["username_id"];
                                             echo "<tr>";
-                                            echo "<td>" . $username_id . "</td>";
+                                            echo "<td>" . $username1_id . "</td>";
                                             echo "<td>" . $data["username"] . "</td>";
                                             echo "<td>" . $data["permission"] . "</td>";
-                                            echo "<td>" . '<a class="btn btn-primary" href="editadmin.php?id=' . $username_id . '">Edit User</a>' . "</td>";
-                                            echo "<td>" . '<a class="btn btn-danger" href="deleteadmin.php?id=' . $username_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete User</a>'. "</td>";
+                                            echo "<td>" . '<a class="btn btn-primary" href="editadmin.php?id=' . $username1_id . '">Edit User</a>' . "</td>";
+                                            echo "<td>" . '<a class="btn btn-danger" href="deleteadmin.php?id=' . $username1_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete User</a>'. "</td>";
                                             echo "</tr>";
                                         }        
                                         ?>

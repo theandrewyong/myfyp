@@ -532,7 +532,7 @@ echo '<tr>';
 echo '<td>' . $data["allowance_desc"] . '</td>';
 echo '<td>' . $data["allowance_rate"] . '</td>';
 echo "<td>" . '<a class="btn btn-primary" href="employee_allowance_edit.php?emp_allowance_id=' . $data["emp_allowance_id"] . '&emp_id=' . $data["emp_id"] . '">Edit Allownace</a>' . "</td>";
-echo '<td>' . '<a class="btn btn-danger" href="">' . 'Delete Allowance' . '</a></td>';
+echo "<td>" . '<a class="btn btn-danger" href="editemployee.php?emp_allowance_id=' . $data["emp_allowance_id"] . '&emp_id=' . $data["emp_id"] . '">Delete Allownace</a>' . "</td>";
 echo '</tr>';
 
 $allowance_rate = $data["allowance_rate"];

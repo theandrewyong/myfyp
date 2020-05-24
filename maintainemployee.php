@@ -6,44 +6,6 @@ if(empty($_SESSION["username"])){
 }
 $username = $_SESSION["username"];
 
-
-if(!empty($_GET["delete_emp_id"])){
-    $employee_id = $_GET["delete_emp_id"];
-    $delete_sql = "DELETE FROM employee_info WHERE emp_id = '$employee_id'";
-    $delete = mysqli_query($conn, $delete_sql);
-
-    if($delete){
-        echo '<script>' . 'alert(\'Deleted Successfully\')' . '</script>';
-        header("location:dashboard.php");
-    }else{
-        echo '<script>' . 'alert(\'Delete Error! Foreign Key constraints exists\')' . '</script>';
-    }        
-}
-
-if(!empty($_GET["delete_allowance_id"])){
-    $allowance_id = $_GET["delete_allowance_id"];
-    $delete_sql = "DELETE FROM allowance WHERE allowance_id = '$allowance_id'";
-    $delete = mysqli_query($conn, $delete_sql);
-
-    if($delete){
-        echo '<script>' . 'alert(\'Deleted Successfully\')' . '</script>';
-    }else{
-        echo '<script>' . 'alert(\'Delete Error! Foreign Key constraints exists\')' . '</script>';
-    }        
-}
-
-if(!empty($_GET["delete_deduction_id"])){
-    $deduction_id = $_GET["delete_deduction_id"];
-    $delete_sql = "DELETE FROM deduction WHERE deduction_id = '$deduction_id'";
-    $delete = mysqli_query($conn, $delete_sql);
-
-    if($delete){
-        echo '<script>' . 'alert(\'Deleted Successfully\')' . '</script>';
-    }else{
-        echo '<script>' . 'alert(\'Delete Error! Foreign Key constraints exists\')' . '</script>';
-    }        
-}
-
 $message ='';
 $error_rate ='';
 if(isset($_POST["submit"])){
@@ -360,6 +322,11 @@ $(document).ready( function() {
         "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
     } );
 } );
+</script>
+<script>
+if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+}
 </script>
 </body>
 </html>

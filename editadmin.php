@@ -68,10 +68,13 @@
             if($error == FALSE){
                 mysqli_query($conn, "UPDATE account SET username = '$edited_admin_username', password = '$edited_admin_password', permission = '$edited_admin_permission' WHERE username_id = '$admin_id'"); 
                 
-                echo '<script>alert("Updated Successfully");</script>';
                 if($edited_admin_username == $username){
-                   header("location:index.php"); 
+                   echo "<script>alert('Updated Successfully! You will be logged out');document.location='index.php'</script>"; 
+                }else{
+                echo '<script>alert("Updated Successfully");</script>';       
                 }
+
+
                 
             }
         }

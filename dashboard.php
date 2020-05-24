@@ -194,7 +194,7 @@ drawChart2();
                         $find_done_result = mysqli_fetch_assoc($find_done);
                         if($find_done_result){
                         echo '<tr>';
-                        echo '<td>' . $find_done_result["emp_id"] . '</td>';
+                        echo '<td>' . $find_done_result["emp_display_id"] . '</td>';
                         echo '<td>' . $find_done_result["emp_full_name"] . '</td>';
                         echo '</tr>';                            
                         }
@@ -224,7 +224,7 @@ drawChart2();
             </thead>
             <tbody>
             <?php
-            $adhoc_pending_sql = "SELECT * FROM adhoc_pending";
+            $adhoc_pending_sql = "SELECT adhoc_pending.*, employee_info.* FROM adhoc_pending INNER JOIN employee_info ON adhoc_pending.emp_id = employee_info.emp_id";
             $epf_formula_prepared_stmt_insert = mysqli_prepare($conn, $adhoc_pending_sql);
             mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
             $epf_result = $epf_formula_prepared_stmt_insert->get_result(); 
@@ -234,7 +234,7 @@ drawChart2();
                     $adhoc_id = $data["adhoc_id"];
                     $delete_adhoc_id = $data["adhoc_id"];
                     echo '<tr>';
-                    echo '<td>' . $data["emp_id"] . '</td>';
+                    echo '<td>' . $data["emp_display_id"] . '</td>';
                     echo '<td>' . $data["emp_full_name"] . '</td>';
                     echo '<td>' . "bonus" . '</td>';
                     echo '<td>' . $data["adhoc_amt"] . '</td>';
@@ -244,11 +244,11 @@ drawChart2();
                     echo '</tr>';
                 }
             }
-            ?> 
+            ?>
             </tbody>
         </table>
     </div>     
-    </div>
+    </div> 
 </div>
 </div>
     
