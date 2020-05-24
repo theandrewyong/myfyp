@@ -59,16 +59,22 @@ $username = $_SESSION["username"];
                                     <?php
                                     $epf_formula_sql = "SELECT * FROM epf_formula";
                                     $epf_formula_prepared_stmt_insert = mysqli_prepare($conn, $epf_formula_sql);
-                                    mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
+                                   	mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
                                     $epf_result = $epf_formula_prepared_stmt_insert->get_result(); 
-
+									
                                     if($epf_result->num_rows > 0) { 
                                         while ($data = $epf_result->fetch_assoc()) {
+											
+											$format_epf_start = number_format($data["epf_formula_wage_start"],2);
+											$format_epf_end = number_format($data["epf_formula_wage_end"],2);
+											$format_epf_employee = number_format($data["epf_formula_employee_amt"],2);
+											$format_epf_employer = number_format($data["epf_formula_employer_amt"],2);
+											
                                             echo '<tr>';
-                                            echo '<td>' . $data["epf_formula_wage_start"] . '</td>';
-                                            echo '<td>' . $data["epf_formula_wage_end"] . '</td>';
-                                            echo '<td>' . $data["epf_formula_employee_amt"] . '</td>';
-                                            echo '<td>' . $data["epf_formula_employer_amt"] . '</td>';
+                                            echo '<td>' . $format_epf_start . '</td>';
+                                            echo '<td>' . $format_epf_end . '</td>';
+                                            echo '<td>' . $format_epf_employee . '</td>';
+                                            echo '<td>' . $format_epf_employer . '</td>';
                                             echo '</tr>';
                                         }
                                     }
@@ -87,6 +93,11 @@ $username = $_SESSION["username"];
                             </div>
                         </div>    
                     <!-- EPF table end -->
+						<br/>
+						<form role="form" action="export_table.php" method="post">
+							<button type="submit" class="btn btn-primary btn-block" name="export_epf">Export EPF table</button>
+						</form>
+						
                     </div>
                 <div id="profile" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-1 py-3">
                 <!-- SOCSO table -->
@@ -118,13 +129,20 @@ $username = $_SESSION["username"];
 
                                     if($result->num_rows > 0) { 
                                         while ($data = $result->fetch_assoc()) {
+											$format_socso_start = number_format($data["socso_formula_wage_start"],2);
+											$format_socso_end = number_format($data["socso_formula_wage_end"],2);
+											$format_socso_employee = number_format($data["socso_formula_employee_amt"],2);
+											$format_socso_employer = number_format($data["socso_formula_employer_amt"],2);
+											$format_socso_total = number_format($data["socso_formula_total"],2);
+											$format_socso_contribution = number_format($data["socso_formula_employer_contribution"],2);
+											
                                             echo '<tr>';
-                                            echo '<td>' . $data["socso_formula_wage_start"] . '</td>';
-                                            echo '<td>' . $data["socso_formula_wage_end"] . '</td>';
-                                            echo '<td>' . $data["socso_formula_employee_amt"] . '</td>';
-                                            echo '<td>' . $data["socso_formula_employer_amt"] . '</td>';
-                                            echo '<td>' . $data["socso_formula_total"] . '</td>';
-                                            echo '<td>' . $data["socso_formula_employer_contribution"] . '</td>';
+                                            echo '<td>' . $format_socso_start . '</td>';
+                                            echo '<td>' . $format_socso_end . '</td>';
+                                            echo '<td>' . $format_socso_employee . '</td>';
+                                            echo '<td>' . $format_socso_employer . '</td>';
+                                            echo '<td>' . $format_socso_total . '</td>';
+                                            echo '<td>' . $format_socso_contribution . '</td>';
                                             echo '</tr>';
                                         }
                                     }
@@ -135,6 +153,10 @@ $username = $_SESSION["username"];
                         </div>
                     </div>    
                 <!-- SOCSO table end --> 
+					<br/>
+					<form role="form" action="export_table.php" method="post">
+						<button type="submit" class="btn btn-primary btn-block" name="export_socso">Export SOCSO table</button>
+					</form>
                 </div>
                 <div id="profile1" role="tabpanel" aria-labelledby="profile1-tab" class="tab-pane fade px-1 py-3">
                 <!-- EIS table -->
@@ -164,12 +186,18 @@ $username = $_SESSION["username"];
 
                                 if($result->num_rows > 0) { 
                                     while ($data = $result->fetch_assoc()) {
+										$format_eis_start = number_format ($data["eis_formula_wage_start"],2);
+										$format_eis_end = number_format ($data["eis_formula_wage_end"],2);
+										$format_eis_employee = number_format ($data["eis_formula_employee_amt"],2);
+										$format_eis_employer = number_format ($data["eis_formula_employer_amt"],2);
+										$format_eis_total = number_format ($data["eis_formula_total"],2);
+										
                                         echo '<tr>';
-                                        echo '<td>' . $data["eis_formula_wage_start"] . '</td>';
-                                        echo '<td>' . $data["eis_formula_wage_end"] . '</td>';
-                                        echo '<td>' . $data["eis_formula_employee_amt"] . '</td>';
-                                        echo '<td>' . $data["eis_formula_employee_amt"] . '</td>';
-                                        echo '<td>' . $data["eis_formula_employer_amt"] . '</td>';
+                                        echo '<td>' . $format_eis_start . '</td>';
+                                        echo '<td>' . $format_eis_end . '</td>';
+                                        echo '<td>' . $format_eis_employee . '</td>';
+                                        echo '<td>' . $format_eis_employer . '</td>';
+                                        echo '<td>' . $format_eis_total . '</td>';
                                         echo '</tr>';
                                     }
                                 }
@@ -179,7 +207,11 @@ $username = $_SESSION["username"];
                             </div>        
                         </div>
                     </div>    
-                <!-- EIS table end -->   
+                <!-- EIS table end -->  
+					<br/>
+					<form role="form" action="export_table.php" method="post">
+						<button type="submit" class="btn btn-primary btn-block" name="export_eis">Export EIS table</button>
+					</form>
                 </div>
                 </div>
             </div> 
