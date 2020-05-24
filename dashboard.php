@@ -24,10 +24,10 @@ if(isset($_POST["submit_year"])){
 }
 
 $query1 = "SELECT process_payroll_net_pay, process_payroll_process_month, SUM(process_payroll_net_pay) as number FROM process_payroll WHERE process_payroll_process_year = '$get_year' GROUP BY process_payroll_process_month";  
-$result1 = mysqli_query($conn, $query1); 
+$result1 = mysqli_query($conn, $query1); //chart 1
 
-$query2 = "SELECT process_payroll_net_pay, emp_id, SUM(process_payroll_net_pay) as number FROM process_payroll WHERE process_payroll_process_year = '$get_year' GROUP BY emp_id";  
-$result2 = mysqli_query($conn, $query2); 
+$query2 = "SELECT employee_info.*, process_payroll.*, process_payroll.SUM(process_payroll_net_pay) as number FROM process_payroll INNER JOIN employee_info ON employee_info.emp_id = process_payroll.emp_id WHERE process_payroll_process_year = '$get_year' GROUP BY emp_id";  
+$result2 = mysqli_query($conn, $query2); //chart 2
 
 
 
@@ -79,66 +79,56 @@ overflow: hidden;
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>  
 <script type="text/javascript">  
 
-
+//Chart 1
 google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(drawChart1);
 function drawChart1() {
-var data = google.visualization.arrayToDataTable([  
-['Month', 'Wages'],  
-<?php  
-    
-if($result1){
-while($row = mysqli_fetch_array($result1)){  
-echo "['".$row["process_payroll_process_month"]."', ".$row["number"]."],";  
-}      
-}else{
-    echo "['',0],";
-}
-  
+    var data = google.visualization.arrayToDataTable([  
+    ['Month', 'Wages'],  
+    <?php  
+        while($row = mysqli_fetch_array($result1)){  
+            echo "['".$row["process_payroll_process_month"]."', ".$row["number"]."],";  
+        }      
+    ?>  
+    ]); 
 
-?>  
-]); 
+    var options = {
+        title: 'Total NetPay(NP) by Month',
+        colors: ['#e0440e', '#e6693e'],
+        hAxis: {title: 'Month', titleTextStyle: {color: '#333'}}
+    };
 
-var options = {
-title: 'Total NetPay(NP) by Month',
-colors: ['#e0440e', '#e6693e'],
-hAxis: {title: 'Month', titleTextStyle: {color: '#333'}}
-};
-
-var chart = new google.visualization.LineChart(document.getElementById('chart_div1'));
-chart.draw(data, options);
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div1'));
+    chart.draw(data, options);
 }
 
-    
-    
-//--------    
-    
-    
+//Chart 2
 google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(drawChart2);
 function drawChart2() {
-var data = google.visualization.arrayToDataTable([  
-['Employee', 'NetPay'], 
-<?php  
-while($row = mysqli_fetch_array($result2)){  
-echo "['".$row["emp_id"]."', ".$row["number"]."],";  
-}  
-?>  
-]); 
+    var data = google.visualization.arrayToDataTable([  
+    ['Employee', 'NetPay'], 
+    <?php  
+        while($row = mysqli_fetch_array($result2)){  
+            echo "['".$row["emp_display_id"]."', ".$row["number"]."],";  
+        }  
+    ?>  
+    ]); 
 
-var options = {
-title: 'Gender in Company',
-colors: ['#e0440e', '#e6693e'],
-//hAxis: {title: 'Year', titleTextStyle: {color: '#333'}}
-};
+    var options = {
+        title: 'Gender in Company',
+        colors: ['#e0440e', '#e6693e'],
+        //hAxis: {title: 'Year', titleTextStyle: {color: '#333'}}
+    };
 
-var chart = new google.visualization.ColumnChart(document.getElementById('chart_div2'));
-chart.draw(data, options);
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div2'));
+    chart.draw(data, options);
 }
+    
 //window.onresize = function(){ location.reload(); }
 $(window).resize(function(){
-drawChart1();
-drawChart2();
+    drawChart1();
+    drawChart2();
 });
 
 // Reminder: you need to put https://www.google.com/jsapi in the head of your document or as an external resource on codepen //    
@@ -156,18 +146,18 @@ drawChart2();
 <div class="row">
     <div class="col-md-6">
         <div class="p-3 bg-white rounded shadow mb-3">
-            <h3>Welcome, <?php echo $username; ?></h3><br>
-            <h4><div id="para1"></div></h4>
+            <h5>Welcome, <?php echo $username; ?></h5><hr>
+            <h5><div id="para1"></div></h5>
         </div>
     </div>    
     <div class="col-md-6">
         <div class="p-3 bg-white rounded shadow mb-3">
             <div class="form-group">
-                <label for="select_year">Select Year</label>
+                <label for="select_year"><b>Select Year (Process Year)</b></label>
                 <div class="form-inline">
                     <form action="dashboard.php" method="POST">
                     <input type="text" class="form-control" name="select_year" value="<?php echo date('Y'); ?>">
-                    <input type="submit" class="btn btn-primary" name="submit_year">
+                    <input type="submit" class="btn btn-primary" name="submit_year" value="Select Year">
                     </form>
                 </div>
             </div>  
@@ -178,7 +168,7 @@ drawChart2();
 <div class="row">
 <div class="col-md-6">
 <div class="p-3 bg-white rounded shadow mb-3">
-    <p><b>Previous Month Processed Employee</b></p>
+    <p><b>Previous Month Processed Employee</b></p><hr>
                 <div class="table-responsive">
                     <table id="example" class="table table-striped table-bordered">
                         <thead>
@@ -208,7 +198,7 @@ drawChart2();
 </div>
 <div class="col-md-6">
 <div class="p-3 bg-white rounded shadow mb-3">
-    <p><b>Pending AdHoc List</b></p>
+    <p><b>Pending AdHoc List</b></p><hr>
     <div class="table-responsive">
         <table id="example1" class="table table-striped table-bordered">
             <thead>
@@ -255,12 +245,31 @@ drawChart2();
 <div class="row">
 <div class="col-md-6">
 <div class="p-3 bg-white rounded shadow mb-3">
-<div id="chart_div1" class="chart"></div>
+<p><b>Total Net Pay(NP) by Month</b></p><hr>
+<?php
+//if process payroll is not empty, show charts
+    $process_payroll_sql = mysqli_query($conn, "SELECT * FROM process_payroll");
+  if($pp_result = mysqli_num_rows($process_payroll_sql) > 0){
+    echo '<div id="chart_div1" class="chart"></div>';      
+  }else{
+      echo '<p>There are currently no processed payroll</p>';
+  }  
+?>
+
     </div>
 </div>
 <div class="col-md-6">
 <div class="p-3 bg-white rounded shadow mb-3">
-<div id="chart_div2" class="chart"></div>
+<p><b>Total Net Pay(NP) by Employee</b></p><hr>
+<?php
+//if process payroll is not empty, show charts
+    $process_payroll_sql = mysqli_query($conn, "SELECT * FROM process_payroll");
+  if($pp_result = mysqli_num_rows($process_payroll_sql) > 0){
+    echo '<div id="chart_div2" class="chart"></div>';      
+  }else{
+      echo '<p>There are currently no processed payroll</p>';
+  }  
+?>
     </div>
 </div>
 </div>
