@@ -36,6 +36,7 @@ $prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
 mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
 mysqli_stmt_execute($prepared_stmt_insert);
 mysqli_stmt_close($prepared_stmt_insert);
+    echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
 }
 }
 
@@ -69,6 +70,7 @@ $prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
 mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
 mysqli_stmt_execute($prepared_stmt_insert);
 mysqli_stmt_close($prepared_stmt_insert);
+    echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
 }
 }
 
@@ -131,7 +133,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["emp_full_name"] . "</td>";
                                                 echo "<td>" . $data["emp_title"] . "</td>";
                                                 echo "<td>" . '<a class="btn btn-primary" href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit Employee Info</a>' . "</td>";
-                                                echo "<td>" . '<a class="btn btn-danger" href="deleteemployee.php?delete_emp_id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-danger" href="deleteEmployee.php?id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  
@@ -197,7 +199,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["allowance_desc"] . "</td>";
                                                 echo "<td>" . $data["allowance_rate"] . "</td>";
                                                 echo "<td>" . '<a class="btn btn-primary" href="editallowance.php?id=' . $data["allowance_id"] . '&desc=' . $data["allowance_desc"] . '&rate=' . $data["allowance_rate"] . '">Edit Allowance</a>' . "</td>";
-                                                echo "<td>" . '<a class="btn btn-danger" href="maintainemployee.php?delete_allowance_id=' . $data["allowance_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Allowance</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-danger" href="deleteGeneralAllowance.php?id=' . $data["allowance_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Allowance</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  
@@ -263,7 +265,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["deduction_desc"] . "</td>";
                                                 echo "<td>" . $data["deduction_rate"] . "</td>";
                                                 echo "<td>" . '<a class="btn btn-primary" href="editdeduction.php?id=' . $data["deduction_id"] . '&desc=' . $data["deduction_desc"] . '&rate=' . $data["deduction_rate"] . '">Edit Deduction</a>' . "</td>";
-                                                echo "<td>" . '<a class="btn btn-danger" href="maintainemployee.php?delete_deduction_id=' . $data["deduction_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Deduction</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-danger" href="deleteGeneralDeduction.php?id=' . $data["deduction_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Deduction</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  

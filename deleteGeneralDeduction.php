@@ -5,7 +5,7 @@
     include "conn.php";
     $get_id = $_GET["id"];
 
-    $delete_sql = mysqli_query($conn, "DELETE FROM employee_info WHERE emp_id = '$get_id'");
+    $delete_sql = mysqli_query($conn, "DELETE FROM deduction WHERE deduction_id = '$get_id'");
 
     if($delete_sql){
         echo "<script>alert('Deleted Successfully!');document.location='maintainemployee.php'</script>";

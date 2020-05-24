@@ -35,8 +35,7 @@ if(isset($_POST["submit"])){
 
     if($error == FALSE){
         mysqli_query($conn, "UPDATE allowance SET allowance_display_id = '$edited_allowance_display_id', allowance_desc = '$edited_allowance_desc', allowance_rate = '$edited_allowance_rate' WHERE allowance_id = '$allowance_id'");
-        echo '<script>alert("Updated Successfully");</script>';
-        header("location:maintainemployee.php");
+        echo "<script>alert('Updated Successfully!');document.location='maintainemployee.php'</script>";
     }    
 }
 

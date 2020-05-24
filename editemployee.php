@@ -160,6 +160,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit_1"])){
 if ($error == FALSE && $count==0){
 
 $update_sql = mysqli_query($conn, "UPDATE employee_info SET emp_display_id='$emp_display_id', emp_full_name='$emp_full_name', emp_gender='$emp_gender', emp_dob='$emp_dob', emp_email='$emp_email', emp_address='$emp_address', emp_mobile='$emp_mobile', emp_telephone='$emp_telephone', emp_ic='$emp_ic', emp_passport='$emp_passport', emp_immigration='$emp_immigration', emp_title='$emp_title', emp_wages='$emp_wages', emp_payment_method='$emp_payment_method', emp_bank_name='$emp_bank_name', emp_account='$emp_account', emp_health_status='$emp_health_status', emp_martial_status='$emp_martial_status', emp_spouse_status='$emp_spouse_status', emp_epf='$emp_epf', emp_socso='$emp_socso', emp_socso_type='$emp_socso_type', emp_eis_type='$emp_eis_type', emp_join_date='$emp_join_date', emp_confirm_date='$emp_confirm_date', emp_resign_date='$emp_resign_date', data_edited_date='$data_edited_date' WHERE emp_id ='$get_emp_id'");}
+    
+echo "<script>alert('Updated Successfully!');document.location='maintainemployee.php'</script>";    
 }
 
 //submit_2
@@ -188,6 +190,7 @@ mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $allowance_id, $a
 
 mysqli_stmt_execute($prepared_stmt_insert);
 mysqli_stmt_close($prepared_stmt_insert);
+    echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
 }
 //submit_3
 if(isset($_POST["submit_3"])){
@@ -215,6 +218,7 @@ mysqli_stmt_bind_param($prepared_stmt_insert, 'ssss', $emp_id, $deduction_id, $d
 
 mysqli_stmt_execute($prepared_stmt_insert);
 mysqli_stmt_close($prepared_stmt_insert);
+    echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
 }
 
 //show all existing value in all input fields
@@ -448,7 +452,7 @@ $show_emp_resign_date = $show_data['emp_resign_date'];
 <input type="date" id="emp_resign_date" name="emp_resign_date" class="form-control" value="<?php echo $show_emp_resign_date; ?>">
 </div>
 <div class="form-group">
-<button type="submit" class="btn btn-primary btn-block p-2" name="submit_1" id="submit_1">Register</button>
+<button type="submit" class="btn btn-primary btn-block p-2" name="submit_1" id="submit_1">Update</button>
 </div>
 </div>
 </div>		
@@ -526,7 +530,7 @@ echo '<tr>';
 echo '<td>' . $data["allowance_desc"] . '</td>';
 echo '<td>' . $data["allowance_rate"] . '</td>';
 echo "<td>" . '<a class="btn btn-primary" href="employee_allowance_edit.php?emp_allowance_id=' . $data["emp_allowance_id"] . '&emp_id=' . $data["emp_id"] . '">Edit Allownace</a>' . "</td>";
-echo "<td>" . '<a class="btn btn-danger" href="editemployee.php?emp_allowance_id=' . $data["emp_allowance_id"] . '&emp_id=' . $data["emp_id"] . '">Delete Allownace</a>' . "</td>";
+echo "<td>" . '<a class="btn btn-danger" onclick="return confirm(\'Confirm Delete?\');" href="deleteEmployeeAllowance.php?id=' . $data["emp_allowance_id"] . '&emp_id=' . $data["emp_id"] . '">Delete Allownace</a>' . "</td>";
 echo '</tr>';
 
 $allowance_rate = $data["allowance_rate"];
@@ -620,7 +624,7 @@ echo '<tr>';
 echo '<td>' . $data["deduction_desc"] . '</td>';
 echo '<td>' . $data["deduction_rate"] . '</td>';
 echo "<td>" . '<a class="btn btn-primary" href="employee_deduction_edit.php?emp_deduction_id=' . $data["emp_deduction_id"] . '&emp_id=' . $data["emp_id"] . '">Edit Deduction</a>' . "</td>";
-echo "<td>" . '<a class="btn btn-danger" href="employee_deduction_edit.php?emp_deduction_id=' . $data["emp_deduction_id"] . '&emp_id=' . $data["emp_id"] . '">Delete Deduction</a>' . "</td>";
+echo "<td>" . '<a class="btn btn-danger" onclick="return confirm(\'Confirm Delete?\');" href="deleteEmployeeDeduction.php?id=' . $data["emp_deduction_id"] . '&emp_id=' . $data["emp_id"] . '">Delete Deduction</a>' . "</td>";
 echo '</tr>';
 
 $deduction_rate = $data["deduction_rate"];

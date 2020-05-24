@@ -34,8 +34,7 @@ if(isset($_POST["submit"])){
 
     if($error == FALSE){
         mysqli_query($conn, "UPDATE deduction SET deduction_display_id = '$edited_deduction_display_id', deduction_desc = '$edited_deduction_desc', deduction_rate = '$edited_deduction_rate' WHERE deduction_id = '$deduction_id'");
-        echo '<script>alert("Updated Successfully");</script>';
-        header("location:maintainemployee.php");
+        echo "<script>alert('Updated Successfully!');document.location='maintainemployee.php'</script>";
     }    
 }
 

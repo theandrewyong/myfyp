@@ -149,7 +149,7 @@ $username = $_SESSION["username"];
 
 			$update_sql = mysqli_query($conn, "UPDATE employee_id_count SET emp_id_count='$emp_display_id'");	
 
-			header("Location: maintainemployee.php");
+			echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
 		}
 	}
 
