@@ -131,7 +131,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                                 echo "<td>" . $data["emp_full_name"] . "</td>";
                                                 echo "<td>" . $data["emp_title"] . "</td>";
                                                 echo "<td>" . '<a class="btn btn-primary" href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit Employee Info</a>' . "</td>";
-                                                echo "<td>" . '<a class="btn btn-danger" href="maintainemployee.php?delete_emp_id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee</a>' . "</td>";
+                                                echo "<td>" . '<a class="btn btn-danger" href="deleteemployee.php?delete_emp_id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee</a>' . "</td>";
                                                 echo "</tr>";
                                             }
                                         }  

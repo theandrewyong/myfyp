@@ -5,7 +5,7 @@
     include "conn.php";
     $get_id = $_GET["id"];
     //select all admins
-    echo $get_id;
+    //echo $get_id;
 
     //count all accounts that have permission 1
     $cp = mysqli_query($conn, "SELECT * FROM account WHERE permission = '1'");

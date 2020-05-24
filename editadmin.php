@@ -71,7 +71,7 @@
                 if($edited_admin_username == $username){
                    echo "<script>alert('Updated Successfully! You will be logged out');document.location='index.php'</script>"; 
                 }else{
-                echo '<script>alert("Updated Successfully");</script>';       
+                    echo "<script>alert('Updated Successfully!');document.location='adminpanel.php'</script>";
                 }
 
 
