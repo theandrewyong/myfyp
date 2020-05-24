@@ -6,6 +6,30 @@ header("location:index.php");
 }
 $username = $_SESSION["username"];
 $get_emp_id = $_GET["emp_id"];
+
+$allow_button = FALSE;
+$a_count = 0;
+
+$select_allowance = mysqli_query($conn, "SELECT * FROM allowance"); 
+while($data = mysqli_fetch_assoc($select_allowance)) {
+	$a_count = $a_count+1;
+}
+
+if ($a_count>0){
+	$allow_button = TRUE;
+}
+//---------------------------
+$deduct_button = FALSE;
+$d_count = 0;
+
+$select_deduction = mysqli_query($conn, "SELECT * FROM deduction"); 
+while($data = mysqli_fetch_assoc($select_deduction)) {
+	$d_count = $d_count+1;
+}
+
+if ($d_count>0){
+	$deduct_button = TRUE;
+}
 ?>
 
 <?php
@@ -27,36 +51,6 @@ $message='';
 $count =0;
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit_1"])){
 
-/*$emp_display_id = $_POST["emp_display_id"];
-$emp_full_name = $_POST["emp_full_name"];
-$emp_gender = $_POST["emp_gender"];
-$emp_dob = $_POST["emp_dob"];
-$emp_email = $_POST["emp_email"];
-$emp_address = $_POST["emp_address"];
-$emp_mobile = $_POST["emp_mobile"];
-$emp_telephone = $_POST["emp_telephone"];
-$emp_ic = $_POST["emp_ic"];
-$emp_passport = $_POST["emp_passport"];
-$emp_immigration = $_POST["emp_immigration"];
-$emp_title = $_POST["emp_title"];
-$emp_wages = $_POST["emp_wages"];
-$emp_payment_method = $_POST["emp_payment_method"];
-$emp_bank_name = $_POST["emp_bank_name"];
-$emp_account = $_POST["emp_account"];
-$emp_health_status = $_POST["emp_health_status"];
-$emp_martial_status = $_POST["emp_martial_status"];
-$emp_spouse_status = $_POST["emp_spouse_status"];
-$emp_epf = $_POST["emp_epf"];
-$emp_socso = $_POST["emp_socso"];
-$emp_socso_type = $_POST["emp_socso_type"];
-$emp_eis_type = $_POST["emp_eis_type"];
-$emp_join_date = $_POST["emp_join_date"];
-$emp_confirm_date = $_POST["emp_confirm_date"];
-$emp_resign_date  = $_POST["emp_resign_date"];
-$data_edited_date = date("Y/m/d");*/
-		//hide errors
-		error_reporting(0);
-		ini_set('display_errors', 0);
 	
 		if(empty($_POST["emp_display_id"])){
 			$error_id = '<span class="text-danger"> *Invalid Employee ID</span>';
@@ -502,7 +496,7 @@ echo '<option value="' . $data["allowance_desc"] . '">' . $data["allowance_desc"
 </div>
 <div class="row">
 <div class="col-md-12">
-<input type="submit" class="btn btn-primary" name="submit_2" id="submit_2" value="Add Item">
+<input type="submit" class="btn btn-primary" name="submit_2" id="submit_2" value="Add Item" <?php if($allow_button==FALSE) {echo "disabled";} ?> >
 
 </div>    
 </div><br>
@@ -596,7 +590,7 @@ echo '<option value="' . $data["deduction_desc"] . '">' . $data["deduction_desc"
 
 <div class="row">
 <div class="col-md-12">
-<input type="submit" class="btn btn-primary" name="submit_3" id="submit_3" value="Add Item">
+<input type="submit" class="btn btn-primary" name="submit_3" id="submit_3" value="Add Item" <?php if($deduct_button==FALSE) {echo "disabled";} ?> >
 </div>
 </div>
 <br/>

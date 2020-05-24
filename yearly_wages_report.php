@@ -46,10 +46,18 @@ $username = $_SESSION["username"];
                     $month = "";
                     $year = "";
                     $view_table = FALSE;
+						
                     if(isset($_POST["submit"])){
-                        $view_table = TRUE;
                         $year = $_POST["year"]; 
                         $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_year = '$year'"); 
+						
+						//validate
+						$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
+						while($validation = mysqli_fetch_assoc($validate)){
+							if ($validation["process_payroll_process_year"]==$year){
+								$view_table = TRUE;
+							}
+						}
                     }
                     $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
                     while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
@@ -91,10 +99,12 @@ $username = $_SESSION["username"];
                             if(isset($_POST["submit"])){
                             $year = $_POST["year"];
                             $count_employee_by_year_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_year = '$year'");
+							$unique_employee[] ='';
                             while($result = mysqli_fetch_assoc($count_employee_by_year_sql)){
                             $employee_id_array[] = $result["emp_id"];
                             $unique_employee = array_unique($employee_id_array);
                             }
+								
                             $countJan = 0;
                             $countFeb = 0;
                             $countMar = 0;
@@ -107,6 +117,9 @@ $username = $_SESSION["username"];
                             $countOct = 0;
                             $countNov = 0;
                             $countDec = 0;
+							
+							if(count($unique_employee)>0){
+							
                             foreach($unique_employee as $ua){
                             echo '<tr>';
 								
@@ -181,6 +194,7 @@ $username = $_SESSION["username"];
                             }                        
                             echo '</tr>';
                             }
+							}
                             //show all employee that existed in the year
                             echo '<tr>';
                             echo '<td><b>' . "Total" . '</b></td>';

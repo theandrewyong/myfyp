@@ -41,7 +41,7 @@ $pdf->SetFont("Arial","B", 11);
 $pdf->Cell (0,4.5,"Smartsoft Co. ",0,1,"L");	
 
 //employee details **
-$query=@mysqli_query($conn,"select process_payroll.*, employee_info.* from process_payroll inner join employee_info on process_payroll.emp_id = employee_info.emp_id where process_payroll.emp_id='$dd' and process_payroll.process_payroll_process_month = '$get_month'");
+$query=@mysqli_query($conn,"select process_payroll.*, employee_info.* from process_payroll inner join employee_info on process_payroll.emp_id = employee_info.emp_id where process_payroll.emp_id='$dd' and process_payroll.process_payroll_process_month = '$get_month' and process_payroll.process_payroll_process_year = '$get_year'");
 
 $data=@mysqli_fetch_array($query);
 
