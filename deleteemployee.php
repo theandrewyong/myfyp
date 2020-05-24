@@ -12,4 +12,5 @@
     }else{
         echo "<script>alert('Cannot Delete, Constraints Exists');document.location='maintainemployee.php'</script>";
     }
+
 ?>
