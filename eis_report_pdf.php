@@ -46,6 +46,10 @@ $count = 0;
 $total_wages = 0;
 $total_employee_deduction = 0;
 $total_employer_deduction = 0;
+$format_total_wages = 0;
+$format_total_employee_deduction = 0;
+$format_total_employer_deduction = 0;
+
 while($data=@mysqli_fetch_array($query)) {
     $eis_employee_wages = $data["emp_wages"];
     $eis_employee_deduction = $data["eis_employee_deduction"];

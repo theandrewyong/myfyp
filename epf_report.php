@@ -51,13 +51,21 @@ $username = $_SESSION["username"];
                         $year = "";
                         $view_table = FALSE;
                         if(isset($_POST["submit"])){
-                            $view_table = TRUE;
+                            
                             $month = $_POST["month"];
                             $year = $_POST["year"]; 
                             $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
+							
+							//validate
+							$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
+							while($validation = mysqli_fetch_assoc($validate)){
+								if ($validation["process_payroll_process_month"]==$month && $validation["process_payroll_process_year"]==$year){
+									$view_table = TRUE;
+								}
+							}
                         }
                         ?>
-                        <p><a target="_blank" href="test_pdf_generator.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a></p>
+                        <p><a target="_blank" href="epf_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a></p>
                     </div>
                 </div>
             </div>

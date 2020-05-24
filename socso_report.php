@@ -12,10 +12,18 @@ $month = "";
 $year = "";
 $view_table = FALSE;
 if(isset($_POST["submit"])){
-    $view_table = TRUE;
+    
     $month = $_POST["month"];
     $year = $_POST["year"]; 
     $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
+	
+	//validate
+	$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
+	while($validation = mysqli_fetch_assoc($validate)){
+		if ($validation["process_payroll_process_month"]==$month && $validation["process_payroll_process_year"]==$year){
+			$view_table = TRUE;
+		}
+	}
 }
 ?>
 <!DOCTYPE html>

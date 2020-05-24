@@ -47,6 +47,10 @@ $count = 0;
 $total_wages = 0;
 $total_employee_deduction = 0;
 $total_employer_deduction = 0;
+$format_total_wages = 0;
+$format_total_employee_deduction = 0;
+$format_total_employer_deduction = 0;
+
 while($data=@mysqli_fetch_array($query)) {
     $epf_employee_wages = $data["emp_wages"];
     $epf_employee_deduction = $data["epf_employee_deduction"];

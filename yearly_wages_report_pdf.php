@@ -61,6 +61,7 @@ $month = $_GET["month"];
 
 //get unique employee
 $count_employee_by_year_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_year = '$year'");
+$unique_employee[]='';
 while($result = mysqli_fetch_assoc($count_employee_by_year_sql)){
 //echo $result["emp_id"];
 //make it unique
@@ -79,6 +80,19 @@ $countSep = 0;
 $countOct = 0;
 $countNov = 0;
 $countDec = 0;
+
+$format_countJan = 0;
+$format_countFeb = 0;
+$format_countMar = 0;
+$format_countApr = 0;
+$format_countMay = 0;
+$format_countJun = 0;
+$format_countJul = 0;
+$format_countAug = 0;
+$format_countSep = 0;
+$format_countOct = 0;
+$format_countNov = 0;
+$format_countDec = 0;
 
 $wageJan = 0;
 $wageFeb = 0;

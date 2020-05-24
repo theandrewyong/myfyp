@@ -67,11 +67,19 @@
                 $year = "";
                 $view_table = FALSE;
                 if(isset($_POST["submit"])){
-                    $view_table = TRUE;
+ 
                     $month = $_POST["month"];
                     $year = $_POST["year"]; 
                     
                     $select_sql = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_process_month = '$month' AND process_adhoc_process_year = '$year'"); 
+					
+					//validate
+					$validate = mysqli_query($conn, "SELECT * FROM process_adhoc");
+					while($validation = mysqli_fetch_assoc($validate)){
+						if ($validation["process_adhoc_process_month"]==$month && $validation["process_adhoc_process_year"]==$year){
+							$view_table = TRUE;
+						}
+					}
                 }
                 
             ?>
@@ -110,6 +118,7 @@
                 $total_adhoc_amount = 0;
 				
                 $format_total_epf_employee_deduction = 0;
+				$format_total_adhoc_epf = 0;
 				$format_total_adhoc_amount = 0;
 				
                 

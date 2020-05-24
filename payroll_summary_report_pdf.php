@@ -82,9 +82,26 @@ $pdf->Cell (14.5,3,'Deduct',"RB",1,"R");
 
 //payroll summary data from sql **
 $count = 0;
+$total_wage = 0;
+$total_overtime = 0;
+$total_commission = 0;
+$total_allowance = 0;
+$total_claims = 0;
+$total_director_fees = 0;
+$total_advance_paid = 0;
+$total_bonus = 0;
+$total_others = 0;
+$total_epf = 0;
+$total_socso = 0;
+$total_eis = 0;
+$total_deduction = 0;
+$total_loan = 0;
+$total_unpaid_leave = 0;
+$total_advance_deduct = 0;
+
 foreach($emp_id_unique as $eiu){
 	//count the total wages for each employee
-	$sql = mysqli_query($conn, "SELECT SUM(process_payroll_wage) AS sum_wage, SUM(process_payroll_allowance) AS sum_allowance, SUM(process_payroll_overtime) AS sum_overtime, SUM(process_payroll_commission) AS sum_commission, SUM(process_payroll_claims) AS sum_claims, SUM(process_payroll_director_fees) AS sum_director_fees, SUM(process_payroll_advance_paid) AS sum_advance_paid, SUM(process_payroll_bonus) AS sum_bonus, SUM(process_payroll_others) AS sum_others, SUM(epf_employee_deduction) AS sum_employee_epf, SUM(epf_employee_deduction) AS sum_epf, SUM(socso_employee_deduction) AS sum_socso, SUM(eis_employee_deduction) AS sum_eis, SUM(process_payroll_deduction) AS sum_deduction, SUM(process_payroll_loan) AS sum_loan, SUM(process_payroll_unpaid_leave) AS sum_unpaid_leave, SUM(process_payroll_advance_deduct) AS sum_advance_deduct FROM process_payroll WHERE emp_id = '$eiu'");
+	$sql = mysqli_query($conn, "SELECT SUM(process_payroll_wage) AS sum_wage, SUM(process_payroll_allowance) AS sum_allowance, SUM(process_payroll_overtime) AS sum_overtime, SUM(process_payroll_commission) AS sum_commission, SUM(process_payroll_claims) AS sum_claims, SUM(process_payroll_director_fees) AS sum_director_fees, SUM(process_payroll_advance_paid) AS sum_advance_paid, SUM(process_payroll_bonus) AS sum_bonus, SUM(process_payroll_others) AS sum_others, SUM(epf_employee_deduction) AS sum_employee_epf, SUM(epf_employee_deduction) AS sum_epf, SUM(socso_employee_deduction) AS sum_socso, SUM(eis_employee_deduction) AS sum_eis, SUM(process_payroll_deduction) AS sum_deduction, SUM(process_payroll_loan) AS sum_loan, SUM(process_payroll_unpaid_leave) AS sum_unpaid_leave, SUM(process_payroll_advance_deduct) AS sum_advance_deduct FROM process_payroll WHERE emp_id = '$eiu' AND process_payroll_process_year = '$get_year'");
 
 	$get_name_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$eiu'");
 	$namesql = mysqli_fetch_assoc($get_name_sql);
@@ -125,6 +142,54 @@ foreach($emp_id_unique as $eiu){
 	$pdf->Cell (14.5,7,$sum_unpaid_leave,"",0,"R");
 	$pdf->Cell (14.5,7,$sum_advance_deduct,"",1,"R");
 	
+	$total_wage = $total_wage + $sum_wage;
+	$foramt_total_wage = number_format($total_wage,2);
+	
+	$total_overtime = $total_overtime + $sum_overtime;
+	$foramt_total_overtime = number_format($total_overtime,2);
+	
+	$total_commission = $total_commission + $sum_commission;
+	$foramt_total_commission = number_format($total_commission,2);
+	
+	$total_allowance = $total_allowance + $sum_allowance;
+	$foramt_total_allowance = number_format($total_allowance,2);
+	
+	$total_claims = $total_claims + $sum_claims;
+	$foramt_total_claims = number_format($total_claims,2);
+	
+	$total_director_fees = $total_director_fees + $sum_director_fees;
+	$foramt_total_director_fees = number_format($total_director_fees,2);
+	
+	$total_advance_paid = $total_advance_paid + $sum_advance_paid;
+	$foramt_total_advance_paid = number_format($total_advance_paid,2);
+	
+	$total_bonus = $total_bonus + $sum_bonus;
+	$foramt_total_bonus = number_format($total_bonus,2);
+	
+	$total_others = $total_others + $sum_others;
+	$foramt_total_others = number_format($total_others,2);
+	
+	$total_epf = $total_epf + $sum_epf;
+	$foramt_total_epf = number_format($total_epf,2);
+	
+	$total_socso = $total_socso + $sum_socso;
+	$foramt_total_socso = number_format($total_socso,2);
+	
+	$total_eis = $total_eis + $sum_eis;
+	$foramt_total_eis = number_format($total_eis,2);
+	
+	$total_deduction = $total_deduction + $sum_deduction;
+	$foramt_total_deduction = number_format($total_deduction,2);
+	
+	$total_loan = $total_loan + $sum_loan;
+	$foramt_total_loan = number_format($total_loan,2);
+	
+	$total_unpaid_leave = $total_unpaid_leave + $sum_unpaid_leave;
+	$foramt_total_unpaid_leave = number_format($total_unpaid_leave,2);
+	
+	$total_advance_deduct = $total_advance_deduct + $sum_advance_deduct;
+	$foramt_total_advance_deduct = number_format($total_advance_deduct,2);
+	
 	$count = $count + 1;
 	}
 
@@ -132,22 +197,22 @@ $pdf->SetFont("Arial","B", 8);
 $pdf->Cell (40,7,'Grand Total',"",0);
 
 $pdf->SetFont("Arial","", 8);
-$pdf->Cell (14.5,7,$sum_wage,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_overtime,"TB",0,"R");
-$pdf->Cell (17,7,$sum_commission,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_allowance,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_claims,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_director_fees,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_advance_paid,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_bonus,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_others,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_epf,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_socso,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_eis,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_deduction,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_loan,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_unpaid_leave,"TB",0,"R");
-$pdf->Cell (14.5,7,$sum_advance_deduct,"TB",1,"R");
+$pdf->Cell (14.5,7,$foramt_total_wage,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_overtime,"TB",0,"R");
+$pdf->Cell (17,7,$foramt_total_commission,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_allowance,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_claims,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_director_fees,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_advance_paid,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_bonus,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_others,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_epf,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_socso,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_eis,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_deduction,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_loan,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_unpaid_leave,"TB",0,"R");
+$pdf->Cell (14.5,7,$foramt_total_advance_deduct,"TB",1,"R");
 
 //count of records
 $pdf->SetFont("Arial","", 10);
