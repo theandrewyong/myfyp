@@ -26,7 +26,7 @@ if(isset($_POST["submit_year"])){
 $query1 = "SELECT process_payroll_net_pay, process_payroll_process_month, SUM(process_payroll_net_pay) as number FROM process_payroll WHERE process_payroll_process_year = '$get_year' GROUP BY process_payroll_process_month";  
 $result1 = mysqli_query($conn, $query1); //chart 1
 
-$query2 = "SELECT employee_info.*, process_payroll.*, process_payroll.SUM(process_payroll_net_pay) as number FROM process_payroll INNER JOIN employee_info ON employee_info.emp_id = process_payroll.emp_id WHERE process_payroll_process_year = '$get_year' GROUP BY emp_id";  
+$query2 = "SELECT process_payroll_net_pay, emp_display_id, SUM(process_payroll_net_pay) as number FROM process_payroll WHERE process_payroll_process_year = '$get_year' GROUP BY emp_display_id";  
 $result2 = mysqli_query($conn, $query2); //chart 2
 
 
@@ -84,10 +84,10 @@ google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(drawChart1);
 function drawChart1() {
     var data = google.visualization.arrayToDataTable([  
-    ['Month', 'Wages'],  
+    ['Month', 'Net Pay'],  
     <?php  
         while($row = mysqli_fetch_array($result1)){  
-            echo "['".$row["process_payroll_process_month"]."', ".$row["number"]."],";  
+            echo "['".date("M", mktime(0, 0, 0, $row["process_payroll_process_month"], 10))."', ".$row["number"]."],";  
         }      
     ?>  
     ]); 
@@ -107,7 +107,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 google.setOnLoadCallback(drawChart2);
 function drawChart2() {
     var data = google.visualization.arrayToDataTable([  
-    ['Employee', 'NetPay'], 
+    ['Employee', 'Net Pay'], 
     <?php  
         while($row = mysqli_fetch_array($result2)){  
             echo "['".$row["emp_display_id"]."', ".$row["number"]."],";  
@@ -116,9 +116,9 @@ function drawChart2() {
     ]); 
 
     var options = {
-        title: 'Gender in Company',
+        title: 'Total Net Pay(NP) by Employee',
         colors: ['#e0440e', '#e6693e'],
-        //hAxis: {title: 'Year', titleTextStyle: {color: '#333'}}
+        hAxis: {title: 'Employee ID', titleTextStyle: {color: '#333'}}
     };
 
     var chart = new google.visualization.ColumnChart(document.getElementById('chart_div2'));
@@ -173,7 +173,7 @@ $(window).resize(function(){
                     <table id="example" class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Employee ID</th>
                             <th>Employee Name</th>
                         </tr>
                         </thead>
