@@ -12,6 +12,7 @@ $select_all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
 
 if(isset($_POST["submit"])){
     $get_adhoc_emp_name = $_POST["adhoc_emp_name"];
+    $adhoc_type = $_POST["adhoc_type"];
     $adhoc_wages = $_POST["adhoc_wages"];
 	$adhoc_bonus = $_POST["adhoc_bonus"];
 	$adhoc_allowance = $_POST["adhoc_allowance"];
@@ -25,7 +26,7 @@ if(isset($_POST["submit"])){
     $id_result = mysqli_fetch_assoc($get_id_sql);
     $get_adhoc_emp_id = $id_result["emp_id"];
     $get_adhoc_status = "PENDING";
-    mysqli_query($conn, "INSERT INTO adhoc_pending (emp_id, emp_full_name, adhoc_wages, adhoc_bonus, adhoc_allowance, adhoc_commission, adhoc_claims, adhoc_unpaid_leave, adhoc_others, adhoc_amt, adhoc_status) VALUES ('$get_adhoc_emp_id','$get_adhoc_emp_name','$adhoc_wages', '$adhoc_bonus', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_unpaid_leave', '$adhoc_others','$get_adhoc_amt','$get_adhoc_status')");
+    mysqli_query($conn, "INSERT INTO adhoc_pending (emp_id, emp_full_name, adhoc_type, adhoc_wages, adhoc_bonus, adhoc_allowance, adhoc_commission, adhoc_claims, adhoc_unpaid_leave, adhoc_others, adhoc_amt, adhoc_status) VALUES ('$get_adhoc_emp_id','$get_adhoc_emp_name','$adhoc_type','$adhoc_wages', '$adhoc_bonus', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_unpaid_leave', '$adhoc_others','$get_adhoc_amt','$get_adhoc_status')");
     
     header("location:newadhoc.php");
 }
@@ -65,12 +66,15 @@ if(isset($_POST["submit"])){
                         ?>
                     </select>
                 </div>
-				
+                
+				<label>Adhoc Type</label>
 				<div class="form-group">
-					<label>Adhoc Type</label>
+					<input type="text" class="form-control" name="adhoc_type">
                 </div>
-				
+                
+				<label>Adhoc Description</label>
                 <div class="form-group">
+                    
 					<input type="hidden" class="checkbox-inline" name="adhoc_wages" value="0">
                     <input type="checkbox" class="checkbox-inline" id="adhoc_wages" name="adhoc_wages" value="1">
 					<label for="adhoc_wages">Wages</label><br/>

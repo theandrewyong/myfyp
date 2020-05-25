@@ -28,6 +28,7 @@ if(isset($_POST["submit"])){
    // $new_adjustment = $_POST["new_adjustment"];
     $adhoc_amt = $_POST["adhoc_amt"];
     // end get all new value from edited history
+    $adhoc_type = $_POST["adhoc_type"];
     
     //count epf contribution
     //$new_epf = $new_wages + $new_bonus + $new_allowance + $new_commission + $new_claims + $new_unpaid_leave + $new_others;
@@ -86,7 +87,7 @@ if(isset($_POST["submit"])){
     
    /* $update_sql = mysqli_query($conn, "UPDATE process_adhoc SET process_adhoc_wage = '$new_wages', process_adhoc_overtime = '$new_overtime', process_adhoc_commission = '$new_commission', process_adhoc_allowance = '$new_allowance', process_adhoc_claims = '$new_claims', process_adhoc_director_fees = '$new_director_fees', process_adhoc_advance_paid = '$new_advance_paid', process_adhoc_bonus = '$new_bonus', process_adhoc_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', socso_employee_deduction = '$socso_employee_deduction', socso_employer_deduction = '$socso_employer_deduction', eis_employee_deduction = '$eis_employee_deduction', eis_employer_deduction = '$eis_employer_deduction', process_adhoc_deduction = '$new_deduction', process_adhoc_loan = '$new_loan', process_adhoc_unpaid_leave = '$new_unpaid_leave', process_adhoc_advance_deduct = '$new_advance_deduct', process_adhoc_adjustment = '$new_adjustment', process_adhoc_net_pay = '$new_netpay' WHERE process_adhoc_id = '$process_id'");*/
     
-    mysqli_query($conn, "UPDATE process_adhoc SET process_adhoc_wage = '$new_wages', process_adhoc_bonus = '$new_bonus', process_adhoc_allowance = '$new_allowance', process_adhoc_commission = '$new_commission', process_adhoc_claims = '$new_claims', process_adhoc_unpaid_leave = '$new_unpaid_leave', process_adhoc_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', adhoc_amt = '$adhoc_amt' WHERE process_adhoc_id = '$process_id'");
+    mysqli_query($conn, "UPDATE process_adhoc SET process_adhoc_type = '$adhoc_type', process_adhoc_wage = '$new_wages', process_adhoc_bonus = '$new_bonus', process_adhoc_allowance = '$new_allowance', process_adhoc_commission = '$new_commission', process_adhoc_claims = '$new_claims', process_adhoc_unpaid_leave = '$new_unpaid_leave', process_adhoc_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', adhoc_amt = '$adhoc_amt' WHERE process_adhoc_id = '$process_id'");
     
     //echo $new_unpaid_leave;
 }        
@@ -100,6 +101,7 @@ $process_month = $get_result["process_adhoc_process_month"];
 $process_year = $get_result["process_adhoc_process_year"];
 $employee_name = $get_result["emp_full_name"];
 
+$adhoc_type = $get_result["process_adhoc_type"];
 $adhoc_wages = $get_result["process_adhoc_wage"];
 $adhoc_commission = $get_result["process_adhoc_commission"];
 $adhoc_allowance = $get_result["process_adhoc_allowance"];
@@ -140,10 +142,15 @@ $adhoc_amt = $get_result["adhoc_amt"];
                 <div class="row">
                     <div class="col-md-6 col-12">
                         <div class="p-3 bg-white rounded shadow mb-5">
-                            <p><b>AdHoc Type includes</b></p>
+                            <p><b>AdHoc information</b></p>
                             <hr>
+                            <label>Adhoc Type</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="adhoc_type" value="<?php echo $adhoc_type; ?>">
+                            </div>                            
                             <div class="row">
                                 <div class="col-md-12">
+                                    <label>AdHoc Description</label>
                                     <div class="form-check">
                                         <label class="form-check-label" for="new_wages">
                                             <input type="hidden" class="form-check-input" id="new_wages" name="new_adhoc_wages" value="0">

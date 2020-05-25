@@ -54,7 +54,7 @@ $username = $_SESSION["username"];
                             
                             $month = $_POST["month"];
                             $year = $_POST["year"]; 
-                            $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
+                            $select_sql = mysqli_query($conn, "SELECT process_payroll.*, process_payroll.epf_employee_deduction as ppeed, process_payroll.epf_employer_deduction as pperd, process_adhoc.epf_employee_deduction as paeed, process_adhoc.epf_employer_deduction as paerd, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id INNER JOIN process_adhoc ON process_adhoc.emp_id = process_payroll.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
 							
 							//validate
 							$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
@@ -85,8 +85,8 @@ $username = $_SESSION["username"];
                         $total_epf_employer_deduction = 0;
                         if($view_table){
                             while($select_result = mysqli_fetch_assoc($select_sql)){
-                                $epf_employee_deduction = $select_result["epf_employee_deduction"];
-                                $epf_employer_deduction = $select_result["epf_employer_deduction"];
+                                $epf_employee_deduction = $select_result["ppeed"] + $select_result["paeed"];
+                                $epf_employer_deduction = $select_result["pperd"] + $select_result["paerd"];
                                 echo '<tr>';
                                 echo '<td>' . $select_result["emp_full_name"] . '</td>';
                                 echo '<td>' . $epf_employee_deduction . '</td>';

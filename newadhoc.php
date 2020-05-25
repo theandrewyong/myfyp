@@ -6,16 +6,6 @@ if(empty($_SESSION["username"])){
 }
 $username = $_SESSION["username"];
 
-if(!empty($_GET["delete_adhoc_id"])){
-    $delete_adhoc_id = $_GET["delete_adhoc_id"];
-    $delete_sql = "DELETE FROM adhoc_pending WHERE adhoc_id = '$delete_adhoc_id'";
-    $delete = mysqli_query($conn, $delete_sql);
-    if($delete){
-        echo '<script>' . 'alert(\'Deleted Successfully\')' . '</script>';
-    }else{
-        echo '<script>' . 'alert(\'Delete Error!\')' . '</script>';
-    }    
-}
 
 $process_date = date("Y-m-d");
 $process_date_month = 5;
@@ -71,7 +61,7 @@ if(isset($_POST["submit"])){
                 $adhoc_claims = $get_specific_result["adhoc_claims"];
                 $adhoc_unpaid_leave = $get_specific_result["adhoc_unpaid_leave"];
                 $adhoc_others = $get_specific_result["adhoc_others"];
-                //$adhoc_type = $get_specific_result["adhoc_type"];
+                $adhoc_type = $get_specific_result["adhoc_type"];
                 
                 //end specific data from adhoc pending table
                 //if adhoc amount is in between start and end epf view table wages
@@ -81,7 +71,7 @@ if(isset($_POST["submit"])){
                         $epf_employee_deduction = $ef["epf_formula_employee_amt"]; //get employee epf value
                         $epf_employer_deduction = $ef["epf_formula_employer_amt"]; //get employer epf value
 
-                        $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_process_date, process_adhoc_from, process_adhoc_to, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_wage, process_adhoc_allowance, process_adhoc_commission, process_adhoc_claims, process_adhoc_bonus, process_adhoc_others, process_adhoc_unpaid_leave, epf_employee_deduction, epf_employer_deduction, process_adhoc_process_month, process_adhoc_process_year, adhoc_amt, cal_epf) VALUES ('${"check_ca$i"}', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$adhoc_wages', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_bonus', '$adhoc_others', '$adhoc_unpaid_leave', '$epf_employee_deduction', '$epf_employer_deduction', '$process_month', '$process_year', '$adhoc_amt', '$cal_epf')");
+                        $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_process_date, process_adhoc_from, process_adhoc_to, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_type, process_adhoc_wage, process_adhoc_allowance, process_adhoc_commission, process_adhoc_claims, process_adhoc_bonus, process_adhoc_others, process_adhoc_unpaid_leave, epf_employee_deduction, epf_employer_deduction, process_adhoc_process_month, process_adhoc_process_year, adhoc_amt, cal_epf) VALUES ('${"check_ca$i"}', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$adhoc_type', '$adhoc_wages', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_bonus', '$adhoc_others', '$adhoc_unpaid_leave', '$epf_employee_deduction', '$epf_employer_deduction', '$process_month', '$process_year', '$adhoc_amt', '$cal_epf')");
                         
                         mysqli_query($conn, "UPDATE adhoc_pending SET adhoc_status = 'DONE' WHERE emp_id = '${"check_ca$i"}'");
                     }    
@@ -90,7 +80,7 @@ if(isset($_POST["submit"])){
                         $epf_employee_deduction = 0;//get employee epf value
                         $epf_employer_deduction = 0; //get employer epf value
 
-                        $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_process_date, process_adhoc_from, process_adhoc_to, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_wage, process_adhoc_allowance, process_adhoc_commission, process_adhoc_claims, process_adhoc_bonus, process_adhoc_others, process_adhoc_unpaid_leave, epf_employee_deduction, epf_employer_deduction, process_adhoc_process_month, process_adhoc_process_year, adhoc_amt, cal_epf) VALUES ('${"check_ca$i"}', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$adhoc_wages', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_bonus', '$adhoc_others', '$adhoc_unpaid_leave', '$epf_employee_deduction', '$epf_employer_deduction', '$process_month', '$process_year', '$adhoc_amt', '$cal_epf')");
+                        $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_process_date, process_adhoc_from, process_adhoc_to, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_type, process_adhoc_wage, process_adhoc_allowance, process_adhoc_commission, process_adhoc_claims, process_adhoc_bonus, process_adhoc_others, process_adhoc_unpaid_leave, epf_employee_deduction, epf_employer_deduction, process_adhoc_process_month, process_adhoc_process_year, adhoc_amt, cal_epf) VALUES ('${"check_ca$i"}', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$adhoc_type', '$adhoc_wages', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_bonus', '$adhoc_others', '$adhoc_unpaid_leave', '$epf_employee_deduction', '$epf_employer_deduction', '$process_month', '$process_year', '$adhoc_amt', '$cal_epf')");
                         
                         mysqli_query($conn, "UPDATE adhoc_pending SET adhoc_status = 'DONE' WHERE emp_id = '${"check_ca$i"}'");
                     }        
@@ -285,11 +275,11 @@ if(isset($_POST["submit"])){
                                                 echo '<tr>';
                                                 echo '<td>' . $data["emp_display_id"] . '</td>';
                                                 echo '<td>' . $data["emp_full_name"] . '</td>';
-                                                echo '<td>' . "bonus" . '</td>';
+                                                echo '<td>' . $data["adhoc_type"] . '</td>';
                                                 echo '<td>' . number_format($data["adhoc_amt"], 2) . '</td>';
                                                 echo '<td>' . $data["adhoc_status"] . '</td>';
                                                 echo '<td>' . '<a class="btn btn-primary" href="editadhocpending.php?adhoc_id=' . $adhoc_id . '">Edit Employee AdHoc</a>' . '</td>';
-                                                echo '<td>' . '<a class="btn btn-danger" href="newadhoc.php?delete_adhoc_id=' . $delete_adhoc_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee AdHoc</a>' . '</td>';
+                                                echo '<td>' . '<a class="btn btn-danger" href="deletePendingAdhoc.php?id=' . $delete_adhoc_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee AdHoc</a>' . '</td>';
                                                 echo '</tr>';
                                             }
                                         }

@@ -90,7 +90,7 @@ while($select_adhoc_result = mysqli_fetch_assoc($select_all_processed_adhoc)){
                                                 echo '<td>' . date("F", mktime(0, 0, 0, $uma, 10)) . '</td>';
                                                 echo '<td>' . $uya . '</td>';
                                                 echo '<td>' . '<a class="btn btn-primary" href="historydetails.php?month=' . $uma . '&year=' . $uya . '">View History Details</a>' . '</td>';
-                                                echo '<td>' . '<a class="btn btn-danger" href="deletehistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete History</a>' . '</td>';
+                                                echo '<td>' . '<a class="btn btn-danger" href="deleteGeneralMeHistory.php?month=' . $uma . '&year=' . $uya . '" onclick="return confirm(\'Confirm Delete?\');">Delete History</a>' . '</td>';
                                                 echo '</tr>';
                                             }
                                         }
@@ -124,7 +124,7 @@ while($select_adhoc_result = mysqli_fetch_assoc($select_all_processed_adhoc)){
                                                 echo '<td>' . date("F", mktime(0, 0, 0, $auma, 10)) . '</td>';
                                                 echo '<td>' . $auya . '</td>';
                                                 echo '<td>' . '<a class="btn btn-primary" href="historyadhoc.php?month=' . $auma . '&year=' . $auya . '">View History Details</a>' . '</td>';
-                                                echo '<td>' . '<a class="btn btn-danger" href="deletehistory.php?month=' . $auma . '&year=' . $auya . '" onclick="return confirm(\'Confirm Delete?\');">Delete History</a>' . '</td>';
+                                                echo '<td>' . '<a class="btn btn-danger" href="deleteGeneralAhHistory.php?month=' . $auma . '&year=' . $auya . '" onclick="return confirm(\'Confirm Delete?\');">Delete History</a>' . '</td>';
                                                 echo '</tr>';
                                             }
                                         }
