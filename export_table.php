@@ -61,19 +61,13 @@ if(isset($_POST["export_socso"])){
 		$output .= '
 		<table class="table" border="1">
 			<tr>
-				<th></th>
-				<th colspan="2">Wages</th>
-				<th colspan="3">First Category</th>
-				<th>Second Category</th>
-			</tr>
-			<tr>
 				<td>SOCSO Row ID</td>
 				<td>Start With</td>
 				<td>End With</td>
-				<td>Employee Share</td>
-				<td>Employer Share</td>
-				<td>Total</td>
-				<td>Employer Contribution</td>
+				<td>Employee Share 1st Category</td>
+				<td>Employer Share 1st Category</td>
+				<td>Total 1st Category</td>
+				<td>Employer Contribution 2nd Category</td>
 			</tr>
 		';
 	}
@@ -115,11 +109,6 @@ if(isset($_POST["export_eis"])){
 		
 		$output .= '
 		<table class="table" border="1">
-			<tr>
-				<th></th>
-				<th colspan="2">Wages</th>
-				<th colspan="3">EIS</th>
-			</tr>
 			<tr>
 				<td>EIS Row ID</td>
 				<td>Start With</td>

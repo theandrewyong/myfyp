@@ -143,10 +143,10 @@ $username = $_SESSION["username"];
                                 echo '<td>' . number_format($final_epf_employee_deduction, 2) . '</td>';
                                 echo '<td>' . number_format($final_epf_employer_deduction, 2) . '</td>';
                                 echo '</tr>'; 
-                                $total_epf_employee_deduction = $total_epf_employee_deduction + $epf_employee_deduction;
+                                $total_epf_employee_deduction = $total_epf_employee_deduction + $final_epf_employee_deduction;
 								$format_total_epf_employee_deduction = number_format ("$total_epf_employee_deduction",2);
 								
-                                $total_epf_employer_deduction = $total_epf_employer_deduction + $epf_employer_deduction;
+                                $total_epf_employer_deduction = $total_epf_employer_deduction + $final_epf_employer_deduction;
 								$format_total_epf_employer_deduction = number_format("$total_epf_employer_deduction",2);
                                 
 

@@ -35,30 +35,84 @@ $pdf->Cell (0,10,"As At " . $month_name . " " . $get_year,0,1,"C");
 $pdf->SetFont("Arial","", 10);
 
 $pdf->Cell (10,7,'ID',"LTB",0);
-$pdf->Cell (140,7,'Employee Name',"TB",0);
+$pdf->Cell (110,7,'Employee Name',"TB",0);
+$pdf->Cell (30,7,'Adhoc Amount',"TB",0,"C");
 $pdf->Cell (30,7,'Wages',"TB",0,"R");
 $pdf->Cell (30,7,'Employee',"TB",0,"R");
 $pdf->Cell (30,7,'Employer',"TB",0,"R");
 $pdf->Cell (40,7,'Total Deduction',"RTB",1,"R");
 
-//epf data from sql
-$query=@mysqli_query($conn,"SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$get_month' AND process_payroll_process_year = '$get_year'");
+//epf data from payroll sql
+$query = mysqli_query($conn,"SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$get_month' AND process_payroll_process_year = '$get_year'");
+
+
 $count = 0;
 $total_wages = 0;
+$adhoc_total = 0;
+$total_deduction = 0;
 $total_employee_deduction = 0;
 $total_employer_deduction = 0;
 $format_total_wages = 0;
 $format_total_employee_deduction = 0;
 $format_total_employer_deduction = 0;
+$total_epf_employee_deduction = 0;
+$total_epf_employer_deduction = 0;
+$total_deduction_final = 0;
+//month end + adhoc
+while($select_result = mysqli_fetch_assoc($query)){
+	
+	$epf_employee_deduction = $select_result["epf_employee_deduction"];
+	$epf_employer_deduction = $select_result["epf_employer_deduction"];
+	$pp_emp_id = $select_result["emp_id"];
+	//get adhoc info
+	$select_adhoc_sql = mysqli_query($conn, "SELECT * FROM process_adhoc WHERE process_adhoc_process_month = '$get_month' AND process_adhoc_process_year = '$get_year' AND emp_id = '$pp_emp_id'");
+	$get_adhoc_result = mysqli_fetch_assoc($select_adhoc_sql);
+	$adhoc_epf_employee_deduction = $get_adhoc_result["epf_employee_deduction"];
+	$adhoc_epf_employer_deduction = $get_adhoc_result["epf_employer_deduction"];
 
-while($data=@mysqli_fetch_array($query)) {
+	$final_epf_employee_deduction = $epf_employee_deduction + $adhoc_epf_employee_deduction;
+	$final_epf_employer_deduction = $epf_employer_deduction + $adhoc_epf_employer_deduction;
+	$total_deduction = $final_epf_employee_deduction + $final_epf_employer_deduction;
+	//echo '<tr>';
+	//echo '<td>' . $select_result["emp_full_name"] . '</td>';
+	//echo '<td>' . number_format($final_epf_employee_deduction, 2) . '</td>';
+	//echo '<td>' . number_format($final_epf_employer_deduction, 2) . '</td>';
+	//echo '</tr>'; 
+	
+	$pdf->Cell (10,7,$select_result["emp_id"],0,0);
+	$pdf->Cell (110,7,$select_result["emp_full_name"],0,0);
+	$pdf->Cell (30,7,$get_adhoc_result["adhoc_amt"],0,0,"C");
+	$pdf->Cell (30,7,$select_result["emp_wages"],0,0,"R");
+	$pdf->Cell (30,7,number_format($final_epf_employee_deduction, 2),0,0,"R");
+	$pdf->Cell (30,7,number_format($final_epf_employer_deduction, 2),0,0,"R");
+	$pdf->Cell (40,7,number_format($total_deduction,2),0,1,"R");
+	
+	$adhoc_total = $adhoc_total + $get_adhoc_result["adhoc_amt"];
+	$format_adhoc_total = number_format($adhoc_total,2);
+	
+	$total_wages = $total_wages + $select_result["emp_wages"];
+	$format_total_wages = number_format($total_wages,2);
+	
+	$total_epf_employee_deduction = $total_epf_employee_deduction + $final_epf_employee_deduction;
+	$format_total_epf_employee_deduction = number_format ("$total_epf_employee_deduction",2);
+
+	$total_epf_employer_deduction = $total_epf_employer_deduction + $final_epf_employer_deduction;
+	$format_total_epf_employer_deduction = number_format("$total_epf_employer_deduction",2);
+
+	$total_deduction_final = $total_deduction_final + $total_deduction;
+	$format_total_deduction_final = number_format($total_deduction_final,2);
+
+}
+
+/*while($data=mysqli_fetch_array($query)) {
     $epf_employee_wages = $data["emp_wages"];
     $epf_employee_deduction = $data["epf_employee_deduction"];
     $epf_employer_deduction = $data["epf_employer_deduction"];
     $epf_employee_deduction_total = $epf_employee_deduction + $epf_employer_deduction;
 	$format_epf_employee_deduction_total = number_format("$epf_employee_deduction_total",2);
 	$pdf->Cell (10,7,$data["emp_id"],0,0);
-	$pdf->Cell (140,7,$data["emp_full_name"],0,0);
+	$pdf->Cell (110,7,$data["emp_full_name"],0,0);
+	$pdf->Cell (30,7,$epf_adhoc_amount,0,0);
 	$pdf->Cell (30,7,$epf_employee_wages,0,0,"R");
 	$pdf->Cell (30,7,$epf_employee_deduction,0,0,"R");
 	$pdf->Cell (30,7,$epf_employer_deduction,0,0,"R");
@@ -67,21 +121,25 @@ while($data=@mysqli_fetch_array($query)) {
     $total_wages = $total_wages + $epf_employee_wages;
 	$format_total_wages = number_format("$total_wages",2);
 	
-    $total_employee_deduction = $total_employee_deduction + $epf_employee_deduction;
+    $total_employee_deduction = $total_employee_deduction + $epf_employee_deduction + $epf_employee_deduction_adhoc;
 	$format_total_employee_deduction = number_format("$total_employee_deduction",2);
 	
-    $total_employer_deduction = $total_employer_deduction + $epf_employer_deduction;
+    $total_employer_deduction = $total_employer_deduction + $epf_employer_deduction +$epf_employer_deduction_adhoc;
 	$format_total_employer_deduction = number_format("$total_employer_deduction",2);
-}
+}*/
+
+
+
 $all_total = $total_employee_deduction + $total_employer_deduction;
 $format_all_total = number_format("$all_total",2);
 //epf totals
 $pdf->Cell (10,7,'',0,0);
-$pdf->Cell (140,7,'',0,0);
+$pdf->Cell (110,7,'',0,0);
+$pdf->Cell (30,7,$format_adhoc_total,"TB",0,"C");
 $pdf->Cell (30,7,$format_total_wages,"TB",0,"R");
-$pdf->Cell (30,7,$format_total_employee_deduction,"TB",0,"R");
-$pdf->Cell (30,7,$format_total_employer_deduction,"TB",0,"R");
-$pdf->Cell (40,7,$format_all_total,"TB",1,"R");
+$pdf->Cell (30,7,$format_total_epf_employee_deduction,"TB",0,"R");
+$pdf->Cell (30,7,$format_total_epf_employer_deduction,"TB",0,"R");
+$pdf->Cell (40,7,$format_total_deduction_final,"TB",1,"R");
 
 //count of records
 $pdf->SetFont("Arial","", 11);
