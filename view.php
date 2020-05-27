@@ -5,6 +5,165 @@ if(empty($_SESSION["username"])){
     header("location:index.php");
 }
 $username = $_SESSION["username"];
+
+$message1='';
+require_once "Classes/PHPExcel.php";
+
+//import EPF
+if(isset($_POST["import_epf"])){
+		
+	if(($_FILES["epf_excel"]["tmp_name"])!=''){
+		
+		$array = explode(".", $_FILES["epf_excel"]["name"]);
+        $extension = end($array);
+		if($extension=="xlsx"){
+			$tmpfname = $_FILES["epf_excel"]["tmp_name"];
+			$excelReader = PHPExcel_IOFactory::createReaderForFile($tmpfname);
+			$excelObj = $excelReader->load($tmpfname);
+			$worksheet = $excelObj->getSheet(0);
+			$lastRow = $worksheet->getHighestRow();
+
+			for ($row = 1; $row <= $lastRow; $row++) {
+
+				//insert to array
+			 $my_array[] = $worksheet->getCell('A'.$row)->getValue();
+			 $my_epf_start[] = $worksheet->getCell('D'.$row)->getValue();
+			 $my_epf_end[] = $worksheet->getCell('E'.$row)->getValue();
+			 $my_epf_emp[] = $worksheet->getCell('F'.$row)->getValue();
+			 $my_epf_empr[] = $worksheet->getCell('G'.$row)->getValue();
+
+				
+			}
+		$count = 0;
+		
+		foreach($my_array as $ma){
+			$get_epf_id_sql = mysqli_query($conn, "SELECT * FROM epf_formula WHERE epf_formula_id = '$ma'");
+			$gei_result = mysqli_fetch_assoc($get_epf_id_sql);
+			$gr_id = $gei_result["epf_formula_id"];
+
+			//do update
+			$update_sql = mysqli_query($conn, "UPDATE epf_formula SET epf_formula_wage_start = '$my_epf_start[$count]', epf_formula_wage_end = '$my_epf_end[$count]', epf_formula_employee_amt = '$my_epf_emp[$count]', epf_formula_employer_amt = '$my_epf_empr[$count]' WHERE epf_formula_id = '$gr_id'");
+			$count = $count + 1;
+			}
+			$message1 = '<label class="text-success">Excel Successfully Imported</label>';
+    }
+		else {
+			$message1 = '<label class="text-danger">Kindly convert your Excel file to .xlsx to ensure Data Stability</label>';
+		}
+    	
+	}
+	
+	else{
+		$message1 = '<label class="text-danger">Please Select a File</label>';
+	}
+		
+	
+}
+
+//import SOCSO
+$message2='';
+if(isset($_POST["import_socso"])){
+		
+	if(($_FILES["socso_excel"]["tmp_name"])!=''){
+		
+		$array = explode(".", $_FILES["socso_excel"]["name"]);
+        $extension = end($array);
+		if($extension=="xlsx"){
+			$tmpfname = $_FILES["socso_excel"]["tmp_name"];
+			$excelReader = PHPExcel_IOFactory::createReaderForFile($tmpfname);
+			$excelObj = $excelReader->load($tmpfname);
+			$worksheet = $excelObj->getSheet(0);
+			$lastRow = $worksheet->getHighestRow();
+
+			for ($row = 1; $row <= $lastRow; $row++) {
+
+			//insert to array
+			 $my_array[] = $worksheet->getCell('A'.$row)->getValue();
+			 $my_socso_start[] = $worksheet->getCell('B'.$row)->getValue();
+			 $my_socso_end[]= $worksheet->getCell('C'.$row)->getValue();
+			 $my_socso_emp_fc[] = $worksheet->getCell('D'.$row)->getValue();
+			 $my_socso_empr_fc[] = $worksheet->getCell('E'.$row)->getValue();
+			 $my_socso_total_fc[] = $worksheet->getCell('F'.$row)->getValue();
+			 $my_socso_empr_sc[] = $worksheet->getCell('G'.$row)->getValue();
+	
+			}
+		$count = 0;
+		
+		foreach($my_array as $ma){
+			$get_socso_id_sql = mysqli_query($conn, "SELECT * FROM socso_formula WHERE socso_formula_id = '$ma'");
+			$gei_result = mysqli_fetch_assoc($get_socso_id_sql);
+			$gr_id = $gei_result["socso_formula_id"];
+
+			//do update
+			$update_sql = mysqli_query($conn, "UPDATE socso_formula SET socso_formula_wage_start = '$my_socso_start[$count]', socso_formula_wage_end = '$my_socso_end[$count]', socso_formula_employee_amt = '$my_socso_emp_fc[$count]', socso_formula_employer_amt = '$my_socso_empr_fc[$count]', socso_formula_total = '$my_socso_total_fc[$count]', socso_formula_employer_contribution = '$my_socso_empr_sc[$count]' WHERE socso_formula_id = '$gr_id'");
+			$count = $count + 1;
+			}
+			$message2 = '<label class="text-success">Excel Successfully Imported</label>';
+    }
+		else {
+			$message2 = '<label class="text-danger">Kindly convert your Excel file to .xlsx to ensure Data Stability</label>';
+		}
+    	
+	}
+	
+	else{
+		$message2 = '<label class="text-danger">Please Select a File</label>';
+	}
+		
+	
+}
+
+//import EIS
+$message3='';
+if(isset($_POST["import_eis"])){
+		
+	if(($_FILES["eis_excel"]["tmp_name"])!=''){
+		
+		$array = explode(".", $_FILES["eis_excel"]["name"]);
+        $extension = end($array);
+		if($extension=="xlsx"){
+			$tmpfname = $_FILES["eis_excel"]["tmp_name"];
+			$excelReader = PHPExcel_IOFactory::createReaderForFile($tmpfname);
+			$excelObj = $excelReader->load($tmpfname);
+			$worksheet = $excelObj->getSheet(0);
+			$lastRow = $worksheet->getHighestRow();
+
+			for ($row = 1; $row <= $lastRow; $row++) {
+
+			//insert to array
+			 $my_array[] = $worksheet->getCell('A'.$row)->getValue();
+			 $my_eis_start[] = $worksheet->getCell('B'.$row)->getValue();
+			 $my_eis_end[]= $worksheet->getCell('C'.$row)->getValue();
+			 $my_eis_emp[] = $worksheet->getCell('D'.$row)->getValue();
+			 $my_eis_empr[] = $worksheet->getCell('E'.$row)->getValue();
+			 $my_eis_total[] = $worksheet->getCell('F'.$row)->getValue();
+	
+			}
+		$count = 0;
+		
+		foreach($my_array as $ma){
+			$get_eis_id_sql = mysqli_query($conn, "SELECT * FROM eis_formula WHERE eis_formula_id = '$ma'");
+			$gei_result = mysqli_fetch_assoc($get_eis_id_sql);
+			$gr_id = $gei_result["eis_formula_id"];
+
+			//do update
+			$update_sql = mysqli_query($conn, "UPDATE eis_formula SET eis_formula_wage_start = '$my_eis_start[$count]', eis_formula_wage_end = '$my_eis_end[$count]', eis_formula_employee_amt = '$my_eis_emp[$count]', eis_formula_employer_amt = '$my_eis_empr[$count]', eis_formula_total = '$my_eis_total[$count]' WHERE eis_formula_id = '$gr_id'");
+			$count = $count + 1;
+			}
+			$message3 = '<label class="text-success">Excel Successfully Imported</label>';
+    }
+		else {
+			$message3 = '<label class="text-danger">Kindly convert your Excel file to .xlsx to ensure Data Stability</label>';
+		}
+    	
+	}
+	
+	else{
+		$message3 = '<label class="text-danger">Please Select a File</label>';
+	}
+		
+	
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,10 +200,22 @@ $username = $_SESSION["username"];
                     <!-- EPF table -->
                         <div class="row">
                             <div class="col-12">
-                                <span style="float:right;">
+                                <span style="float:left;">
+								<form method="post" enctype="multipart/form-data">
+								<div class="custom-file mb-3">
+									<input type="file" class="custom-file-input" id="customFile" name="epf_excel" accept="xlsx">
+									<label class="custom-file-label" for="customFile">Select XLS File</label>
+								</div>
+									<input type="submit" name="import_epf" class="btn btn-info" value="Import Excel File" />
+									<div><?php echo $message1; ?></div>
+								</form>	
+									<br>
+								</span>
+								 <span style="float:right;">
                                 <form role="form" action="export_table.php" method="post">
                                     <button type="submit" class="btn btn-primary btn-block" name="export_epf">Export EPF table</button>
                                 </form>
+								
                                 </span>
                                 <div class="table-responsive">
                                     <table id="example" class="table table-striped table-bordered" width="100%">
@@ -106,6 +277,17 @@ $username = $_SESSION["username"];
                 <!-- SOCSO table -->
                     <div class="row">
                         <div class="col-12">
+							<span style="float:left;">
+								<form method="post" enctype="multipart/form-data">
+								<div class="custom-file mb-3">
+									<input type="file" class="custom-file-input" id="customFile" name="socso_excel" accept="xlsx">
+									<label class="custom-file-label" for="customFile">Select XLS File</label>
+								</div>
+									<input type="submit" name="import_socso" class="btn btn-info" value="Import Excel File" />
+									<div><?php echo $message2; ?></div>
+								</form>	
+									<br>
+								</span>
                             <span style="float:right;">
                             <form role="form" action="export_table.php" method="post">
                                 <button type="submit" class="btn btn-primary btn-block" name="export_socso">Export SOCSO table</button>
@@ -178,6 +360,19 @@ $username = $_SESSION["username"];
                 <!-- EIS table -->
                     <div class="row">
                         <div class="col-12">
+							
+							<span style="float:left;">
+								<form method="post" enctype="multipart/form-data">
+								<div class="custom-file mb-3">
+									<input type="file" class="custom-file-input" id="customFile" name="eis_excel" accept="xlsx">
+									<label class="custom-file-label" for="customFile">Select XLS File</label>
+								</div>
+									<input type="submit" name="import_eis" class="btn btn-info" value="Import Excel File" />
+									<div><?php echo $message2; ?></div>
+								</form>	
+									<br>
+								</span>
+							
                             <span style="float:right;">
                             <form role="form" action="export_table.php" method="post">
                                 <button type="submit" class="btn btn-primary btn-block" name="export_eis">Export EIS table</button>
