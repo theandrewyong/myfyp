@@ -50,20 +50,35 @@ $username = $_SESSION["username"];
                         $month = "";
                         $year = "";
                         $view_table = FALSE;
+                        $ppresult = FALSE;
                         if(isset($_POST["submit"])){
                             
                             $month = $_POST["month"];
                             $year = $_POST["year"]; 
-                            $select_sql = mysqli_query($conn, "SELECT process_payroll.*, process_payroll.epf_employee_deduction as ppeed, process_payroll.epf_employer_deduction as pperd, process_adhoc.epf_employee_deduction as paeed, process_adhoc.epf_employer_deduction as paerd, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id INNER JOIN process_adhoc ON process_adhoc.emp_id = process_payroll.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
-							
+                            $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
+
+							$select_adhoc_sql = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_process_month = '$month' AND process_adhoc_process_year = '$year'");
+                            
 							//validate
 							$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
+							$validate2 = mysqli_query($conn, "SELECT * FROM process_adhoc");
+                            
 							while($validation = mysqli_fetch_assoc($validate)){
 								if ($validation["process_payroll_process_month"]==$month && $validation["process_payroll_process_year"]==$year){
 									$view_table = TRUE;
 								}
 							}
+                            
+							while($validation2 = mysqli_fetch_assoc($validate2)){
+								if ($validation2["process_adhoc_process_month"]==$month && $validation2["process_adhoc_process_year"]==$year){
+									$view_table = TRUE;
+								}
+							}                            
+                                                        
                         }
+                        
+                        
+                        
                         ?>
                         <p><a target="_blank" href="epf_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a></p>
                     </div>
@@ -83,21 +98,64 @@ $username = $_SESSION["username"];
                         <?php
                         $total_epf_employee_deduction = 0;
                         $total_epf_employer_deduction = 0;
-                        if($view_table){
+  
+                            
+                        
+                        if($view_table == TRUE){
+                            //adhoc only    
+                            if(mysqli_num_rows($select_sql) == 0){
+       
+                                while($select_adhoc_result = mysqli_fetch_assoc($select_adhoc_sql)){
+                                    $epf_employee_deduction = $select_adhoc_result["epf_employee_deduction"];
+                                    $epf_employer_deduction = $select_adhoc_result["epf_employer_deduction"];  
+                                    
+                                    $total_epf_employee_deduction = $total_epf_employee_deduction + $epf_employee_deduction;
+                                    $format_total_epf_employee_deduction = number_format ("$total_epf_employee_deduction",2);
+
+                                    $total_epf_employer_deduction = $total_epf_employer_deduction + $epf_employer_deduction;
+                                    $format_total_epf_employer_deduction = number_format("$total_epf_employer_deduction",2);                                    
+                                    
+                                    echo '<tr>';
+                                    echo '<td>' . $select_adhoc_result["emp_full_name"] . '</td>';
+                                    echo '<td>' . $epf_employee_deduction . '</td>';
+                                    echo '<td>' . $epf_employer_deduction . '</td>';
+                                    echo '</tr>';
+                                }
+                                
+                            }else{
+  
+                            //month end + adhoc
                             while($select_result = mysqli_fetch_assoc($select_sql)){
-                                $epf_employee_deduction = $select_result["ppeed"] + $select_result["paeed"];
-                                $epf_employer_deduction = $select_result["pperd"] + $select_result["paerd"];
+                                $epf_employee_deduction = $select_result["epf_employee_deduction"];
+                                $epf_employer_deduction = $select_result["epf_employer_deduction"];
+                                $pp_emp_id = $select_result["emp_id"];
+                                //get adhoc info
+                                $select_adhoc_sql = mysqli_query($conn, "SELECT * FROM process_adhoc WHERE process_adhoc_process_month = '$month' AND process_adhoc_process_year = '$year' AND emp_id = '$pp_emp_id'");
+                                $get_adhoc_result = mysqli_fetch_assoc($select_adhoc_sql);
+                                $adhoc_epf_employee_deduction = $get_adhoc_result["epf_employee_deduction"];
+                                $adhoc_epf_employer_deduction = $get_adhoc_result["epf_employer_deduction"];
+                                
+                                $final_epf_employee_deduction = $epf_employee_deduction + $adhoc_epf_employee_deduction;
+                                $final_epf_employer_deduction = $epf_employer_deduction + $adhoc_epf_employer_deduction;
+                                
                                 echo '<tr>';
                                 echo '<td>' . $select_result["emp_full_name"] . '</td>';
-                                echo '<td>' . $epf_employee_deduction . '</td>';
-                                echo '<td>' . $epf_employer_deduction . '</td>';
+                                echo '<td>' . number_format($final_epf_employee_deduction, 2) . '</td>';
+                                echo '<td>' . number_format($final_epf_employer_deduction, 2) . '</td>';
                                 echo '</tr>'; 
                                 $total_epf_employee_deduction = $total_epf_employee_deduction + $epf_employee_deduction;
 								$format_total_epf_employee_deduction = number_format ("$total_epf_employee_deduction",2);
 								
                                 $total_epf_employer_deduction = $total_epf_employer_deduction + $epf_employer_deduction;
 								$format_total_epf_employer_deduction = number_format("$total_epf_employer_deduction",2);
-                            }                    
+                                
+
+                            }
+
+                            }
+                            
+                           
+                    
                         }
                         ?> 
                             <tr>

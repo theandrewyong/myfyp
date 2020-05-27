@@ -41,6 +41,11 @@ $username = $_SESSION["username"];
                     <!-- EPF table -->
                         <div class="row">
                             <div class="col-12">
+                                <span style="float:right;">
+                                <form role="form" action="export_table.php" method="post">
+                                    <button type="submit" class="btn btn-primary btn-block" name="export_epf">Export EPF table</button>
+                                </form>
+                                </span>
                                 <div class="table-responsive">
                                     <table id="example" class="table table-striped table-bordered" width="100%">
                                         <thead>
@@ -94,15 +99,18 @@ $username = $_SESSION["username"];
                         </div>    
                     <!-- EPF table end -->
 						<br/>
-						<form role="form" action="export_table.php" method="post">
-							<button type="submit" class="btn btn-primary btn-block" name="export_epf">Export EPF table</button>
-						</form>
+
 						
                     </div>
                 <div id="profile" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-1 py-3">
                 <!-- SOCSO table -->
                     <div class="row">
                         <div class="col-12">
+                            <span style="float:right;">
+                            <form role="form" action="export_table.php" method="post">
+                                <button type="submit" class="btn btn-primary btn-block" name="export_socso">Export SOCSO table</button>
+                            </form>
+                            </span>                            
                             <div class="table-responsive">
                                 <table id="example3" class="table table-striped table-bordered" width="100%">
                                     <thead>
@@ -148,20 +156,33 @@ $username = $_SESSION["username"];
                                     }
                                     ?>            
                                     </tbody>
+                                    <tfoot>
+                                    <tr>
+                                    <th>Wages Start With</th>
+                                    <th>Wages End With</th>
+                                    <th>Employee Share</th>
+                                    <th>Employer Share</th>
+                                    <th>Total</th>
+                                    <th>Employer Contribution</th>
+                                    </tr>
+                                    </tfoot>                                    
                                 </table>
                             </div>        
                         </div>
                     </div>    
                 <!-- SOCSO table end --> 
 					<br/>
-					<form role="form" action="export_table.php" method="post">
-						<button type="submit" class="btn btn-primary btn-block" name="export_socso">Export SOCSO table</button>
-					</form>
+
                 </div>
                 <div id="profile1" role="tabpanel" aria-labelledby="profile1-tab" class="tab-pane fade px-1 py-3">
                 <!-- EIS table -->
                     <div class="row">
                         <div class="col-12">
+                            <span style="float:right;">
+                            <form role="form" action="export_table.php" method="post">
+                                <button type="submit" class="btn btn-primary btn-block" name="export_eis">Export EIS table</button>
+                            </form>
+                            </span>                             
                             <div class="table-responsive">
                                 <table id="example2" class="table table-striped table-bordered" width="100%">
                                     <thead>
@@ -203,15 +224,22 @@ $username = $_SESSION["username"];
                                 }
                                 ?>            
                                 </tbody>
+                                    <tfoot>
+                                    <tr>
+                                    <th>Wages Start With</th>
+                                    <th>Wages End With</th>
+                                    <th>Employee EIS</th>
+                                    <th>Employer EIS</th>
+                                    <th>Total</th>
+                                    </tr>
+                                    </tfoot>                                      
                                 </table>
                             </div>        
                         </div>
                     </div>    
                 <!-- EIS table end -->  
 					<br/>
-					<form role="form" action="export_table.php" method="post">
-						<button type="submit" class="btn btn-primary btn-block" name="export_eis">Export EIS table</button>
-					</form>
+
                 </div>
                 </div>
             </div> 
@@ -220,7 +248,9 @@ $username = $_SESSION["username"];
 </div>
 <style>
   
-
+    .ggwp {
+        width: 100%;
+    }
     
     </style>
 <script src="vendor/jquery/jquery.min.js"></script>
@@ -260,7 +290,8 @@ $(document).ready(function() {
                             .search( this.value )
                             .draw();
                     }
-                } );
+                } ).addClass('ggwp');
+                $('#example tfoot tr').appendTo('#example thead');
             } );
         }
     });
@@ -269,20 +300,13 @@ $(document).ready(function() {
 } );    
 
 
-    
-/*$(document).ready( function() {
-    $('#example').dataTable( {
-        responsive: true,
-        language: {
-        search: "",
-        "lengthMenu": "_MENU_",
-        searchPlaceholder: "Search records"
-        },
-        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
-    } );   
-} );
-*/
 $(document).ready( function() {
+    $('#example2 tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+     
+    
     $('#example2').dataTable( {
         responsive: true,
         language: {
@@ -290,11 +314,32 @@ $(document).ready( function() {
         "lengthMenu": "_MENU_",
         searchPlaceholder: "Search records"
         },
-        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
+        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">',
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } ).addClass('ggwp');
+                $('#example2 tfoot tr').appendTo('#example2 thead');
+            } );
+        }
         } );   
 } );
 
 $(document).ready( function() {
+    $('#example3 tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+     
+    
     $('#example3').dataTable( {
         responsive: true,
         language: {
@@ -302,7 +347,22 @@ $(document).ready( function() {
         "lengthMenu": "_MENU_",
         searchPlaceholder: "Search records"
         },
-        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
+        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">',
+        initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } ).addClass('ggwp');
+                $('#example3 tfoot tr').appendTo('#example3 thead');
+            } );
+        }        
     } );   
 } );
 </script>

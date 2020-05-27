@@ -93,7 +93,7 @@ error_reporting(0);
                             $get_specific_result = mysqli_fetch_assoc($specific_emp_sql);
                             
                             //specific data into variables (for new employee info table, only wage and allowance)
-                            $emp_wages = $get_specific_result["emp_wages"]; //wages
+                            
                             //$emp_bonus = $get_specific_result["process_payroll_bonus"]; //bonus
                             $emp_allowance = $get_specific_result["emp_total_allowance"]; //allowance
                             $emp_deduction = $get_specific_result["emp_total_deduction"]; //allowance
@@ -102,6 +102,7 @@ error_reporting(0);
                             //$emp_unpaid_leave = $get_specific_result["process_payroll_unpaid_leave"]; //unpaid leave
                             //$emp_others = $get_specific_result["process_payroll_others"]; //others
                             //$emp_overtime = $get_specific_result["process_payroll_overtime"]; //overtime
+                            $emp_wages = $get_specific_result["emp_wages"]; //wages
                             //end specific data into variables                            
                             
                             $ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
@@ -138,7 +139,7 @@ error_reporting(0);
                                             $es_start = $es["eis_formula_wage_start"]; //get eis starting wages value
                                             $es_end = $es["eis_formula_wage_end"]; //get eis ending wages value
                                             //count eis contribution
-                                            $eis_contribution = $emp_wages;
+                                            $eis_contribution = $emp_wages + $emp_allowance - $emp_deduction;
                                             
                                             //if eis contribution is in between start and end wages in view table
                                             if(($eis_contribution >= $es_start) && ($eis_contribution <= $es_end)){
@@ -150,6 +151,7 @@ error_reporting(0);
                                                 
                                                 //count net pay for insert
                                                 $process_payroll_net_pay = $emp_wages + $emp_allowance - $emp_deduction - $epf_employee_deduction - $socso_employee_deduction - $eis_employee_deduction;
+                                                
                                                 //get emp display id from employee info table
                                                 $emp_display_id_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '${"check_ca$i"}'"); 
                                                 $emp_display_id_result = mysqli_fetch_assoc($emp_display_id_sql);

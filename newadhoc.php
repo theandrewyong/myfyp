@@ -217,11 +217,11 @@ if(isset($_POST["submit"])){
                                                 
                                                 if(mysqli_num_rows($to_process_sql) >= 0){
 
-                                                    $adhoc_pending_list_sql = mysqli_query($conn, "SELECT * FROM adhoc_pending");
+                                                    $adhoc_pending_list_sql = mysqli_query($conn, "SELECT adhoc_pending.*, employee_info.* FROM adhoc_pending INNER JOIN employee_info ON adhoc_pending.emp_id = employee_info.emp_id");
                                                     while($result = mysqli_fetch_assoc($adhoc_pending_list_sql)){
                                                         $ccb++;
                                                         echo "<tr>";
-                                                        echo "<td>" . $result["emp_id"] . "</td>";
+                                                        echo "<td>" . $result["emp_display_id"] . "</td>";
                                                         echo "<td>" . $result["emp_full_name"] . "</td>";
                                                         echo "<td>" . '<input value="' . $result["emp_id"] . '" type="checkbox" name="cb' . $ccb . '" checked>' . "</td>";
                                                         echo "</tr>"; 
