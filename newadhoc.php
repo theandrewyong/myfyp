@@ -263,7 +263,7 @@ if(isset($_POST["submit"])){
                                         </thead>
                                         <tbody>
                                         <?php
-                                        $adhoc_pending_sql = "SELECT adhoc_pending.*, employee_info.* FROM adhoc_pending INNER JOIN employee_info ON adhoc_pending.emp_id = employee_info.emp_id";
+                                        $adhoc_pending_sql = "SELECT adhoc_pending.*, employee_info.* FROM adhoc_pending INNER JOIN employee_info ON adhoc_pending.emp_id = employee_info.emp_id WHERE adhoc_status = 'PENDING'";
                                         $epf_formula_prepared_stmt_insert = mysqli_prepare($conn, $adhoc_pending_sql);
                                         mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
                                         $epf_result = $epf_formula_prepared_stmt_insert->get_result(); 
