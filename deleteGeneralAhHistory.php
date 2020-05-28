@@ -3,6 +3,10 @@
     //get current username
     $username_id = $_SESSION["username_id"];
     include "conn.php";
+if(empty($_SESSION["username"])){
+header("location:index.php");
+}
+
     $get_month = $_GET["month"];
     $get_year = $_GET["year"];
 

@@ -4,6 +4,10 @@ include "conn.php";
 if(empty($_SESSION["username"])){
     header("location:index.php");
 }
+
+if($_SESSION["permission"] != 1){
+    header("location:index.php");
+}
 $username = $_SESSION["username"];
 
 $error = FALSE;

@@ -3,6 +3,10 @@
     //get current username
     $username_id = $_SESSION["username_id"];
     include "conn.php";
+if(empty($_SESSION["username"])){
+header("location:index.php");
+}
+
     $get_id = $_GET["id"];
     //select all admins
     //echo $get_id;

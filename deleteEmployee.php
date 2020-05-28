@@ -3,6 +3,10 @@
     //get current username
     $username_id = $_SESSION["username_id"];
     include "conn.php";
+
+if(empty($_SESSION["username"])){
+header("location:index.php");
+}
     $get_id = $_GET["id"];
 
     $delete_sql = mysqli_query($conn, "DELETE FROM employee_info WHERE emp_id = '$get_id'");

@@ -1,6 +1,9 @@
 <?php
     session_start();
     include "conn.php";
+if(empty($_SESSION["username"])){
+header("location:index.php");
+}
     $deduction_id = $_GET["id"];
     $deduction_desc = $_GET["desc"];
     $deduction_sql = mysqli_query($conn, "UPDATE deduction SET deduction_desc = '$deduction_desc' WHERE deduction_id = '$deduction_id'");

@@ -34,7 +34,7 @@ if(isset($_POST["submit"])){
 }
 
 //select all existing adhoc pending
-$select_all_sql = mysqli_query($conn, "SELECT * FROM adhoc_pending");
+$select_all_sql = mysqli_query($conn, "SELECT * FROM adhoc_pending WHERE adhoc_id = '$get_adhoc_id'");
 $specific_result = mysqli_fetch_assoc($select_all_sql);
 
 $s_name = $specific_result["emp_full_name"];

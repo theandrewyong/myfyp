@@ -1,5 +1,8 @@
 <?php
 include "conn.php";
+if(empty($_SESSION["username"])){
+header("location:index.php");
+}
 ?>
 <h1>SOCSO calculations</h1>
 <?php

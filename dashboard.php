@@ -4,6 +4,7 @@ include "conn.php";
 if(empty($_SESSION["username"])){
 header("location:index.php");
 }
+
 $username = $_SESSION["username"];
 
 //get current month
@@ -175,20 +176,34 @@ $(window).resize(function(){
                         <tr>
                             <th>Employee ID</th>
                             <th>Employee Name</th>
+                            <th>Process Status</th>
                         </tr>
                         </thead>
                     <tbody>
                     <?php
+
                     foreach($emp_array as $ea){
                         $find_done = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll.process_payroll_process_month = '$previous_month' AND process_payroll.process_payroll_process_year = '$get_year' AND process_payroll.emp_id = '$ea'");
                         $find_done_result = mysqli_fetch_assoc($find_done);
-                        if($find_done_result){
-                        echo '<tr>';
-                        echo '<td>' . $find_done_result["emp_display_id"] . '</td>';
-                        echo '<td>' . $find_done_result["emp_full_name"] . '</td>';
-                        echo '</tr>';                            
-                        }
+                        $fdr_id = $find_done_result["emp_id"];
+                        
+                        //check with employee info    
+                        $gr = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$ea'");
+                        $gr_result = mysqli_fetch_assoc($gr);
+                        $gr_id = $gr_result["emp_id"];
+                        $gr_disp = $gr_result["emp_display_id"];
+                        $gr_name = $gr_result["emp_full_name"];
 
+                        echo '<tr>';
+                        echo '<td>' . $gr_disp . '</td>';
+                        echo '<td>' . $gr_name . '</td>';
+                        if($gr_id == $fdr_id){
+                            echo '<td style="color:green;">' . 'Processed' . '</td>';    
+                        }else{
+                            echo '<td style="color:red;">' . 'Not Processed' . '</td>';
+                        }
+                        echo '</tr>';                            
+                        
                     }       
                     ?>
                     </tbody>
@@ -208,13 +223,11 @@ $(window).resize(function(){
                     <th>AdHoc Type</th>
                     <th>Amount</th>
                     <th>Status</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
             <?php
-            $adhoc_pending_sql = "SELECT adhoc_pending.*, employee_info.* FROM adhoc_pending INNER JOIN employee_info ON adhoc_pending.emp_id = employee_info.emp_id";
+            $adhoc_pending_sql = "SELECT adhoc_pending.*, employee_info.* FROM adhoc_pending INNER JOIN employee_info ON adhoc_pending.emp_id = employee_info.emp_id WHERE adhoc_status = 'PENDING'";
             $epf_formula_prepared_stmt_insert = mysqli_prepare($conn, $adhoc_pending_sql);
             mysqli_stmt_execute($epf_formula_prepared_stmt_insert);
             $epf_result = $epf_formula_prepared_stmt_insert->get_result(); 
@@ -226,11 +239,13 @@ $(window).resize(function(){
                     echo '<tr>';
                     echo '<td>' . $data["emp_display_id"] . '</td>';
                     echo '<td>' . $data["emp_full_name"] . '</td>';
-                    echo '<td>' . "bonus" . '</td>';
+                    echo '<td>' . $data["adhoc_type"] . '</td>';
                     echo '<td>' . $data["adhoc_amt"] . '</td>';
-                    echo '<td>' . $data["adhoc_status"] . '</td>';
-                    echo '<td>' . '<a class="btn btn-primary" href="editadhocpending.php?adhoc_id=' . $adhoc_id . '">Edit</a>' . '</td>';
-                    echo '<td>' . '<a class="btn btn-danger" href="newadhoc.php?delete_adhoc_id=' . $delete_adhoc_id . '" onclick="return confirm(\'Confirm Delete?\');">Delete</a>' . '</td>';
+                    if( $data["adhoc_status"] == 'PENDING'){
+                        echo '<td style="color:red;">' . $data["adhoc_status"] . '</td>';
+                    }else{
+                        echo '<td style="color:green;">' . $data["adhoc_status"] . '</td>';
+                    }
                     echo '</tr>';
                 }
             }

@@ -1,5 +1,8 @@
 <?php
 include "conn.php";
+if(empty($_SESSION["username"])){
+header("location:index.php");
+}
 $mydemo = '<p id="demo"></p>';
 if(isset($_POST["submit"])){
     $mydemo = '<p id="demo"></p>';
