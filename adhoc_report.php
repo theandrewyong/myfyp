@@ -38,33 +38,9 @@
 <div class="container-fluid">
 <h1 class="mt-4">Adhoc Report</h1>
 <hr>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="p-3 bg-white rounded shadow mb-5">
-            <form action="adhoc_report.php" method="post" enctype="multipart/form-data" autocomplete="off">
-                <div class="row">
-                <div class="col-md-6">
-                <div class="form-group">
-                <label for="month">Month</label>
-                    <input type="text" class="form-control" id="month" name="month" value="<?php echo (int)date("m"); ?>">
-                </div>
-                </div>
-                <div class="col-md-6">
-                <div class="form-group">
-                    <label for="year">Year</label>
-                    <input type="text" class="form-control" id="year" name="year" value="<?php echo date("Y"); ?>">
-                </div>
-                </div>
-                </div>
-                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-            </form>            
-            </div>        
-        </div>
-        <div class="col-md-6">
-            <div class="p-3 bg-white rounded shadow mb-5">
             <?php
-                $month = "";
-                $year = "";
+                $month = (int)date("m");
+                $year = date("Y");
                 $view_table = FALSE;
                 if(isset($_POST["submit"])){
  
@@ -82,7 +58,32 @@
 					}
                 }
                 
-            ?>
+            ?>    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded shadow mb-5">
+            <form action="adhoc_report.php" method="post" enctype="multipart/form-data" autocomplete="off">
+                <div class="row">
+                <div class="col-md-6">
+                <div class="form-group">
+                <label for="month">Month</label>
+                    <input type="number" class="form-control" id="month" name="month" value="<?php echo $month ?>">
+                </div>
+                </div>
+                <div class="col-md-6">
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <input type="number" class="form-control" id="year" name="year" value="<?php echo $year ?>">
+                </div>
+                </div>
+                </div>
+                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+            </form>            
+            </div>        
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded shadow mb-5">
+
             <p><a target="_blank" href="adhoc_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a></p>
             </div>
         </div>

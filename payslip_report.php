@@ -38,6 +38,27 @@
 <div class="container-fluid">
 <h1 class="mt-4">Payslip Report</h1>
 <hr>
+<?php
+    $month = (int)date("m");
+    $year = date("Y");
+    $view_table = FALSE;
+    if(isset($_POST["submit"])){
+
+        $month = $_POST["month"];
+        $year = $_POST["year"]; 
+
+        $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
+
+        //validate
+        $validate = mysqli_query($conn, "SELECT * FROM process_payroll");
+        while($validation = mysqli_fetch_assoc($validate)){
+            if ($validation["process_payroll_process_month"]==$month && $validation["process_payroll_process_year"]==$year){
+                $view_table = TRUE;
+            }
+        }
+    }
+
+?>    
     <div class="row">
         <div class="col-md-6">
             <div class="p-3 bg-white rounded shadow mb-5">
@@ -46,13 +67,13 @@
                 <div class="col-md-6">
                 <div class="form-group">
                 <label for="month">Month</label>
-                    <input type="text" class="form-control" id="month" name="month" value="<?php echo (int)date("m"); ?>">
+                    <input type="number" class="form-control" id="month" name="month" value="<?php echo $month; ?>">
                 </div>
                 </div>
                 <div class="col-md-6">
                 <div class="form-group">
                     <label for="year">Year</label>
-                    <input type="text" class="form-control" id="year" name="year" value="<?php echo date("Y"); ?>">
+                    <input type="number" class="form-control" id="year" name="year" value="<?php echo $year; ?>">
                 </div>
                 </div>
                 </div>
@@ -62,27 +83,7 @@
         </div>
         <div class="col-md-6">
             <div class="p-3 bg-white rounded shadow mb-5">
-            <?php
-                $month = "";
-                $year = "";
-                $view_table = FALSE;
-                if(isset($_POST["submit"])){
-                    
-                    $month = $_POST["month"];
-                    $year = $_POST["year"]; 
-                    
-                    $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
-					
-					//validate
-					$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
-					while($validation = mysqli_fetch_assoc($validate)){
-						if ($validation["process_payroll_process_month"]==$month && $validation["process_payroll_process_year"]==$year){
-							$view_table = TRUE;
-						}
-					}
-                }
-                
-            ?>
+
             <p><a target="_blank" href="payslip_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a></p>
             </div>
         </div>

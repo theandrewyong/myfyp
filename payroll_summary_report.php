@@ -7,7 +7,7 @@ if(empty($_SESSION["username"])){
 $username = $_SESSION["username"];
 
 $month = "";
-$year = "";
+$year = date("Y");
 $view_table = FALSE;
 
 if(isset($_POST["submit"])){
@@ -47,8 +47,8 @@ while($validation = mysqli_fetch_assoc($validate)){
                         <div class="p-3 bg-white rounded shadow mb-5">
                             <form action="payroll_summary_report.php" method="post" enctype="multipart/form-data" autocomplete="off">
                             <div class="form-group">
-                                <label for="pwd">Year</label>
-                                <input type="text" class="form-control" id="year" name="year" value="<?php echo date("Y"); ?>">
+                                <label for="year">Year</label>
+                                <input type="number" class="form-control" id="year" name="year" value="<?php echo $year; ?>">
                             </div>
                             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                             </form> 

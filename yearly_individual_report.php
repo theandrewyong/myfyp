@@ -38,26 +38,8 @@
 <div class="container-fluid">
 <h1 class="mt-4">Yealy Individual Report</h1>
 <hr>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="p-3 bg-white rounded shadow mb-5">
-            <form action="yearly_individual_report.php" method="post" enctype="multipart/form-data" autocomplete="off">
-                <div class="row">
-                <div class="col-12">
-                <div class="form-group">
-                    <label for="pwd">Year</label>
-                    <input type="text" class="form-control" id="year" name="year" value="<?php echo date("Y"); ?>">
-                </div>
-                </div>
-                </div>
-                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-            </form>            
-            </div>        
-        </div>
-        <div class="col-md-6">
-            <div class="p-3 bg-white rounded shadow mb-5">
             <?php
-                $year = "";
+                $year = date("Y");
                 $view_table = FALSE;
                 if(isset($_POST["submit"])){
                     $year = $_POST["year"]; 
@@ -80,7 +62,26 @@
 					}
 
 				}
-            ?>
+            ?>    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded shadow mb-5">
+            <form action="yearly_individual_report.php" method="post" enctype="multipart/form-data" autocomplete="off">
+                <div class="row">
+                <div class="col-12">
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <input type="number" class="form-control" id="year" name="year" value="<?php echo $year; ?>">
+                </div>
+                </div>
+                </div>
+                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+            </form>            
+            </div>        
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 bg-white rounded shadow mb-5">
+
 				
             <p><a target="_blank" href="yearly_individual_report_pdf.php?year=<?php echo $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a></p>
             </div>

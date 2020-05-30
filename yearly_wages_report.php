@@ -24,15 +24,42 @@ $username = $_SESSION["username"];
         <div class="container-fluid">
             <h1 class="mt-4">Yearly Wages Report</h1>
             <hr>
+            <?php
+            $month = "";
+            $year = date("Y");
+            $view_table = FALSE;
+
+            if(isset($_POST["submit"])){
+                $year = $_POST["year"]; 
+                $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_year = '$year'"); 
+
+                //validate
+                $validate = mysqli_query($conn, "SELECT * FROM process_payroll");
+                while($validation = mysqli_fetch_assoc($validate)){
+                    if ($validation["process_payroll_process_year"]==$year){
+                        $view_table = TRUE;
+                    }
+                }
+            }
+            $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
+            while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
+                $specific_month = $select_result["process_payroll_process_month"];
+                $specific_year = $select_result["process_payroll_process_year"];
+                $specific_month_array[] = $specific_month;
+                $specific_year_array[] = $specific_year;                    
+            }
+            $unique_month_array = array_unique($specific_month_array);
+            $unique_year_array = array_unique($specific_year_array);                
+            ?>            
             <div class="row">
                 <div class="col-md-6">
                     <div class="p-3 bg-white rounded shadow mb-5">
                         <form action="yearly_wages_report.php" method="post" enctype="multipart/form-data" autocomplete="off">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="pwd">Year</label>
-                                        <input type="text" class="form-control" id="year" name="year" value="<?php echo date("Y"); ?>">
+                                        <label for="year">Year</label>
+                                        <input type="number" class="form-control" id="year" name="year" value="<?php echo $year; ?>">
                                     </div>
                                 </div>
                             </div>
@@ -42,33 +69,7 @@ $username = $_SESSION["username"];
                 </div>
                 <div class="col-md-6">
                     <div class="p-3 bg-white rounded shadow mb-5">           
-                    <?php
-                    $month = "";
-                    $year = "";
-                    $view_table = FALSE;
-						
-                    if(isset($_POST["submit"])){
-                        $year = $_POST["year"]; 
-                        $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_year = '$year'"); 
-						
-						//validate
-						$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
-						while($validation = mysqli_fetch_assoc($validate)){
-							if ($validation["process_payroll_process_year"]==$year){
-								$view_table = TRUE;
-							}
-						}
-                    }
-                    $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
-                    while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
-                        $specific_month = $select_result["process_payroll_process_month"];
-                        $specific_year = $select_result["process_payroll_process_year"];
-                        $specific_month_array[] = $specific_month;
-                        $specific_year_array[] = $specific_year;                    
-                    }
-                    $unique_month_array = array_unique($specific_month_array);
-                    $unique_year_array = array_unique($specific_year_array);                
-                    ?>
+
                     <p><a target="_blank" href="yearly_wages_report_pdf.php?month=<?php echo $month . '&year=' . $year;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Download as PDF</a></p>
                     </div>
                 </div>

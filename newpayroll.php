@@ -31,7 +31,12 @@ error_reporting(0);
 
             <p id="guide_new_payroll">
             
+                
+                
             <?php
+            $process_date_month = (int)date("m");
+            $process_date_year = date("Y");                
+                
             if(isset($_POST["check"])){
                 
                 $check_month = $_POST["process_payroll_process_month"];
@@ -193,7 +198,6 @@ error_reporting(0);
                 <p>Select the month and year to process, click check</p>
                 <p>Tick or Untick employee to process</p>
                 <p>Edit employee overtime, etc with the edit button</p>
-                <p>If all is correct, click process at the bottom</p>
               </div>
               <div class="modal-footer">
                   <a href="" class="btn btn-primary" id="g1" data-dismiss="modal">Continue</a>
@@ -215,7 +219,7 @@ error_reporting(0);
                             </div>                
                             <div class="col-md-6 col-12">
                                 <label for="">Year</label>
-                                <input type="text" name="process_payroll_process_year" class="form-control" value="<?php echo $process_date_year; ?>">
+                                <input type="number" name="process_payroll_process_year" class="form-control" value="<?php echo $process_date_year; ?>">
                             </div>
                         </div>
                         <br>

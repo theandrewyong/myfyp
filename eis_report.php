@@ -9,8 +9,8 @@ $username = $_SESSION["username"];
 ?>
 
 <?php
-$month = "";
-$year = "";
+$month = (int)date("m");
+$year = date("Y");
 $view_table = FALSE;
 
 if(isset($_POST["submit"])){
@@ -53,14 +53,14 @@ while($validation = mysqli_fetch_assoc($validate)){
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="email">Month</label>
-                                    <input type="text" class="form-control" id="month" name="month" value="<?php echo (int)date("m"); ?>">
+                                    <label for="month">Month</label>
+                                    <input type="number" class="form-control" id="month" name="month" value="<?php echo $month; ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="pwd">Year</label>
-                                    <input type="text" class="form-control" id="year" name="year" value="<?php echo date("Y"); ?>">
+                                    <label for="year">Year</label>
+                                    <input type="number" class="form-control" id="year" name="year" value="<?php echo $year; ?>">
                                 </div>
                             </div>
                         </div>

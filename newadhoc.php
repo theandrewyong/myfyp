@@ -8,8 +8,8 @@ $username = $_SESSION["username"];
 
 
 $process_date = date("Y-m-d");
-$process_date_month = 5;
-$process_date_year = 2020;
+$process_date_month = (int)date("m");
+$process_date_year = date("Y");
 $ccb = 0; //checkbox variable
 $ecount = 0;
 $all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
@@ -133,7 +133,7 @@ if(isset($_POST["submit"])){
                                     </div>                
                                     <div class="col-md-6 col-12">
                                         <label for="">Year</label>
-                                        <input type="text" name="process_adhoc_process_year" class="form-control" value="<?php echo $process_date_year; ?>">
+                                        <input type="number" name="process_adhoc_process_year" class="form-control" value="<?php echo $process_date_year; ?>">
                                     </div>
                                 </div>
                                 <div class="row">
