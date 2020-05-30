@@ -89,6 +89,57 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
 <?php include "all_css.php"; ?>
 </head>
 <body>
+    
+    
+    
+
+
+
+<div id="tallModal" class="modal modal-wide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title">Process Payroll?</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>To process payroll with guidance, Press Proceed</p>
+        <p>To process manually, Press cancel</p>
+      </div>
+      <div class="modal-footer">
+          <a href="" class="btn btn-danger" data-dismiss="modal">Cancel</a>
+          <a href="" class="btn btn-primary" id="save" data-dismiss="modal">Proceed</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+   
+    
+    
+<div id="guide1" class="modal modal-wide fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title">Step 1: Maintain Employee</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>If No changes to be made in Maintain Employee, Press Proceed</p>
+        <p>To Check or Edit Employee, Press Check. After finish editing employee, go to New Payroll on the left side of sidebar</p>
+      </div>
+      <div class="modal-footer">
+          <a href="" class="btn btn-danger" data-dismiss="modal">Check / Edit Employee</a>
+          <a href="" class="btn btn-primary" id="g1" data-dismiss="modal">Proceed</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal --> 
+    
+    
 <div class="d-flex" id="wrapper">
 <?php include "sidebar.php"; ?>
     <div id="page-content-wrapper">
@@ -329,6 +380,23 @@ $(document).ready( function() {
 if ( window.history.replaceState ) {
     window.history.replaceState( null, null, window.location.href );
 }
+    
+ 
+$(window).on('load',function(){
+  if (!sessionStorage.getItem('shown-modal')){
+    $('#tallModal').modal('show');
+    sessionStorage.setItem('shown-modal', 'true');
+  }
+});
+    
+
+    
+
+
+
+
+   
 </script>
+
 </body>
 </html>

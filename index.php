@@ -46,7 +46,7 @@
                     $_SESSION["username"] = $result["username"];
                     $_SESSION["permission"] = $result["permission"];
                     $_SESSION["username_id"] = $result["username_id"];
-                    header("location:dashboard.php");
+                    header("location:maintainemployee.php");
                 }else{
                     
                     $errorMsg = "Wrong password!";
@@ -98,3 +98,7 @@
 </body>
 	
 </html>
+<script>
+ localStorage.clear();
+    sessionStorage.clear();
+</script>

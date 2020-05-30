@@ -43,8 +43,6 @@
     ?>
     <div class="list-group list-group-flush">
 
-    <a href="dashboard.php" class="<?php if($dashboard){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Dashboard</a>
-
     <a href="maintainemployee.php" class="<?php if($maintain_employee){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Maintain Employee</a>
 
     <a href="newpayroll.php" class="<?php if($new_payroll){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">New Payroll</a> 
@@ -56,6 +54,8 @@
     <a href="reports.php" class="<?php if($reports){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Reports</a>
 
     <a href="view.php" class="<?php if($view){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">View</a>
+        
+    <a href="dashboard.php" class="<?php if($dashboard){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Dashboard</a>        
 
     <a href="adminpanel.php" class="<?php if($admin_panel){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Admin Panel</a> 
         
@@ -64,3 +64,33 @@
     </div>
 </div>
 
+<script>
+    
+var save_button = document.getElementById('save')
+save_button.onclick = saveData;
+
+function saveData(){
+  //var input = document.getElementById("saveServer");
+    var input = 'guide';
+  localStorage.setItem("guidelines", input.value);
+  var storedValue = localStorage.getItem("guidelines");
+    //document.getElementById("myDialog").showModal(); 
+    $('#guide1').modal('show'); 
+}
+    
+var save_button1 = document.getElementById('g1')
+save_button1.onclick = saveData1;    
+    
+function saveData1(){
+    window.location.href = "newpayroll.php";
+    $('#guide1').modal('show'); 
+}
+    
+    
+    if (localStorage.getItem("guidelines") !== null) {
+        //if user press proceed guidelines, show guidance div
+       // alert("x");
+        //$('#myModal').modal('show'); 
+    }
+    
+</script>

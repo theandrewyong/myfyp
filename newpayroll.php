@@ -22,6 +22,16 @@ error_reporting(0);
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
             <h1 class="mt-4">New Payroll</h1>
+            <script>
+            if (localStorage.getItem("guidelines") !== null) {
+            document.write('<div class="p-3 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Maintain Employee</a><b> ></b><a class="btn btn-primary" href="newpayroll.php">New Payroll</a></div>');
+            }
+            </script>
+            
+           
+            
+            
+             
             <?php
             if(isset($_POST["check"])){
                 
@@ -158,6 +168,7 @@ error_reporting(0);
                                                 $emp_display_id = $emp_display_id_result["emp_display_id"];
                                                 
                                                 $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, emp_display_id,  process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, process_payroll_deduction, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction, socso_employee_contribution, process_payroll_net_pay) VALUES ('${"check_ca$i"}', '$emp_display_id', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$additional_emp_deduction', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction', '$sc_employee_contribution', '$process_payroll_net_pay')"); 
+                                                header("location:historydetails.php?month=$process_date_month&year=$process_date_year");
                                             }
                                         }                                                            
                                     }
@@ -253,6 +264,7 @@ error_reporting(0);
                                             <tr>
                                                 <th>Employee ID</th>
                                                 <th>Employee Name</th>
+                                                <th>Edit</th>
                                                 <th>To process</th>
                                             </tr>
                                         </thead>                                
@@ -267,6 +279,7 @@ error_reporting(0);
                                                 echo "<tr>";
                                                 echo "<td>" . $get_name_result["emp_display_id"] . "</td>";
                                                 echo "<td>" . $get_name_result["emp_full_name"] . "</td>";
+                                                echo "<td>" . '<a href="pre_process.php?pid=' . $get_name_result["emp_id"] . '">Edit</a>' . "</td>";
                                                 echo "<td>" . '<input value="' . $get_name_result["emp_id"] . '" type="checkbox" name="cb' . $ccb . '" checked>' . "</td>";
                                                 echo "</tr>";                                   
                                             }                                            
@@ -314,6 +327,16 @@ $(document).ready( function() {
 if ( window.history.replaceState ) {
     window.history.replaceState( null, null, window.location.href );
 }
+
+    
+$(window).on('load',function(){
+  if (!sessionStorage.getItem('shown-modal')){
+    $('#tallModal').modal('show');
+    sessionStorage.setItem('shown-modal', 'true');
+  }
+});
+        
+    
 </script>
 </body>
 </html>

@@ -23,6 +23,11 @@ $get_year = $_GET["year"];
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
             <h1 class="mt-4">Payroll History Details</h1>
+            <div class="p-3 bg-white rounded shadow mb-1">
+            <a class="btn btn-primary" href="maintainemployee.php">Maintain Employee</a><b> ></b>
+            <a class="btn btn-primary" href="newpayroll.php">New Payroll</a><b> ></b>
+            <a class="btn btn-primary" href="historydetails.php">History Details</a>
+            </div>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">
                 <div class="table-responsive">
