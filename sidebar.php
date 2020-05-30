@@ -83,14 +83,11 @@ save_button1.onclick = saveData1;
     
 function saveData1(){
     window.location.href = "newpayroll.php";
-    $('#guide1').modal('show'); 
+    $('#guide2').modal('show'); 
+   // alert("x");
 }
     
+ 
     
-    if (localStorage.getItem("guidelines") !== null) {
-        //if user press proceed guidelines, show guidance div
-       // alert("x");
-        //$('#myModal').modal('show'); 
-    }
-    
+
 </script>

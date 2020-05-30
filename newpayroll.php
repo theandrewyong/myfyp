@@ -15,18 +15,22 @@ error_reporting(0);
 <title>Payroll Software - New Payroll</title>
 <?php include "all_css.php"; ?>
 </head>
-<body>
+<body onload="myFunction()">
+    
+       
+    
 <div class="d-flex" id="wrapper">
 <?php include "sidebar.php"; ?>
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
             <h1 class="mt-4">New Payroll</h1>
+            
+  
+            
 
-           
+            <p id="guide_new_payroll">
             
-            
-             
             <?php
             if(isset($_POST["check"])){
                 
@@ -164,7 +168,7 @@ error_reporting(0);
                                                 
                                                 $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, emp_display_id,  process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, process_payroll_deduction, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction, socso_employee_contribution, process_payroll_net_pay) VALUES ('${"check_ca$i"}', '$emp_display_id', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$additional_emp_deduction', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction', '$sc_employee_contribution', '$process_payroll_net_pay')"); 
                                                 //header("location:historydetails.php?month=$process_date_month&year=$process_date_year");
-                                                //header("location:view.php");
+                                                header("location:reports.php");
                                             }
                                         }                                                            
                                     }
@@ -176,6 +180,28 @@ error_reporting(0);
             header("Refresh:0"); //refresh page after submit
             }
         ?>
+        <!-- modal must put after php refresh page, if not header wont work -->        
+        <div id="guide2" class="modal modal-wide fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+
+                <h4 class="modal-title">Step 2: New Payroll</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body">
+                <p>Select the month and year to process, click check</p>
+                <p>Tick or Untick employee to process</p>
+                <p>Edit employee overtime, etc with the edit button</p>
+                <p>If all is correct, click process at the bottom</p>
+              </div>
+              <div class="modal-footer">
+                  <a href="" class="btn btn-primary" id="g1" data-dismiss="modal">Continue</a>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->  
+            
         <hr>
         <form action="newpayroll.php" method="post" enctype="multipart/form-data">
             <div class="row">
@@ -325,14 +351,20 @@ if ( window.history.replaceState ) {
 }
 
     
-$(window).on('load',function(){
-  if (!sessionStorage.getItem('shown-modal')){
-    $('#tallModal').modal('show');
-    sessionStorage.setItem('shown-modal', 'true');
-  }
-});
+function myFunction() {
+    if (localStorage.getItem("guidelines") !== null) {
+      if (!sessionStorage.getItem('shown-modal2')){
+        $('#guide2').modal('show');
+        sessionStorage.setItem('shown-modal2', 'true');
+      }
+    }
+} 
         
+if (localStorage.getItem("guidelines") !== null) {
     
+ document.getElementById("guide_new_payroll").innerHTML = '<div class="p-3 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a><b> ></b><a class="btn btn-primary" href="newpayroll.php">Step 2: New Payroll</a></div>';
+}
+            
 </script>
 </body>
 </html>

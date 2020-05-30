@@ -132,12 +132,14 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
         <p>To Check or Edit Employee, Press Check. After finish editing employee, go to New Payroll on the left side of sidebar</p>
       </div>
       <div class="modal-footer">
-          <a href="" class="btn btn-danger" data-dismiss="modal">Check / Edit Employee</a>
+          <a href="" class="btn btn-danger" onClick="history.go(0);">Check / Edit Employee</a>
           <a href="" class="btn btn-primary" id="g1" data-dismiss="modal">Proceed</a>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal --> 
+    
+    
     
     
 <div class="d-flex" id="wrapper">
@@ -146,6 +148,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
             <h1 class="mt-4">Maintain Employee</h1>
+            <p id="guide_maintain_employee"></p>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">
                 <ul id="myTab" role="tablist" class="nav nav-tabs nav-pills flex-column flex-sm-row text-center bg-light border-0 rounded-nav">
@@ -389,13 +392,11 @@ $(window).on('load',function(){
   }
 });
     
-
+if (localStorage.getItem("guidelines") !== null) {
     
+ document.getElementById("guide_maintain_employee").innerHTML = '<div class="p-3 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a></div>';
+}    
 
-
-
-
-   
 </script>
 
 </body>

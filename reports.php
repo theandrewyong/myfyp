@@ -13,13 +13,35 @@ $username = $_SESSION["username"];
 <title>Payroll Software - Reports</title>
 <?php include "all_css.php"; ?>
 </head>
-<body>
+<body onload="myFunction();">
+        <!-- modal must put after php refresh page, if not header wont work -->        
+        <div id="guide3" class="modal modal-wide fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+
+                <h4 class="modal-title">Step 3: Reports</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body">
+                <p>To Print Payslip, click Print Payslip</p>
+                <p>To View other reports, click View all reports</p>
+              </div>
+              <div class="modal-footer">
+                  <a href="" class="btn btn-primary" id="g3" data-dismiss="modal">View All Reports</a>
+                  <a href="" class="btn btn-primary" id="ppslip" data-dismiss="modal">Print Payslip</a>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal --> 
+    
 <div class="d-flex" id="wrapper">
 <?php include "sidebar.php"; ?>
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
             <h1 class="mt-4">Reports</h1>
+            <p id="guide_reports">
             <hr>
             <div class="polaroids">
                 <div class="polaroid">
@@ -81,6 +103,25 @@ $("#menu-toggle").click(function(e) {
 e.preventDefault();
 $("#wrapper").toggleClass("toggled");
 });
+    
+function myFunction() {
+    if (localStorage.getItem("guidelines") !== null) {
+      if (!sessionStorage.getItem('shown-modal3')){
+        $('#guide3').modal('show');
+        sessionStorage.setItem('shown-modal3', 'true');
+      }
+    }
+}     
+    
+    
+if (localStorage.getItem("guidelines") !== null) {
+    
+ document.getElementById("guide_reports").innerHTML = '<div class="p-3 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a><b> ></b><a class="btn btn-primary" href="newpayroll.php">Step 2: New Payroll</a><b> ></b><a class="btn btn-primary" href="reports.php">Step 3: Reports</div>';
+}    
+    
+document.getElementById("ppslip").onclick = function () {
+    location.href = "payslip_report.php";
+}; 
 </script>
 </body>
 </html>
