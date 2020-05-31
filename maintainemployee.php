@@ -156,7 +156,7 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                         <a id="employee-tab" data-toggle="tab" href="#employee" role="tab" aria-controls="employee" aria-selected="true" class="nav-link border-0 text-uppercase font-weight-bold active">All Employee Info</a>
                     </li>
                     <li class="nav-item flex-sm-fill">
-                        <a id="allowance-tab" data-toggle="tab" href="#allowance" role="tab" aria-controls="allowance" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold false">All Allowance Info</a>
+                        <a id="allowance-tab" data-toggle="tab" href="#allowance" role="tab" aria-controls="allowance" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">All Allowance Info</a>
                     </li>
                     <li class="nav-item flex-sm-fill">
                         <a id="deduction-tab" data-toggle="tab" href="#deduction" role="tab" aria-controls="deduction" aria-selected="false" class="nav-link border-0 text-uppercase font-weight-bold">All Deduction Info</a>

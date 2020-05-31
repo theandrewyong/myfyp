@@ -51,12 +51,13 @@ if(isset($_POST["submit"])){
     while($sc = mysqli_fetch_assoc($socso_formula_sql)){
         $sc_start = $sc["socso_formula_wage_start"]; //get socso starting wages value
         $sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
-        $sc_employee_contribution = $sc["socso_formula_wage_end"]; //get socso fixed contribution value
+        
         
         //if socso contribution is in between start and end wages in view table
         if(($new_socso >= $sc_start) && ($new_socso <= $sc_end)){
         $socso_employee_deduction = $sc["socso_formula_employee_amt"]; //get employee socso deduction value
-        $socso_employer_deduction = $sc["socso_formula_employer_contribution"]; //get employer socso deduction value
+        $socso_employer_deduction = $sc["socso_formula_employer_amt"]; //get employer socso deduction value
+        $sc_employee_contribution = $sc["socso_formula_employer_contribution"]; //get socso fixed contribution value
         }
     }
     //count eis contribution
@@ -296,9 +297,31 @@ $("#menu-toggle").click(function(e) {
     $("#wrapper").toggleClass("toggled");
 });
 
-document.getElementById("total_gross_pay").innerHTML = <?php echo $total_gross_pay; ?>;    
-document.getElementById("total_gross_deduct").innerHTML = <?php echo $total_gross_deduct; ?>;    
-document.getElementById("net_pay").innerHTML = <?php echo $net_pay; ?>;    
+
+    
+    var wages = document.getElementById("wages").value;
+    var overtime = document.getElementById("overtime").value;
+    var commission = document.getElementById("commission").value;
+    var allowance = document.getElementById("allowance").value;
+    var claims = document.getElementById("claims").value;
+    var director_fees = document.getElementById("director_fees").value;
+    var advance_paid = document.getElementById("advance_paid").value;
+    var bonus = document.getElementById("bonus").value;
+    var others = document.getElementById("others").value;
+    var total_gp = parseFloat(wages) + parseFloat(overtime) + parseFloat(commission) + parseFloat(allowance) + parseFloat(claims) + parseFloat(director_fees) + parseFloat(advance_paid) + parseFloat(bonus) + parseFloat(others);
+    var epf = document.getElementById("epf").value;
+    var socso = document.getElementById("socso").value;
+    var eis = document.getElementById("eis").value;
+    var deduction = document.getElementById("deduction").value;
+    var loan = document.getElementById("loan").value;
+    var unpaid_leave = document.getElementById("unpaid_leave").value;
+    var advance_deduct = document.getElementById("advance_deduct").value;
+    var total_gd = parseFloat(epf) + parseFloat(socso) + parseFloat(eis) + parseFloat(deduction) + parseFloat(loan) + parseFloat(unpaid_leave) + parseFloat(advance_deduct);    
+    var adjustment = document.getElementById("adjustment").value;
+    var net_pay = total_gp - total_gd + parseFloat(adjustment);
+    document.getElementById("total_gross_pay").innerHTML = total_gp.toFixed(2);
+    document.getElementById("total_gross_deduct").innerHTML = total_gd.toFixed(2);
+    document.getElementById("net_pay").innerHTML = net_pay.toFixed(2);
 
 function countNetPay() {
     var wages = document.getElementById("wages").value;
@@ -321,9 +344,9 @@ function countNetPay() {
     var total_gd = parseFloat(epf) + parseFloat(socso) + parseFloat(eis) + parseFloat(deduction) + parseFloat(loan) + parseFloat(unpaid_leave) + parseFloat(advance_deduct);    
     var adjustment = document.getElementById("adjustment").value;
     var net_pay = total_gp - total_gd + parseFloat(adjustment);
-    document.getElementById("total_gross_pay").innerHTML = total_gp;
-    document.getElementById("total_gross_deduct").innerHTML = total_gd;
-    document.getElementById("net_pay").innerHTML = net_pay;
+    document.getElementById("total_gross_pay").innerHTML = total_gp.toFixed(2);
+    document.getElementById("total_gross_deduct").innerHTML = total_gd.toFixed(2);
+    document.getElementById("net_pay").innerHTML = net_pay.toFixed(2);
 }    
 </script>
 </body>
