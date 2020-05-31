@@ -200,23 +200,24 @@ if(isset($_POST["import_eis"])){
                     <!-- EPF table -->
                         <div class="row">
                             <div class="col-12">
-                                <span style="float:left;">
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
 								<form method="post" enctype="multipart/form-data">
 								<div class="custom-file mb-3">
 									<input type="file" class="custom-file-input" id="customFile" name="epf_excel" accept="xlsx">
 									<label class="custom-file-label" for="customFile">Select XLS File</label>
 								</div>
-									<input type="submit" name="import_epf" class="btn btn-info" value="Import Excel File" />
-									<div><?php echo $message1; ?></div>
+									<input type="submit" name="import_epf" class="btn btn-info col-md-6 col-12" value="Import EPF Excel File" />
+									<div><?php echo $message1; ?></div><br>
 								</form>	
-									<br>
-								</span>
-								 <span style="float:right;">
+                                    </div>
+                                    <div class="col-md-6 col-12">
                                 <form role="form" action="export_table.php" method="post">
-                                    <button type="submit" class="btn btn-primary btn-block" name="export_epf">Export EPF table</button>
+                                    <button type="submit" class="btn btn-primary col-md-6 float-right col-12" name="export_epf">Export EPF Excel File</button>
                                 </form>
-								
-                                </span>
+                                    </div>                                    
+                                </div>
+									<hr>
                                 <div class="table-responsive">
                                     <table id="example" class="table table-striped table-bordered" width="100%">
                                         <thead>
@@ -276,23 +277,25 @@ if(isset($_POST["import_eis"])){
                 <div id="profile" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-1 py-3">
                 <!-- SOCSO table -->
                     <div class="row">
-                        <div class="col-12">
-							<span style="float:left;">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6 col-12">
 								<form method="post" enctype="multipart/form-data">
 								<div class="custom-file mb-3">
 									<input type="file" class="custom-file-input" id="customFile" name="socso_excel" accept="xlsx">
 									<label class="custom-file-label" for="customFile">Select XLS File</label>
 								</div>
-									<input type="submit" name="import_socso" class="btn btn-info" value="Import Excel File" />
-									<div><?php echo $message2; ?></div>
+									<input type="submit" name="import_socso" class="btn btn-info col-md-6 col-12" value="Import SOCSO Excel File" />
+									<div><?php echo $message2; ?></div><br>
 								</form>	
-									<br>
-								</span>
-                            <span style="float:right;">
+                                </div>
+                                <div class="col-md-6 col-12">
                             <form role="form" action="export_table.php" method="post">
-                                <button type="submit" class="btn btn-primary btn-block" name="export_socso">Export SOCSO table</button>
+                                <button type="submit" class="btn btn-primary col-md-6 float-right col-12" name="export_socso">Export SOCSO Excel File</button>
                             </form>
-                            </span>                            
+                                </div>
+                            </div>
+                            <hr>
                             <div class="table-responsive">
                                 <table id="example3" class="table table-striped table-bordered" width="100%">
                                     <thead>
@@ -359,25 +362,25 @@ if(isset($_POST["import_eis"])){
                 <div id="profile1" role="tabpanel" aria-labelledby="profile1-tab" class="tab-pane fade px-1 py-3">
                 <!-- EIS table -->
                     <div class="row">
-                        <div class="col-12">
-							
-							<span style="float:left;">
+                        <div class="col-md-12">
+							<div class="row">
+                                <div class="col-md-6 col-12">
 								<form method="post" enctype="multipart/form-data">
 								<div class="custom-file mb-3">
 									<input type="file" class="custom-file-input" id="customFile" name="eis_excel" accept="xlsx">
 									<label class="custom-file-label" for="customFile">Select XLS File</label>
 								</div>
-									<input type="submit" name="import_eis" class="btn btn-info" value="Import Excel File" />
-									<div><?php echo $message2; ?></div>
+									<input type="submit" name="import_eis" class="btn btn-info col-md-6 col-12" value="Import EIS Excel File" />
+									<div><?php echo $message2; ?></div><br>
 								</form>	
-									<br>
-								</span>
-							
-                            <span style="float:right;">
+                                </div>
+                                <div class="col-md-6 col-12">
                             <form role="form" action="export_table.php" method="post">
-                                <button type="submit" class="btn btn-primary btn-block" name="export_eis">Export EIS table</button>
+                                <button type="submit" class="btn btn-primary col-md-6 float-right col-12" name="export_eis">Export EIS Excel File</button>
                             </form>
-                            </span>                             
+                                </div>
+                            </div>
+                            <hr>
                             <div class="table-responsive">
                                 <table id="example2" class="table table-striped table-bordered" width="100%">
                                     <thead>

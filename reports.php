@@ -116,7 +116,7 @@ function myFunction() {
     
 if (localStorage.getItem("guidelines") !== null) {
     
- document.getElementById("guide_reports").innerHTML = '<div class="p-3 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a><b> ></b><a class="btn btn-primary" href="newpayroll.php">Step 2: New Payroll</a><b> ></b><a class="btn btn-primary" href="reports.php">Step 3: Reports</div>';
+ document.getElementById("guide_reports").innerHTML = '<div class="p-2 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a><b> ></b><a class="btn btn-primary" href="newpayroll.php">Step 2: New Payroll</a><b> ></b><a class="btn btn-primary" href="reports.php">Step 3: Reports</div>';
 }    
     
 document.getElementById("ppslip").onclick = function () {

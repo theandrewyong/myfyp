@@ -394,7 +394,7 @@ $(window).on('load',function(){
     
 if (localStorage.getItem("guidelines") !== null) {
     
- document.getElementById("guide_maintain_employee").innerHTML = '<div class="p-3 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a></div>';
+ document.getElementById("guide_maintain_employee").innerHTML = '<div class="p-2 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a></div>';
 }    
 
 </script>

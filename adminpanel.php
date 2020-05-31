@@ -13,6 +13,7 @@ $username = $_SESSION["username"];
 $error = FALSE;
 $error_username = "";
 $error_password = "";
+$error_acc_exists = "";
 $username1 = "";
 $password = "";
 $permission = ""; 
@@ -30,9 +31,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }else{
         $password = mysqli_escape_string($conn, test_input($_POST["password"]));
     }
+    
+    
     $permission = mysqli_escape_string($conn, test_input($_POST["permission"]));
 
-    if($error == FALSE){
+    $accounts_sql = mysqli_query($conn, "SELECT * FROM account");
+    while($accounts_result = mysqli_fetch_assoc($accounts_sql)){
+        if($accounts_result["username"] == $username1){
+            $error_acc_exists = '<span class="text-danger"> *Username already exists</span>';
+            $error = TRUE;
+        }
+    }
+
+    if($error == FALSE){        
         $new_user_sql = "INSERT INTO account (username, password, permission) VALUES (?,?,?)";
         $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
         mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $username1, $password, $permission);
@@ -41,6 +52,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         echo '<script>alert("Created Successfully");</script>';
     }
 }
+
 
 function test_input($data) {
     $data = trim($data);
@@ -80,7 +92,7 @@ function test_input($data) {
                     <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-1 py-3 show active">          
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data" autocomplete="off">
                             <div class="form-group">
-                                <label for="email">Username:<?php echo $error_username;?></label>
+                                <label for="email">Username:<?php echo $error_username; echo $error_acc_exists;?></label>
                                 <input type="text" class="form-control" id="email" name="username">
                             </div>
                         <div class="form-group">

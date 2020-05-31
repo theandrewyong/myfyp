@@ -366,7 +366,7 @@ function myFunction() {
         
 if (localStorage.getItem("guidelines") !== null) {
     
- document.getElementById("guide_new_payroll").innerHTML = '<div class="p-3 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a><b> ></b><a class="btn btn-primary" href="newpayroll.php">Step 2: New Payroll</a></div>';
+ document.getElementById("guide_new_payroll").innerHTML = '<div class="p-2 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a><b> ></b><a class="btn btn-primary" href="newpayroll.php">Step 2: New Payroll</a></div>';
 }
             
 </script>
