@@ -103,26 +103,32 @@ error_reporting(0);
                         while($ef = mysqli_fetch_assoc($epf_formula_sql)){
                             
                             //get specific data from employee table table
-                            $specific_emp_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '${"check_ca$i"}'");
+                            $specific_emp_sql = mysqli_query($conn, "SELECT * FROM pre_process_payroll WHERE emp_id = '${"check_ca$i"}'");
                             $get_specific_result = mysqli_fetch_assoc($specific_emp_sql);
                             
                             //specific data into variables (for new employee info table, only wage and allowance)
                             
-                            //$emp_bonus = $get_specific_result["process_payroll_bonus"]; //bonus
-                            $emp_allowance = $get_specific_result["emp_total_allowance"]; //allowance
-                            $emp_deduction = $get_specific_result["emp_total_deduction"]; //allowance
-                            //$emp_commission = $get_specific_result["process_payroll_commission"]; //commission
-                            //$emp_claims = $get_specific_result["process_payroll_claims"]; //claims
-                            //$emp_unpaid_leave = $get_specific_result["process_payroll_unpaid_leave"]; //unpaid leave
-                            //$emp_others = $get_specific_result["process_payroll_others"]; //others
-                            //$emp_overtime = $get_specific_result["process_payroll_overtime"]; //overtime
-                            $emp_wages = $get_specific_result["emp_wages"]; //wages
+                            $emp_bonus = $get_specific_result["pre_process_payroll_bonus"]; //bonus
+                            $emp_allowance = $get_specific_result["pre_process_payroll_allowance"]; //allowance
+                            $emp_additional_deduction = $get_specific_result["pre_process_payroll_additional_deduction"]; //deduction
+                            $emp_commission = $get_specific_result["pre_process_payroll_commission"]; //commission
+                            $emp_claims = $get_specific_result["pre_process_payroll_claims"]; //claims
+                            $emp_unpaid_leave = $get_specific_result["pre_process_payroll_unpaid_leave"]; //unpaid leave
+                            $emp_others = $get_specific_result["pre_process_payroll_others"]; //others
+                            $emp_overtime = $get_specific_result["pre_process_payroll_overtime"]; //overtime
+                            $emp_wages = $get_specific_result["pre_process_payroll_wage"]; //wages
+							$emp_director_fees = $get_specific_result["pre_process_payroll_director_fees"];//director fees
+							$emp_advance_paid = $get_specific_result["pre_process_payroll_advance_paid"];//advance paid
+							$emp_loan = $get_specific_result["pre_process_payroll_loan"];//loan
+							$emp_advance_deduct = $get_specific_result["pre_process_payroll_advance_deduct"];//advance deduct
+							$emp_adjustment = $get_specific_result["pre_process_payroll_adjustment"];//adjustment
+							
                             //end specific data into variables                            
                             
                             $ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
                             $ef_end = $ef["epf_formula_wage_end"]; //get epf ending wages value
                             //count epf contribution
-                            $epf_contribution = $emp_wages + $emp_allowance - $emp_deduction;
+                            $epf_contribution = $emp_wages + $emp_allowance;
                             
                             //if epf contribution is in between start and end wages in view table
                             if(($epf_contribution >= $ef_start) && ($epf_contribution <= $ef_end)){
@@ -138,7 +144,7 @@ error_reporting(0);
                                     $sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
                                     
                                     //count socso contribution
-                                    $socso_contribution = $emp_wages + $emp_allowance - $emp_deduction;
+                                    $socso_contribution = $emp_wages + $emp_allowance;
                                     
                                     //if socso contribution is in between start and end wages in view table
                                     if(($socso_contribution >= $sc_start) && ($socso_contribution <= $sc_end)){
@@ -153,7 +159,7 @@ error_reporting(0);
                                             $es_start = $es["eis_formula_wage_start"]; //get eis starting wages value
                                             $es_end = $es["eis_formula_wage_end"]; //get eis ending wages value
                                             //count eis contribution
-                                            $eis_contribution = $emp_wages + $emp_allowance - $emp_deduction;
+                                            $eis_contribution = $emp_wages + $emp_allowance;
                                             
                                             //if eis contribution is in between start and end wages in view table
                                             if(($eis_contribution >= $es_start) && ($eis_contribution <= $es_end)){
@@ -161,17 +167,17 @@ error_reporting(0);
                                                 $eis_employer_deduction = $es["eis_formula_employer_amt"]; //get employer eis deduction value
                                                 
                                                 //straight minus deduction from allowance
-                                                $emp_allowance = $emp_allowance - $emp_deduction;
+                                                //$emp_allowance = $emp_allowance - $emp_additional_deduction;
                                                 
                                                 //count net pay for insert
-                                                $process_payroll_net_pay = $emp_wages + $emp_allowance - $emp_deduction - $epf_employee_deduction - $socso_employee_deduction - $eis_employee_deduction;
+                                                $process_payroll_net_pay = $emp_wages + $emp_allowance - $emp_additional_deduction - $epf_employee_deduction - $socso_employee_deduction - $eis_employee_deduction;
                                                 
                                                 //get emp display id from employee info table
                                                 $emp_display_id_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '${"check_ca$i"}'"); 
                                                 $emp_display_id_result = mysqli_fetch_assoc($emp_display_id_sql);
                                                 $emp_display_id = $emp_display_id_result["emp_display_id"];
                                                 
-                                                $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, emp_display_id,  process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, process_payroll_deduction, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction, socso_employee_contribution, process_payroll_net_pay) VALUES ('${"check_ca$i"}', '$emp_display_id', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$additional_emp_deduction', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction', '$sc_employee_contribution', '$process_payroll_net_pay')"); 
+                                                $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, emp_display_id,  process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, process_payroll_additional_deduction, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction, socso_employee_contribution, process_payroll_net_pay, process_payroll_overtime, process_payroll_commission, process_payroll_claims, process_payroll_director_fees, process_payroll_bonus, process_payroll_others, process_payroll_advance_paid, process_payroll_loan, process_payroll_unpaid_leave, process_payroll_advance_deduct, process_payroll_adjustment) VALUES ('${"check_ca$i"}', '$emp_display_id', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$emp_additional_deduction', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction', '$sc_employee_contribution', '$process_payroll_net_pay', '$emp_overtime', '$emp_commission', '$emp_claims', '$emp_director_fees', '$emp_bonus', '$emp_others', '$emp_advance_paid', '$emp_loan', '$emp_unpaid_leave', '$emp_advance_deduct','$emp_adjustment')"); 
                                                 //header("location:historydetails.php?month=$process_date_month&year=$process_date_year");
                                                 header("location:reports.php");
                                             }
@@ -305,7 +311,7 @@ error_reporting(0);
                                                 echo "<tr>";
                                                 echo "<td>" . $get_name_result["emp_display_id"] . "</td>";
                                                 echo "<td>" . $get_name_result["emp_full_name"] . "</td>";
-                                                echo "<td>" . '<a href="pre_process.php?pid=' . $get_name_result["emp_id"] . '">Edit</a>' . "</td>";
+                                                echo "<td>" . '<a href="pre_process.php?pid=' . $get_name_result["emp_id"] . '&month=' . $process_date_month . '&year=' . $process_date_year .'">Edit</a>' . "</td>";
                                                 echo "<td>" . '<input value="' . $get_name_result["emp_id"] . '" type="checkbox" name="cb' . $ccb . '" checked>' . "</td>";
                                                 echo "</tr>";                                   
                                             }                                            
