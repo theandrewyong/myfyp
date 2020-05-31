@@ -360,7 +360,7 @@ $total_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance
                             <div class="col-md-6 col-6 text-primary">
                                 <div class="form-group">
                                     <label for="new_overtime"><h5 class="pt-2">Overtime:</h5></label>
-                                    <input type="text" class="form-control" id="overtime" onchange="countNetPay()" name="new_overtime" value="<?php echo $new_overtime ?>">
+                                    <input type="text" class="form-control" id="overtime" onchange="countNetPay()" name="new_overtime" value="<?php echo number_format($new_overtime,2); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6 col-6 text-danger">
@@ -374,7 +374,7 @@ $total_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance
                             <div class="col-md-6 col-6 text-primary">
                                 <div class="form-group">
                                     <label for="new_commission"><h5 class="pt-2">Commission:</h5></label>
-                                    <input type="text" class="form-control" id="commission" onchange="countNetPay()" name="new_commission" value="<?php echo $new_commission; ?>">
+                                    <input type="text" class="form-control" id="commission" onchange="countNetPay()" name="new_commission" value="<?php echo number_format($new_commission,2); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6 col-6 text-danger">
@@ -388,13 +388,13 @@ $total_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance
                             <div class="col-md-6 col-6 text-primary">
                                 <div class="form-group">
                                     <label for="new_allowance"><h5 class="pt-2">Allowance:</h5></label>
-                                    <input type="text" class="form-control" id="allowance" onchange="countNetPay()" name="new_allowance" value="<?php echo $new_allowance; ?>">
+                                    <input type="text" class="form-control" id="allowance" onchange="countNetPay()" name="new_allowance" value="<?php echo number_format($new_allowance,2); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6 col-6 text-danger">
                                 <div class="form-group">
                                     <label for="new_additional_deduction"><h5 class="pt-2">Deduction:</h5></label>
-                                    <input type="text" class="form-control" id="deduction" onchange="countNetPay()" name="new_additional_deduction" value="<?php echo $new_additional_deduction; ?>">
+                                    <input type="text" class="form-control" id="deduction" onchange="countNetPay()" name="new_additional_deduction" value="<?php echo number_format($new_additional_deduction,2); ?>">
                                 </div>
                             </div>               
                         </div> 
@@ -402,13 +402,13 @@ $total_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance
                             <div class="col-md-6 col-6 text-primary">
                                 <div class="form-group">
                                     <label for="new_claims"><h5 class="pt-2">Claims:</h5></label>
-                                    <input type="text" class="form-control" id="claims" onchange="countNetPay()" name="new_claims" value="<?php echo $new_claims; ?>">
+                                    <input type="text" class="form-control" id="claims" onchange="countNetPay()" name="new_claims" value="<?php echo number_format($new_claims,2); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6 col-6 text-danger">
                                 <div class="form-group">
                                     <label for="new_loan"><h5 class="pt-2">Loan:</h5></label>
-                                    <input type="text" class="form-control" id="loan" onchange="countNetPay()" name="new_loan" value="<?php echo $new_loan; ?>">
+                                    <input type="text" class="form-control" id="loan" onchange="countNetPay()" name="new_loan" value="<?php echo number_format($new_loan,2); ?>">
                                 </div>
                             </div>               
                         </div>
@@ -416,13 +416,13 @@ $total_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance
                             <div class="col-md-6 col-6 text-primary">
                                 <div class="form-group">
                                     <label for="new_director_fees"><h5 class="pt-2">Director Fees:</h5></label>
-                                    <input type="text" class="form-control" id="director_fees" onchange="countNetPay()" name="new_director_fees" value="<?php echo $new_director_fees; ?>">
+                                    <input type="text" class="form-control" id="director_fees" onchange="countNetPay()" name="new_director_fees" value="<?php echo number_format($new_director_fees,2); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6 col-6 text-danger">
                                 <div class="form-group">
                                     <label for="new_unpaid_leave"><h5 class="pt-2">Unpaid Leave:</h5></label>
-                                    <input type="text" class="form-control" id="unpaid_leave" onchange="countNetPay()" name="new_unpaid_leave" value="<?php echo $new_unpaid_leave; ?>">
+                                    <input type="text" class="form-control" id="unpaid_leave" onchange="countNetPay()" name="new_unpaid_leave" value="<?php echo number_format($new_unpaid_leave,2); ?>">
                                 </div>
                             </div>               
                         </div> 
@@ -430,13 +430,13 @@ $total_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance
                             <div class="col-md-6 col-6 text-primary">
                                 <div class="form-group">
                                     <label for="new_advance_paid"><h5 class="pt-2">Advance Paid:</h5></label>
-                                    <input type="text" class="form-control" id="advance_paid" onchange="countNetPay()" name="new_advance_paid" value="<?php echo $new_advance_paid; ?>">
+                                    <input type="text" class="form-control" id="advance_paid" onchange="countNetPay()" name="new_advance_paid" value="<?php echo number_format($new_advance_paid,2); ?>">
                                 </div>
                             </div>
                             <div class="col-md-6 col-6 text-danger">
                                 <div class="form-group">
                                     <label for="new_advance_deduct"><h5 class="pt-2">Advance Deduct:</h5></label>
-                                    <input type="text" class="form-control" id="advance_deduct" onchange="countNetPay()" name="new_advance_deduct" value="<?php echo $new_advance_deduct; ?>">
+                                    <input type="text" class="form-control" id="advance_deduct" onchange="countNetPay()" name="new_advance_deduct" value="<?php echo number_format($new_advance_deduct,2); ?>">
                                 </div>
                             </div>               
                         </div> 
@@ -444,7 +444,7 @@ $total_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance
                             <div class="col-md-6 col-6 text-primary">
                                 <div class="form-group">
                                     <label for="new_bonus"><h5 class="pt-2">Bonus:</h5></label>
-                                    <input type="text" class="form-control" id="bonus" onchange="countNetPay()" name="new_bonus" value="<?php echo $new_bonus; ?>">
+                                    <input type="text" class="form-control" id="bonus" onchange="countNetPay()" name="new_bonus" value="<?php echo number_format($new_bonus,2); ?>">
                                 </div>
                             </div>              
                         </div>
@@ -452,7 +452,7 @@ $total_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance
                         <div class="col-md-6 col-6 text-primary">
                             <div class="form-group">
                                 <label for="new_others"><h5 class="pt-2">Others:</h5></label>
-                                <input type="text" class="form-control" id="others" onchange="countNetPay()" name="new_others" value="<?php echo $new_others; ?>">
+                                <input type="text" class="form-control" id="others" onchange="countNetPay()" name="new_others" value="<?php echo number_format($new_others,2); ?>">
                             </div>
                         </div>              
                     </div>                
@@ -472,7 +472,7 @@ $total_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance
                             <p class="text-danger">Gross Deduct:<span class="float-right" id="total_gross_deduct"></span></p>
                                                         <div class="form-group">
                                 <label for="new_others"><p>Adjustment:</p></label>
-                                <input type="text" id="adjustment" onchange="countNetPay()" name="new_adjustment" class="form-control" value="<?php echo $new_adjustment; ?>">
+                                <input type="text" id="adjustment" onchange="countNetPay()" name="new_adjustment" class="form-control" value="<?php echo number_format($new_adjustment,2); ?>">
                             </div>
                         </div>                      
                         <div class="p-3 bg-success rounded shadow mb-5 text-white">

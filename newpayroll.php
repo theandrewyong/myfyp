@@ -27,7 +27,6 @@ error_reporting(0);
             <h1 class="mt-4">New Payroll</h1>
             
   
-            
 
             <p id="guide_new_payroll">
             
@@ -102,28 +101,48 @@ error_reporting(0);
                         //while epf view table data exists
                         while($ef = mysqli_fetch_assoc($epf_formula_sql)){
                             
+                            $specific_emp_info_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '${"check_ca$i"}'");
+                            $get_emp_info_result = mysqli_fetch_assoc($specific_emp_info_sql);
                             //get specific data from employee table table
                             $specific_emp_sql = mysqli_query($conn, "SELECT * FROM pre_process_payroll WHERE emp_id = '${"check_ca$i"}'");
                             $get_specific_result = mysqli_fetch_assoc($specific_emp_sql);
                             
-                            //specific data into variables (for new employee info table, only wage and allowance)
-                            
-                            $emp_bonus = $get_specific_result["pre_process_payroll_bonus"]; //bonus
-                            $emp_allowance = $get_specific_result["pre_process_payroll_allowance"]; //allowance
-                            $emp_additional_deduction = $get_specific_result["pre_process_payroll_additional_deduction"]; //deduction
-                            $emp_commission = $get_specific_result["pre_process_payroll_commission"]; //commission
-                            $emp_claims = $get_specific_result["pre_process_payroll_claims"]; //claims
-                            $emp_unpaid_leave = $get_specific_result["pre_process_payroll_unpaid_leave"]; //unpaid leave
-                            $emp_others = $get_specific_result["pre_process_payroll_others"]; //others
-                            $emp_overtime = $get_specific_result["pre_process_payroll_overtime"]; //overtime
-                            $emp_wages = $get_specific_result["pre_process_payroll_wage"]; //wages
-							$emp_director_fees = $get_specific_result["pre_process_payroll_director_fees"];//director fees
-							$emp_advance_paid = $get_specific_result["pre_process_payroll_advance_paid"];//advance paid
-							$emp_loan = $get_specific_result["pre_process_payroll_loan"];//loan
-							$emp_advance_deduct = $get_specific_result["pre_process_payroll_advance_deduct"];//advance deduct
-							$emp_adjustment = $get_specific_result["pre_process_payroll_adjustment"];//adjustment
-							
-                            //end specific data into variables                            
+                            if(${"check_ca$i"} == $get_specific_result["emp_id"]){
+                                //specific data into variables (for new employee info table, only wage and allowance)
+
+                                $emp_bonus = $get_specific_result["pre_process_payroll_bonus"]; //bonus
+                                $emp_allowance = $get_specific_result["pre_process_payroll_allowance"]; //allowance
+                                $emp_additional_deduction = $get_specific_result["pre_process_payroll_additional_deduction"]; //deduction
+                                $emp_commission = $get_specific_result["pre_process_payroll_commission"]; //commission
+                                $emp_claims = $get_specific_result["pre_process_payroll_claims"]; //claims
+                                $emp_unpaid_leave = $get_specific_result["pre_process_payroll_unpaid_leave"]; //unpaid leave
+                                $emp_others = $get_specific_result["pre_process_payroll_others"]; //others
+                                $emp_overtime = $get_specific_result["pre_process_payroll_overtime"]; //overtime
+                                $emp_wages = $get_specific_result["pre_process_payroll_wage"]; //wages
+                                $emp_director_fees = $get_specific_result["pre_process_payroll_director_fees"];//director fees
+                                $emp_advance_paid = $get_specific_result["pre_process_payroll_advance_paid"];//advance paid
+                                $emp_loan = $get_specific_result["pre_process_payroll_loan"];//loan
+                                $emp_advance_deduct = $get_specific_result["pre_process_payroll_advance_deduct"];//advance deduct
+                                $emp_adjustment = $get_specific_result["pre_process_payroll_adjustment"];//adjustment
+
+                                //end specific data into variables    
+                            }else{
+                                $emp_bonus = 0; //bonus
+                                $emp_allowance = $get_emp_info_result["emp_total_allowance"] - $get_emp_info_result["emp_total_deduction"]; //allowance
+                                $emp_additional_deduction = 0; //deduction
+                                $emp_commission = 0; //commission
+                                $emp_claims = 0; //claims
+                                $emp_unpaid_leave = 0; //unpaid leave
+                                $emp_others = 0; //others
+                                $emp_overtime = 0; //overtime
+                                $emp_wages = $get_emp_info_result["emp_wages"]; //wages
+                                $emp_director_fees = 0;//director fees
+                                $emp_advance_paid = 0;//advance paid
+                                $emp_loan = 0;//loan
+                                $emp_advance_deduct = 0;//advance deduct
+                                $emp_adjustment = 0;//adjustment                                
+                            }
+                        
                             
                             $ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
                             $ef_end = $ef["epf_formula_wage_end"]; //get epf ending wages value
@@ -177,7 +196,12 @@ error_reporting(0);
                                                 $emp_display_id_result = mysqli_fetch_assoc($emp_display_id_sql);
                                                 $emp_display_id = $emp_display_id_result["emp_display_id"];
                                                 
+                                                
                                                 $insert_emp_sql = mysqli_query($conn, "INSERT INTO process_payroll (emp_id, emp_display_id,  process_payroll_process_month, process_payroll_process_year, process_payroll_process_date, process_payroll_from, process_payroll_to, process_payroll_desc_1, process_payroll_desc_2, process_payroll_ref_1, process_payroll_ref_2, process_payroll_wage, process_payroll_allowance, process_payroll_additional_deduction, epf_employee_deduction, epf_employer_deduction, socso_employee_deduction, socso_employer_deduction, eis_employee_deduction, eis_employer_deduction, socso_employee_contribution, process_payroll_net_pay, process_payroll_overtime, process_payroll_commission, process_payroll_claims, process_payroll_director_fees, process_payroll_bonus, process_payroll_others, process_payroll_advance_paid, process_payroll_loan, process_payroll_unpaid_leave, process_payroll_advance_deduct, process_payroll_adjustment) VALUES ('${"check_ca$i"}', '$emp_display_id', '$process_month', '$process_year', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$emp_wages', '$emp_allowance', '$emp_additional_deduction', '$epf_employee_deduction', '$epf_employer_deduction', '$socso_employee_deduction', '$socso_employer_deduction', '$eis_employee_deduction', '$eis_employer_deduction', '$sc_employee_contribution', '$process_payroll_net_pay', '$emp_overtime', '$emp_commission', '$emp_claims', '$emp_director_fees', '$emp_bonus', '$emp_others', '$emp_advance_paid', '$emp_loan', '$emp_unpaid_leave', '$emp_advance_deduct','$emp_adjustment')"); 
+                                                
+                                                //after insert, delete it from pre-process payroll
+                                                $delete_pre_process_sql = mysqli_query($conn, "DELETE FROM pre_process_payroll WHERE emp_id = '${"check_ca$i"}' AND pre_process_month = '$process_month' AND pre_process_year = '$process_year'");
+                                                
                                                 //header("location:historydetails.php?month=$process_date_month&year=$process_date_year");
                                                 header("location:reports.php");
                                             }
