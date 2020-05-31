@@ -10,6 +10,34 @@
 	$get_emp_id = $_GET["emp_id"];
 	
 ?>
+
+<?php
+  $error = FALSE;
+  $error_rate =''; 
+  if(isset($_POST["submit"])){
+
+
+    $allowance_rate = $_POST["allowance_rate"];
+
+    if (empty($allowance_rate) || $allowance_rate == 0 || $allowance_rate == 0.00) {
+        $error_rate = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
+        $error = TRUE;
+    }
+
+      if ($error == FALSE){
+        $update_sql = mysqli_query($conn, "UPDATE employee_allowance SET allowance_rate='$allowance_rate' WHERE emp_allowance_id ='$get_emp_allowance_id'");
+      }
+
+  }
+
+  //show all existing value in all input fields
+    $show_sql = mysqli_query($conn, "SELECT * FROM employee_allowance WHERE emp_allowance_id = '$get_emp_allowance_id'");
+    $show_data = mysqli_fetch_assoc($show_sql);
+    $show_allowance_id = $show_data['allowance_id'];
+    $show_allowance_desc = $show_data['allowance_desc'];
+    $show_allowance_rate = $show_data['allowance_rate'];
+  ?>
+								
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,64 +69,32 @@
     
 <div class="container-fluid">
 
-<!-- dashboard conten here -->
-<section class="container py-4">
+<!-- dashboard conten here --><br>
+									<h1>Edit Allowance</h1>
     <div class="row">
         <div class="col-md-12">
 
-			<div id="tabsJustifiedContent" class="tab-content">
-				
-                <div id="profile1" class="tab-pane fade active show">
-                    <div class="row pb-2">
-                        <div class="col-md-12">
-							<div class="container">
-								
-								<?php
-								  $error = FALSE;
-								  $error_rate =''; 
-								  if(isset($_POST["submit"])){
-									
-									  
-									$allowance_rate = $_POST["allowance_rate"];
-									  
-									if (empty($allowance_rate) || $allowance_rate == 0 || $allowance_rate == 0.00) {
-										$error_rate = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
-										$error = TRUE;
-									}
-									  
-									  if ($error == FALSE){
-									  	$update_sql = mysqli_query($conn, "UPDATE employee_allowance SET allowance_rate='$allowance_rate' WHERE emp_allowance_id ='$get_emp_allowance_id'");
-									  }
 
-								  }
-								
-								  //show all existing value in all input fields
-									$show_sql = mysqli_query($conn, "SELECT * FROM employee_allowance WHERE emp_allowance_id = '$get_emp_allowance_id'");
-									$show_data = mysqli_fetch_assoc($show_sql);
-									$show_allowance_id = $show_data['allowance_id'];
-									$show_allowance_desc = $show_data['allowance_desc'];
-									$show_allowance_rate = $show_data['allowance_rate'];
-								  ?>
-								
+
 								<form method="POST">
-									<a id="employee_section"><h1>Edit Allowance</h1></a> 
-									
+
+									<div class="p-3 bg-white rounded shadow mb-2">
 										<div class="form-group">
-										<label for="allowance_desc" class="col-sm-12 control-label"><h6>Allowance Desc</h6></label>
-										<div class="col-sm-9">
+										<label for="allowance_desc" class="col-md-12 control-label"><h6>Allowance Desc</h6></label>
+										<div class="col-md-12">
 											<input type="text" id="allowance_desc" name="allowance_desc" class="form-control" value="<?php echo $show_allowance_desc; ?>" disabled>
 										</div>
 										</div>
 									
 									<div class="form-group">
-										<label for="allowance_rate" class="col-sm-12 control-label"><h6>Allowance Rate <?php echo $error_rate ?></h6></label>
-										<div class="col-sm-9">
+										<label for="allowance_rate" class="col-md-12 control-label"><h6>Allowance Rate <?php echo $error_rate ?></h6></label>
+										<div class="col-md-12">
 											<input type="text" id="allowance_rate" placeholder="Email" class="form-control" name= "allowance_rate" value="<?php echo $show_allowance_rate; ?>">
 										</div>
 									</div>
 									
-									<div class="container"><input type="submit" class="btn btn-primary" name="submit" id="submit" value="Edit Item"> </div>
-									
+									<input type="submit" class="btn btn-primary" name="submit" id="submit" value="Edit Item">
+                                    </div>
 									<?php
 											$table_sql = mysqli_query($conn, "SELECT * FROM employee_allowance WHERE emp_id = $get_emp_id");		
 											$allowance_total = 0;
@@ -114,15 +110,10 @@
 											?>
 									
 								  </form>
-							</div>
-						</div>
-					</div>
-                </div>				
-            </div>
+
         </div>
 	</div>
-	
-</section>
+
     
     
 </div>
