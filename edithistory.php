@@ -29,7 +29,7 @@ if(isset($_POST["submit"])){
     // end get all new value from edited history
     
     //count epf contribution
-    $new_epf = $new_wages + $new_bonus + $new_allowance + $new_commission + $new_claims + $new_unpaid_leave + $new_others;
+    $new_epf = $new_wages + $new_bonus + $new_allowance + $new_commission + $new_claims - $new_unpaid_leave + $new_others;
     //select all data from epf view table
     $epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula"); 
     //while epf view table data exists

@@ -128,7 +128,7 @@ error_reporting(0);
                             $ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
                             $ef_end = $ef["epf_formula_wage_end"]; //get epf ending wages value
                             //count epf contribution
-                            $epf_contribution = $emp_wages + $emp_allowance;
+                            $epf_contribution = $emp_wages + $emp_bonus + $emp_allowance + $emp_commission + $emp_claims - $emp_unpaid_leave + $emp_others;
                             
                             //if epf contribution is in between start and end wages in view table
                             if(($epf_contribution >= $ef_start) && ($epf_contribution <= $ef_end)){
@@ -144,7 +144,7 @@ error_reporting(0);
                                     $sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
                                     
                                     //count socso contribution
-                                    $socso_contribution = $emp_wages + $emp_allowance;
+                                    $socso_contribution = $emp_wages + $emp_allowance + $emp_others + $emp_overtime + $emp_commission;
                                     
                                     //if socso contribution is in between start and end wages in view table
                                     if(($socso_contribution >= $sc_start) && ($socso_contribution <= $sc_end)){
@@ -159,7 +159,7 @@ error_reporting(0);
                                             $es_start = $es["eis_formula_wage_start"]; //get eis starting wages value
                                             $es_end = $es["eis_formula_wage_end"]; //get eis ending wages value
                                             //count eis contribution
-                                            $eis_contribution = $emp_wages + $emp_allowance;
+                                            $eis_contribution = $emp_wages;
                                             
                                             //if eis contribution is in between start and end wages in view table
                                             if(($eis_contribution >= $es_start) && ($eis_contribution <= $es_end)){
