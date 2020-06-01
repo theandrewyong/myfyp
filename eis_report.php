@@ -44,7 +44,7 @@ while($validation = mysqli_fetch_assoc($validate)){
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">EIS Report</h1>
+            <h1 class="mt-4"><a href="reports.php" class="btn btn-primary">Back</a> EIS Report</h1>
             <hr>
             <div class="row">
                 <div class="col-md-6">

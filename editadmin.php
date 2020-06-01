@@ -37,7 +37,7 @@
 <?php include "navbar.php"; ?>
     
 <div class="container-fluid">
-<h1 class="mt-4">Edit Admin</h1>
+<h1 class="mt-4"><a href="adminpanel.php" class="btn btn-primary">Back</a> Edit Admin</h1>
 <hr>
 <!-- dashboard conten here -->
     <div class="p-5 bg-white rounded shadow mb-5">

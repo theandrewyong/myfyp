@@ -36,7 +36,7 @@
 <?php include "navbar.php"; ?>
     
 <div class="container-fluid">
-<h1 class="mt-4">Adhoc Report</h1>
+<h1 class="mt-4"><a href="reports.php" class="btn btn-primary">Back</a> Adhoc Report</h1>
 <hr>
             <?php
                 $month = (int)date("m");

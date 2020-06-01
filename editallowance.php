@@ -61,7 +61,7 @@ $allowance_rate = $show_data["allowance_rate"];
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">Edit Allowance</h1>
+            <h1 class="mt-4"><a href="maintainemployee.php" class="btn btn-primary">Back</a> Edit Allowance</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">
             <form action="editallowance.php?id=<?php echo $allowance_id; ?>" method="post">

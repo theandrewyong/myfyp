@@ -20,7 +20,7 @@ $username = $_SESSION["username"];
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">EPF Report</h1>
+            <h1 class="mt-4"><a href="reports.php" class="btn btn-primary">Back</a> EPF Report</h1>
             <hr>
                         <?php
                         $month = (int)date("m");

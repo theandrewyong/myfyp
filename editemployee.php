@@ -266,7 +266,7 @@ $show_emp_resign_date = $show_data['emp_resign_date'];
 <div id="page-content-wrapper">
 <?php include "navbar.php"; ?>
 <div class="container-fluid">
-<h1 class="mt-4">Edit Employee</h1>
+<h1 class="mt-4"><a href="maintainemployee.php" class="btn btn-primary">Back</a> Edit Employee</h1>
 <hr>
 <div class="p-3 bg-white rounded shadow mb-5">
 <ul id="myTab" role="tablist" class="nav nav-tabs nav-pills flex-column flex-md-row text-center bg-light border-0 rounded-nav">

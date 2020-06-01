@@ -172,7 +172,7 @@ $username = $_SESSION["username"];
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">Add Employee</h1>
+            <h1 class="mt-4"><a href="maintainemployee.php" class="btn btn-primary">Back</a> Add Employee</h1>
             <hr>
             <div class="row">
                 <div class="col-md-12">

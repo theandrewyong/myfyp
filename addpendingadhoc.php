@@ -46,7 +46,7 @@ if(isset($_POST["submit"])){
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">Add New AdHoc</h1>
+            <h1 class="mt-4"><a href="newadhoc.php" class="btn btn-primary">Back</a> Add New AdHoc</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">    
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data" autocomplete="off">

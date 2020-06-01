@@ -22,8 +22,10 @@ $get_year = $_GET["year"];
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">AdHoc History</h1>
+            <h1 class="mt-4"><a href="historypayroll.php" class="btn btn-primary">Back</a> AdHoc History Details</h1>
             <hr>
+            <div class="row">
+                <div class="col-md-9">
             <div class="p-3 bg-white rounded shadow mb-5">
                 <div class="table-responsive">
                     <table id="example" class="table table-striped table-bordered">
@@ -43,7 +45,7 @@ $get_year = $_GET["year"];
                             echo "<tr>";
                             echo "<td>" . $data["emp_display_id"] . "</td>";
                             echo "<td>" . $data["emp_full_name"] . "</td>";
-                            echo "<td>" . '<a class="btn btn-primary" href="editadhochistory.php?pid=' . $process_id . '">Edit History</a>' . "</td>";
+                            echo "<td>" . '<a class="btn btn-primary" href="editadhochistory.php?pid=' . $process_id . '&month=' . $get_month . '&year=' . $get_year . '">Edit History</a>' . "</td>";
                             echo "<td>" . '<a class="btn btn-danger" href="deleteEmployeeAhHistory.php?pid=' . $process_id . '&month=' . $get_month . '&year=' . $get_year . '" onclick="return confirm(\'Confirm Delete?\')">Delete History</a>' . "</td>";
                             echo "</tr>";
                         }        
@@ -52,6 +54,14 @@ $get_year = $_GET["year"];
                     </table>
                 </div>     
             </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-white rounded shadow mb-5">
+                        
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

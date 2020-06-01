@@ -59,7 +59,7 @@ $deduction_rate = $show_data["deduction_rate"];
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">Edit Deduction</h1>
+            <h1 class="mt-4"><a href="maintainemployee.php" class="btn btn-primary">Back</a> Edit Deduction</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">
             <form action="editdeduction.php?id=<?php echo $deduction_id; ?>" method="post">

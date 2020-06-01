@@ -70,7 +70,7 @@
 <div class="container-fluid">
 
 <!-- dashboard conten here --><br>
-									<h1>Edit Allowance</h1>
+									<h1><a href="editemployee.php?emp_id=<?php echo $get_emp_id; ?>" class="btn btn-primary">Back</a> Edit Allowance</h1>
     <div class="row">
         <div class="col-md-12">
 

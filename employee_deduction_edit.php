@@ -74,7 +74,7 @@ $show_deduction_rate = $show_data['deduction_rate'];
 
 <form method="POST">
 	<br/>
-<h1>Edit Deduction</h1>
+<h1><a href="editemployee.php?emp_id=<?php echo $get_emp_id; ?>" class="btn btn-primary">Back</a> Edit Deduction</h1>
 <div class="p-3 bg-white rounded shadow mb-2">
     <div class="form-group">
     <label for="deduction_desc" class="col-md-12 control-label"><h6>Deduction Desc</h6></label>

@@ -124,7 +124,7 @@ function test_input($data) {
                             </div>
                         </div>
                     </div>                    
-                    <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-1 py-3 show active">          
+                    <div id="home" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-1 py-3">          
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data" autocomplete="off">
                             <div class="form-group">
                                 <label for="email">Username:<?php echo $error_username; echo $error_acc_exists;?></label>

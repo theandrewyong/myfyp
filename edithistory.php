@@ -7,6 +7,9 @@ if(empty($_SESSION["username"])){
 $username = $_SESSION["username"];
 $process_id = $_GET["pid"];
 
+$get_month = $_GET["month"];
+$get_year = $_GET["year"];
+
 if(isset($_POST["submit"])){
     //get all new value from edited history
     $new_wages = $_POST["new_wages"];
@@ -138,7 +141,7 @@ $net_pay = $total_gross_pay - $total_gross_deduct + $employee_adjustment;
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">Edit History</h1>
+            <h1 class="mt-4"><a href="historydetails.php?month=<?php echo $get_month; ?>&year=<?php echo $get_year; ?>" class="btn btn-primary">Back</a> Edit History</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">
             <form action="edithistory.php?pid=<?php echo $process_id; ?>" method="post" enctype="multipart/form-data" autocomplete="off">
