@@ -67,38 +67,35 @@ $show_deduction_rate = $show_data['deduction_rate'];
 
 <div class="container-fluid">
 <!-- dashboard conten here -->
-<section class="container py-4">
 <div class="row">
 <div class="col-md-12">
-
-<div id="tabsJustifiedContent" class="tab-content">
-
-<div id="profile1" class="tab-pane fade active show">
-<div class="row pb-2">
-<div class="col-md-12">
-<div class="container">
 
 
 
 <form method="POST">
-<a id="employee_section"><h1>Edit Deduction</h1></a>
-
+	<br/>
+<h1>Edit Deduction</h1>
+<div class="p-3 bg-white rounded shadow mb-2">
     <div class="form-group">
-    <label for="deduction_desc" class="col-sm-12 control-label"><h6>Deduction Desc</h6></label>
-    <div class="col-sm-9">
+    <label for="deduction_desc" class="col-md-12 control-label"><h6>Deduction Desc</h6></label>
+    <div class="col-md-12">
         <input type="text" id="deduction_desc" name="deduction_desc" class="form-control" value="<?php echo $show_deduction_desc; ?>" disabled>
     </div>
     </div>
 
 <div class="form-group">
-    <label for="deduction_rate" class="col-sm-12 control-label"><h6>Deduction Rate <?php echo $error_rate ?></h6></label>
-    <div class="col-sm-9">
+    <label for="deduction_rate" class="col-md-12 control-label"><h6>Deduction Rate <?php echo $error_rate ?></h6></label>
+    <div class="col-md-12">
         <input type="text" id="deduction_rate" placeholder="Email" class="form-control" name= "deduction_rate" value="<?php echo $show_deduction_rate; ?>">
     </div>
 </div>
 
-<div class="container"><input type="submit" class="btn btn-primary" name="submit" id="submit" value="Edit Item"> </div>
-
+	<div class="form-group">
+		<div class="col-md-12">
+			<input type="submit" class="btn btn-primary" name="submit" id="submit" value="Edit Item">
+		</div>
+	</div>
+</div>
 <?php
         $table_sql = mysqli_query($conn, "SELECT * FROM employee_deduction WHERE emp_id = $get_emp_id");		
         $deduction_total = 0;
@@ -114,16 +111,9 @@ $show_deduction_rate = $show_data['deduction_rate'];
         ?>
 
 </form>
-</div>
-</div>
-</div>
-</div>				
-</div>
-</div>
-</div>
 
-</section>
-
+</div>
+</div>
 
 </div>
 </div>

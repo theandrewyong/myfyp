@@ -93,7 +93,11 @@
 										</div>
 									</div>
 									
-									<input type="submit" class="btn btn-primary" name="submit" id="submit" value="Edit Item">
+									<div class="form-group">
+										<div class="col-md-12">
+										<input type="submit" class="btn btn-primary" name="submit" id="submit" value="Edit Item">
+										</div>
+									</div>
                                     </div>
 									<?php
 											$table_sql = mysqli_query($conn, "SELECT * FROM employee_allowance WHERE emp_id = $get_emp_id");		
