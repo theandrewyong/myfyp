@@ -57,7 +57,11 @@ $get_year = $_GET["year"];
                 </div>
                 <div class="col-md-3">
                     <div class="p-3 bg-white rounded shadow mb-5">
-                        
+                        <h5>Adhoc History for <?php echo $get_month . '/' . $get_year; ?></h5>
+                    <div class="form-group">
+                    <label for="username">Desc1</label>
+                        <input type="text" class="form-control" id="username" name="edited_username" value="<?php echo $admin_username; ?>">
+                    </div>
                     </div>
                 </div>
             </div>

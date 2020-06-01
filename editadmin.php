@@ -88,8 +88,8 @@
         ?>
         <form action="editadmin.php?id=<?php echo $admin_id; ?>" method="post" enctype="multipart/form-data" autocomplete="off">
             <div class="form-group">
-            <label for="email">Username:<?php echo $error_edited_admin_username;?></label>
-                <input type="text" class="form-control" id="email" name="edited_username" value="<?php echo $admin_username; ?>">
+            <label for="username">Username:<?php echo $error_edited_admin_username;?></label>
+                <input type="text" class="form-control" id="username" name="edited_username" value="<?php echo $admin_username; ?>">
             </div>
             <div class="form-group">
                 <label for="pwd">Password:<?php echo $error_edited_admin_password;?></label>

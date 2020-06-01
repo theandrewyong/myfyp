@@ -39,7 +39,7 @@ while($validation = mysqli_fetch_assoc($validate)){
     <div id="page-content-wrapper">
     <?php include "navbar.php"; ?>
         <div class="container-fluid">
-            <h1 class="mt-4">Payroll Summary Report</h1>
+            <h1 class="mt-4"><a href="reports.php" class="btn btn-primary">Back</a> Payroll Summary Report</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">
                 <div class="row">
