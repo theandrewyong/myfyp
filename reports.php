@@ -25,10 +25,10 @@ $username = $_SESSION["username"];
               </div>
               <div class="modal-body">
                 <p>To Print Payslip, click Print Payslip</p>
-                <p>To View other reports, click View all reports</p>
+                <p>To View Payroll Summary Report, click View Payroll Summary</p>
               </div>
               <div class="modal-footer">
-                  <a href="" class="btn btn-primary" id="g3" data-dismiss="modal">View All Reports</a>
+                  <a href="" class="btn btn-primary" id="psum" data-dismiss="modal">View Payroll Summary</a>
                   <a href="" class="btn btn-primary" id="ppslip" data-dismiss="modal">Print Payslip</a>
               </div>
             </div><!-- /.modal-content -->
@@ -122,6 +122,10 @@ if (localStorage.getItem("guidelines") !== null) {
 document.getElementById("ppslip").onclick = function () {
     location.href = "payslip_report.php";
 }; 
+    
+document.getElementById("psum").onclick = function () {
+    location.href = "payroll_summary_report.php";
+};    
 </script>
 </body>
 </html>
