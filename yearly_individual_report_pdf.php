@@ -46,6 +46,8 @@ $countOct = 0;
 $countNov = 0;
 $countDec = 0;
 
+$count_emp = 0;
+
 foreach($unique_employee as $ua){
     
 $query = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$ua'");
@@ -581,7 +583,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
-            $pdf->Cell (17,5,$data["process_payroll_others"],0,0,"R");
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
             $countJanOthers = $countJan + $data["process_payroll_others"];
         }
         if($i == 2){
@@ -635,45 +637,106 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 	
     $pdf->Cell (17,5,$format_count_allOthers,0,1,"R");
 	
+	//Adhoc section
+	$pdf->Cell (60,5,'Adhoc Amount',0,0);
+	for($i=1;$i<=12;$i++){
+		$query2 = mysqli_query($conn, "select process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info WHERE process_adhoc_process_month = '$i' AND process_adhoc.emp_id = '$ua' AND process_adhoc_process_year = '$get_year'");
+		$data = mysqli_fetch_assoc($query2);
+
+		if($i == 1){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countJanAdhoc = $countJan + $data["adhoc_amt"];
+        }
+        if($i == 2){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countFebAdhoc = $countFeb + $data["adhoc_amt"];
+        }
+        if($i == 3){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countMarAdhoc = $countMar + $data["adhoc_amt"];
+        }
+        if($i == 4){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countAprAdhoc = $countApr + $data["adhoc_amt"];
+        }
+        if($i == 5){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countMayAdhoc = $countMay + $data["adhoc_amt"];
+        }
+        if($i == 6){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countJunAdhoc = $countJun + $data["adhoc_amt"];
+        }
+        if($i == 7){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countJulAdhoc = $countJul + $data["adhoc_amt"];
+        }
+        if($i == 8){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countAugAdhoc = $countAug + $data["adhoc_amt"];
+        }
+        if($i == 9){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countSepAdhoc = $countSep + $data["adhoc_amt"];
+        }
+        if($i == 10){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countOctAdhoc = $countOct + $data["adhoc_amt"];
+        } 
+        if($i == 11){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countNovAdhoc = $countNov + $data["adhoc_amt"];
+        }
+        if($i == 12){
+            $pdf->Cell (17,5,$data["adhoc_amt"],0,0,"R");
+            $countDecAdhoc = $countDec + $data["adhoc_amt"];
+        }
+		
+    }
+	$count_allAdhoc = $countJanAdhoc + $countFebAdhoc + $countMarAdhoc + $countAprAdhoc + $countMayAdhoc + $countJunAdhoc + $countJulAdhoc + $countAugAdhoc + $countSepAdhoc + $countOctAdhoc + $countNovAdhoc + $countDecAdhoc;
+	$format_count_allAdhoc = number_format("$count_allAdhoc",2);
+	
+    $pdf->Cell (17,5,$format_count_allAdhoc,0,1,"R");
+	
 	//yearly individual total earnings **
 	$pdf->SetFont("Arial","B", 8);
 	$pdf->Cell (60,5,'Total Earnings',0,0);
 
 	//total earnings by month formatted
-	$total_earnings_jan = $countJanWage + $countJanOvertime + $countJanCommission + $countJanAllowance + $countJanClaims + $countJanDirectorFees + $countJanAdvancePaid + $countJanBonus + $countJanOthers;
+	$total_earnings_jan = $countJanWage + $countJanOvertime + $countJanCommission + $countJanAllowance + $countJanClaims + $countJanDirectorFees + $countJanAdvancePaid + $countJanBonus + $countJanOthers + $countJanAdhoc;
 	$format_total_earnings_jan = number_format("$total_earnings_jan",2);
 	
-	$total_earnings_feb = $countFebWage + $countFebOvertime + $countFebCommission + $countFebAllowance + $countFebClaims + $countFebDirectorFees + $countFebAdvancePaid + $countFebBonus + $countFebOthers;
+	$total_earnings_feb = $countFebWage + $countFebOvertime + $countFebCommission + $countFebAllowance + $countFebClaims + $countFebDirectorFees + $countFebAdvancePaid + $countFebBonus + $countFebOthers + $countFebAdhoc;
 	$format_total_earnings_feb = number_format("$total_earnings_feb",2);
 	
-	$total_earnings_mar = $countMarWage + $countMarOvertime + $countMarCommission + $countMarAllowance + $countMarClaims + $countMarDirectorFees + $countMarAdvancePaid + $countMarBonus + $countMarOthers;
+	$total_earnings_mar = $countMarWage + $countMarOvertime + $countMarCommission + $countMarAllowance + $countMarClaims + $countMarDirectorFees + $countMarAdvancePaid + $countMarBonus + $countMarOthers + $countMarAdhoc;
 	$format_total_earnings_mar = number_format("$total_earnings_mar",2);
 	
-	$total_earnings_apr = $countAprWage + $countAprOvertime + $countAprCommission + $countAprAllowance + $countAprClaims + $countAprDirectorFees + $countAprAdvancePaid + $countAprBonus + $countAprOthers;
+	$total_earnings_apr = $countAprWage + $countAprOvertime + $countAprCommission + $countAprAllowance + $countAprClaims + $countAprDirectorFees + $countAprAdvancePaid + $countAprBonus + $countAprOthers + $countAprAdhoc;
 	$format_total_earnings_apr = number_format("$total_earnings_apr",2);
 	
-	$total_earnings_may = $countMayWage + $countMayOvertime + $countMayCommission + $countMayAllowance + $countMayClaims + $countMayDirectorFees + $countMayAdvancePaid + $countMayBonus + $countMayOthers;
+	$total_earnings_may = $countMayWage + $countMayOvertime + $countMayCommission + $countMayAllowance + $countMayClaims + $countMayDirectorFees + $countMayAdvancePaid + $countMayBonus + $countMayOthers + $countMayAdhoc;
 	$format_total_earnings_may = number_format("$total_earnings_may",2);
 	
-	$total_earnings_jun = $countJunWage + $countJunOvertime + $countJunCommission + $countJunAllowance + $countJunClaims + $countJunDirectorFees + $countJunAdvancePaid + $countJunBonus + $countJunOthers;
+	$total_earnings_jun = $countJunWage + $countJunOvertime + $countJunCommission + $countJunAllowance + $countJunClaims + $countJunDirectorFees + $countJunAdvancePaid + $countJunBonus + $countJunOthers + $countJunAdhoc;
 	$format_total_earnings_jun = number_format("$total_earnings_jun",2);
 	
-	$total_earnings_jul = $countJulWage + $countJulOvertime + $countJulCommission + $countJulAllowance + $countJulClaims + $countJulDirectorFees + $countJulAdvancePaid + $countJulBonus + $countJulOthers;
+	$total_earnings_jul = $countJulWage + $countJulOvertime + $countJulCommission + $countJulAllowance + $countJulClaims + $countJulDirectorFees + $countJulAdvancePaid + $countJulBonus + $countJulOthers + $countJulAdhoc;
 	$format_total_earnings_jul = number_format("$total_earnings_jul",2);
 	
-	$total_earnings_aug = $countAugWage + $countAugOvertime + $countAugCommission + $countAugAllowance + $countAugClaims + $countAugDirectorFees + $countAugAdvancePaid + $countAugBonus + $countAugOthers;
+	$total_earnings_aug = $countAugWage + $countAugOvertime + $countAugCommission + $countAugAllowance + $countAugClaims + $countAugDirectorFees + $countAugAdvancePaid + $countAugBonus + $countAugOthers + $countAugAdhoc;
 	$format_total_earnings_aug = number_format("$total_earnings_aug",2);
 	
-	$total_earnings_sep = $countSepWage + $countSepOvertime + $countSepCommission + $countSepAllowance + $countSepClaims + $countSepDirectorFees + $countSepAdvancePaid + $countSepBonus + $countSepOthers;
+	$total_earnings_sep = $countSepWage + $countSepOvertime + $countSepCommission + $countSepAllowance + $countSepClaims + $countSepDirectorFees + $countSepAdvancePaid + $countSepBonus + $countSepOthers + $countSepAdhoc;
 	$format_total_earnings_sep = number_format("$total_earnings_sep",2);
 	
-	$total_earnings_oct = $countOctWage + $countOctOvertime + $countOctCommission + $countOctAllowance + $countOctClaims + $countOctDirectorFees + $countOctAdvancePaid + $countOctBonus + $countOctOthers;
+	$total_earnings_oct = $countOctWage + $countOctOvertime + $countOctCommission + $countOctAllowance + $countOctClaims + $countOctDirectorFees + $countOctAdvancePaid + $countOctBonus + $countOctOthers + $countOctAdhoc;
 	$format_total_earnings_oct = number_format("$total_earnings_oct",2);
 	
-	$total_earnings_nov = $countNovWage + $countNovOvertime + $countNovCommission + $countNovAllowance + $countNovClaims + $countNovDirectorFees + $countNovAdvancePaid + $countNovBonus + $countNovOthers;
+	$total_earnings_nov = $countNovWage + $countNovOvertime + $countNovCommission + $countNovAllowance + $countNovClaims + $countNovDirectorFees + $countNovAdvancePaid + $countNovBonus + $countNovOthers + $countNovAdhoc;
 	$format_total_earnings_nov = number_format("$total_earnings_nov",2);
 	
-	$total_earnings_dec = $countDecWage + $countDecOvertime + $countDecCommission + $countDecAllowance + $countDecClaims + $countDecDirectorFees + $countDecAdvancePaid + $countDecBonus + $countDecOthers;
+	$total_earnings_dec = $countDecWage + $countDecOvertime + $countDecCommission + $countDecAllowance + $countDecClaims + $countDecDirectorFees + $countDecAdvancePaid + $countDecBonus + $countDecOthers + $countDecAdhoc;
 	$format_total_earnings_dec = number_format("$total_earnings_dec",2);
 		
 	for($x=1;$x<=12;$x++){
@@ -716,7 +779,7 @@ $pdf->Cell (17,5,'Total',"RTB",1,"C");
 
 	}
 	
-$total_earnings_total = $count_allWage + $count_allOvertime + $count_allCommission + $count_allAllowance + $count_allClaims + $count_allDirectorFees + $count_allAdvancePaid + $count_allBonus + $count_allOthers;
+$total_earnings_total = $count_allWage + $count_allOvertime + $count_allCommission + $count_allAllowance + $count_allClaims + $count_allDirectorFees + $count_allAdvancePaid + $count_allBonus + $count_allOthers + $count_allAdhoc;
 $format_total_earnings_total = number_format("$total_earnings_total",2);
 	
 $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
@@ -782,6 +845,67 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	$format_count_allEmpEPF = number_format("$count_allEmpEPF",2);
 	
     $pdf->Cell (17,5,$format_count_allEmpEPF,0,1,"R");	
+	
+	//Employee EPF Adhoc section
+	$pdf->Cell (60,5,'Employee EPF (Adhoc)',0,0);
+	for($i=1;$i<=12;$i++){
+		$query2 = mysqli_query($conn, "select process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info WHERE process_adhoc_process_month = '$i' AND process_adhoc.emp_id = '$ua' AND process_adhoc_process_year = '$get_year'");
+		
+		$data = mysqli_fetch_assoc($query2);
+		if($i == 1){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countJanEmpEPFAdhoc = $countJan + $data["epf_employee_deduction"];
+        }
+        if($i == 2){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countFebEmpEPFAdhoc = $countFeb + $data["epf_employee_deduction"];
+        }
+        if($i == 3){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countMarEmpEPFAdhoc = $countMar + $data["epf_employee_deduction"];
+        }
+        if($i == 4){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countAprEmpEPFAdhoc = $countApr + $data["epf_employee_deduction"];
+        }
+        if($i == 5){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countMayEmpEPFAdhoc = $countMay + $data["epf_employee_deduction"];
+        }
+        if($i == 6){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countJunEmpEPFAdhoc = $countJun + $data["epf_employee_deduction"];
+        }
+        if($i == 7){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countJulEmpEPFAdhoc = $countJul + $data["epf_employee_deduction"];
+        }
+        if($i == 8){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countAugEmpEPFAdhoc = $countAug + $data["epf_employee_deduction"];
+        }
+        if($i == 9){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countSepEmpEPFAdhoc = $countSep + $data["epf_employee_deduction"];
+        }
+        if($i == 10){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countOctEmpEPFAdhoc = $countOct + $data["epf_employee_deduction"];
+        } 
+        if($i == 11){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countNovEmpEPFAdhoc = $countNov + $data["epf_employee_deduction"];
+        }
+        if($i == 12){
+            $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
+            $countDecEmpEPFAdhoc = $countDec + $data["epf_employee_deduction"];
+        }
+		
+    }
+	$count_allEmpEPFAdhoc = $countJanEmpEPFAdhoc + $countFebEmpEPFAdhoc + $countMarEmpEPFAdhoc + $countAprEmpEPFAdhoc + $countMayEmpEPFAdhoc + $countJunEmpEPFAdhoc + $countJulEmpEPFAdhoc + $countAugEmpEPFAdhoc + $countSepEmpEPFAdhoc + $countOctEmpEPFAdhoc + $countNovEmpEPFAdhoc + $countDecEmpEPFAdhoc;
+	$format_count_allEmpEPFAdhoc = number_format("$count_allEmpEPFAdhoc",2);
+	
+    $pdf->Cell (17,5,$format_count_allEmpEPFAdhoc,0,1,"R");
 	
 	//Employee SOCSO section
 	$pdf->Cell (60,5,'Employee SOCSO',0,0);
@@ -1148,40 +1272,40 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	$pdf->Cell (60,5,'Total Deductions',0,0);
 
 	//total earnings by month formatted
-	$total_deductions_jan = $countJanEmpEPF + $countJanEmpSOCSO + $countJanEmpEIS + $countJanDeduction + $countJanLoan + $countJanUnpaidLeave + $countJanAdvanceDeduct;
+	$total_deductions_jan = $countJanEmpEPF + $countJanEmpSOCSO + $countJanEmpEIS + $countJanDeduction + $countJanLoan + $countJanUnpaidLeave + $countJanAdvanceDeduct + $countJanEmpEPFAdhoc;
 	$format_total_deductions_jan = number_format("$total_deductions_jan",2);
 	
-	$total_deductions_feb = $countFebEmpEPF + $countFebEmpSOCSO + $countFebEmpEIS + $countFebDeduction + $countFebLoan + $countFebUnpaidLeave + $countFebAdvanceDeduct;
+	$total_deductions_feb = $countFebEmpEPF + $countFebEmpSOCSO + $countFebEmpEIS + $countFebDeduction + $countFebLoan + $countFebUnpaidLeave + $countFebAdvanceDeduct + $countFebEmpEPFAdhoc;
 	$format_total_deductions_feb = number_format("$total_deductions_feb",2);
 	
-	$total_deductions_mar = $countMarEmpEPF + $countMarEmpSOCSO + $countMarEmpEIS + $countMarDeduction + $countMarLoan + $countMarUnpaidLeave + $countMarAdvanceDeduct;
+	$total_deductions_mar = $countMarEmpEPF + $countMarEmpSOCSO + $countMarEmpEIS + $countMarDeduction + $countMarLoan + $countMarUnpaidLeave + $countMarAdvanceDeduct + $countMarEmpEPFAdhoc;
 	$format_total_deductions_mar = number_format("$total_deductions_mar",2);
 	
-	$total_deductions_apr = $countAprEmpEPF + $countAprEmpSOCSO + $countAprEmpEIS + $countAprDeduction + $countAprLoan + $countAprUnpaidLeave + $countAprAdvanceDeduct;
+	$total_deductions_apr = $countAprEmpEPF + $countAprEmpSOCSO + $countAprEmpEIS + $countAprDeduction + $countAprLoan + $countAprUnpaidLeave + $countAprAdvanceDeduct  + $countAprEmpEPFAdhoc;
 	$format_total_deductions_apr = number_format("$total_deductions_apr",2);
 	
-	$total_deductions_may = $countMayEmpEPF + $countMayEmpSOCSO + $countMayEmpEIS + $countMayDeduction + $countMayLoan + $countMayUnpaidLeave + $countMayAdvanceDeduct;
+	$total_deductions_may = $countMayEmpEPF + $countMayEmpSOCSO + $countMayEmpEIS + $countMayDeduction + $countMayLoan + $countMayUnpaidLeave + $countMayAdvanceDeduct + $countMayEmpEPFAdhoc;
 	$format_total_deductions_may = number_format("$total_deductions_may",2);
 	
-	$total_deductions_jun = $countJunEmpEPF + $countJunEmpSOCSO + $countJunEmpEIS + $countJunDeduction + $countJunLoan + $countJunUnpaidLeave + $countJunAdvanceDeduct;
+	$total_deductions_jun = $countJunEmpEPF + $countJunEmpSOCSO + $countJunEmpEIS + $countJunDeduction + $countJunLoan + $countJunUnpaidLeave + $countJunAdvanceDeduct + $countJunEmpEPFAdhoc;
 	$format_total_deductions_jun = number_format("$total_deductions_jun",2);
 	
-	$total_deductions_jul = $countJulEmpEPF + $countJulEmpSOCSO + $countJulEmpEIS + $countJulDeduction + $countJulLoan + $countJulUnpaidLeave + $countJulAdvanceDeduct;
+	$total_deductions_jul = $countJulEmpEPF + $countJulEmpSOCSO + $countJulEmpEIS + $countJulDeduction + $countJulLoan + $countJulUnpaidLeave + $countJulAdvanceDeduct + $countJulEmpEPFAdhoc;
 	$format_total_deductions_jul = number_format("$total_deductions_jul",2);
 	
-	$total_deductions_aug = $countAugEmpEPF + $countAugEmpSOCSO + $countAugEmpEIS + $countAugDeduction + $countAugLoan + $countAugUnpaidLeave + $countAugAdvanceDeduct;
+	$total_deductions_aug = $countAugEmpEPF + $countAugEmpSOCSO + $countAugEmpEIS + $countAugDeduction + $countAugLoan + $countAugUnpaidLeave + $countAugAdvanceDeduct + $countAugEmpEPFAdhoc;
 	$format_total_deductions_aug = number_format("$total_deductions_aug",2);
 	
-	$total_deductions_sep = $countSepEmpEPF + $countSepEmpSOCSO + $countSepEmpEIS + $countSepDeduction + $countSepLoan + $countSepUnpaidLeave + $countSepAdvanceDeduct;
+	$total_deductions_sep = $countSepEmpEPF + $countSepEmpSOCSO + $countSepEmpEIS + $countSepDeduction + $countSepLoan + $countSepUnpaidLeave + $countSepAdvanceDeduct + $countSepEmpEPFAdhoc;
 	$format_total_deductions_sep = number_format("$total_deductions_sep",2);
 	
-	$total_deductions_oct = $countOctEmpEPF + $countOctEmpSOCSO + $countOctEmpEIS + $countOctDeduction + $countOctLoan + $countOctUnpaidLeave + $countOctAdvanceDeduct;
+	$total_deductions_oct = $countOctEmpEPF + $countOctEmpSOCSO + $countOctEmpEIS + $countOctDeduction + $countOctLoan + $countOctUnpaidLeave + $countOctAdvanceDeduct + $countOctEmpEPFAdhoc;
 	$format_total_deductions_oct = number_format("$total_deductions_oct",2);
 	
-	$total_deductions_nov = $countNovEmpEPF + $countNovEmpSOCSO + $countNovEmpEIS + $countNovDeduction + $countNovLoan + $countNovUnpaidLeave + $countNovAdvanceDeduct;
+	$total_deductions_nov = $countNovEmpEPF + $countNovEmpSOCSO + $countNovEmpEIS + $countNovDeduction + $countNovLoan + $countNovUnpaidLeave + $countNovAdvanceDeduct + $countNovEmpEPFAdhoc;
 	$format_total_deductions_nov = number_format("$total_deductions_nov",2);
 	
-	$total_deductions_dec = $countDecEmpEPF + $countDecEmpSOCSO + $countDecEmpEIS + $countDecDeduction + $countDecLoan + $countDecUnpaidLeave + $countDecAdvanceDeduct;
+	$total_deductions_dec = $countDecEmpEPF + $countDecEmpSOCSO + $countDecEmpEIS + $countDecDeduction + $countDecLoan + $countDecUnpaidLeave + $countDecAdvanceDeduct + $countDecEmpEPFAdhoc;
 	$format_total_deductions_dec = number_format("$total_deductions_dec",2);
 	
 	
@@ -1225,63 +1349,63 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 
 		}
 	
-$total_deductions_total = $count_allEmpEPF + $count_allEmpSOCSO + $count_allEmpEIS + $count_allDeduction + $count_allLoan + $count_allUnpaidLeave + $count_allAdvanceDeduct;
+$total_deductions_total = $count_allEmpEPF + $count_allEmpSOCSO + $count_allEmpEIS + $count_allDeduction + $count_allLoan + $count_allUnpaidLeave + $count_allAdvanceDeduct + $count_allEmpEPFAdhoc;
 $format_total_deductions_total = number_format("$total_deductions_total",2);
 
 $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 
 	//Adjustment section
 	$pdf->SetFont("Arial","", 8);
-	$pdf->Cell (60,10,'Adjustments',0,0);
+	$pdf->Cell (60,7,'Adjustments',0,0);
 	for($i=1;$i<=12;$i++){
 		$query = mysqli_query($conn, "select process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info WHERE process_payroll_process_month = '$i' AND process_payroll.emp_id = '$ua' AND process_payroll_process_year = '$get_year'");
 		$data = mysqli_fetch_assoc($query);
 		if($i == 1){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countJanAdjustment = $countJan + $data["process_payroll_adjustment"];
         }
         if($i == 2){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countFebAdjustment = $countFeb + $data["process_payroll_adjustment"];
         }
         if($i == 3){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countMarAdjustment = $countMar + $data["process_payroll_adjustment"];
         }
         if($i == 4){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countAprAdjustment = $countApr + $data["process_payroll_adjustment"];
         }
         if($i == 5){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countMayAdjustment = $countMay + $data["process_payroll_adjustment"];
         }
         if($i == 6){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countJunAdjustment = $countJun + $data["process_payroll_adjustment"];
         }
         if($i == 7){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countJulAdjustment = $countJul + $data["process_payroll_adjustment"];
         }
         if($i == 8){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countAugAdjustment = $countAug + $data["process_payroll_adjustment"];
         }
         if($i == 9){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countSepAdjustment = $countSep + $data["process_payroll_adjustment"];
         }
         if($i == 10){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countOctAdjustment = $countOct + $data["process_payroll_adjustment"];
         } 
         if($i == 11){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countNovAdjustment = $countNov + $data["process_payroll_adjustment"];
         }
         if($i == 12){
-            $pdf->Cell (17,10,$data["process_payroll_adjustment"],0,0,"R");
+            $pdf->Cell (17,7,$data["process_payroll_adjustment"],0,0,"R");
             $countDecAdjustment = $countDec + $data["process_payroll_adjustment"];
         }
 		
@@ -1289,11 +1413,11 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	$count_allAdjustment = $countJanAdjustment + $countFebAdjustment + $countMarAdjustment + $countAprAdjustment + $countMayAdjustment + $countJunAdjustment + $countJulAdjustment + $countAugAdjustment + $countSepAdjustment + $countOctAdjustment + $countNovAdjustment + $countDecAdjustment;
 	$format_count_allAdjustment = number_format("$count_allAdjustment",2);
 	
-    $pdf->Cell (17,10,$format_count_allAdjustment,0,1,"R");	
+    $pdf->Cell (17,7,$format_count_allAdjustment,0,1,"R");	
 	
 	//yearly individual nett pay
 	$pdf->SetFont("Arial","B", 8);
-	$pdf->Cell (60,10,'Nett Pay',0,0);
+	$pdf->Cell (60,7,'Nett Pay',0,0);
 	
 	$nett_pay_jan = $total_earnings_jan - $total_deductions_jan + $countJanAdjustment;
 	$format_nett_pay_jan = number_format("$nett_pay_jan",2);
@@ -1337,43 +1461,43 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 
 	for($x=1;$x<=12;$x++){
 		if($x == 1){
-			$pdf->Cell (17,10,$format_nett_pay_jan,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_jan,"TB",0,"R");
 		}
 		if($x == 2){
-			$pdf->Cell (17,10,$format_nett_pay_feb,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_feb,"TB",0,"R");
 		}
 		if($x == 3){
-			$pdf->Cell (17,10,$format_nett_pay_mar,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_mar,"TB",0,"R");
 		}
 		if($x == 4){
-			$pdf->Cell (17,10,$format_nett_pay_apr,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_apr,"TB",0,"R");
 		}
 		if($x == 5){
-			$pdf->Cell (17,10,$format_nett_pay_may,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_may,"TB",0,"R");
 		}
 		if($x == 6){
-			$pdf->Cell (17,10,$format_nett_pay_jun,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_jun,"TB",0,"R");
 		}
 		if($x == 7){
-			$pdf->Cell (17,10,$format_nett_pay_jul,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_jul,"TB",0,"R");
 		}
 		if($x == 8){
-			$pdf->Cell (17,10,$format_nett_pay_aug,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_aug,"TB",0,"R");
 		}
 		if($x == 9){
-			$pdf->Cell (17,10,$format_nett_pay_sep,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_sep,"TB",0,"R");
 		}
 		if($x == 10){
-			$pdf->Cell (17,10,$format_nett_pay_oct,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_oct,"TB",0,"R");
 		}
 		if($x == 11){
-			$pdf->Cell (17,10,$format_nett_pay_nov,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_nov,"TB",0,"R");
 		}
 		if($x == 12){
-			$pdf->Cell (17,10,$format_nett_pay_dec,"TB",0,"R");
+			$pdf->Cell (17,7,$format_nett_pay_dec,"TB",0,"R");
 		}                        
 	}
-	$pdf->Cell (17,10,$format_nett_pay_total,"TB",1,"R");
+	$pdf->Cell (17,7,$format_nett_pay_total,"TB",1,"R");
 	
 	$pdf->SetFont("Arial","", 8);
 	
@@ -1436,6 +1560,66 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	$format_count_allEmprEPF = number_format("$count_allEmprEPF",2);
 	
     $pdf->Cell (17,5,$format_count_allEmprEPF,0,1,"R");
+	
+	//Employer EPF Adhoc Section
+	$pdf->Cell (60,5,'Employer EPF (Adhoc)',0,0);
+	for($i=1;$i<=12;$i++){
+		$query2 = mysqli_query($conn, "select process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info WHERE process_adhoc_process_month = '$i' AND process_adhoc.emp_id = '$ua' AND process_adhoc_process_year = '$get_year'");
+		$data = mysqli_fetch_assoc($query2);
+		if($i == 1){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countJanEmprEPFAdhoc = $countJan + $data["epf_employer_deduction"];
+        }
+        if($i == 2){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countFebEmprEPFAdhoc = $countFeb + $data["epf_employer_deduction"];
+        }
+        if($i == 3){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countMarEmprEPFAdhoc = $countMar + $data["epf_employer_deduction"];
+        }
+        if($i == 4){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countAprEmprEPFAdhoc = $countApr + $data["epf_employer_deduction"];
+        }
+        if($i == 5){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countMayEmprEPFAdhoc = $countMay + $data["epf_employer_deduction"];
+        }
+        if($i == 6){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countJunEmprEPFAdhoc = $countJun + $data["epf_employer_deduction"];
+        }
+        if($i == 7){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countJulEmprEPFAdhoc = $countJul + $data["epf_employer_deduction"];
+        }
+        if($i == 8){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countAugEmprEPFAdhoc = $countAug + $data["epf_employer_deduction"];
+        }
+        if($i == 9){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countSepEmprEPFAdhoc = $countSep + $data["epf_employer_deduction"];
+        }
+        if($i == 10){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countOctEmprEPFAdhoc = $countOct + $data["epf_employer_deduction"];
+        } 
+        if($i == 11){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countNovEmprEPFAdhoc = $countNov + $data["epf_employer_deduction"];
+        }
+        if($i == 12){
+            $pdf->Cell (17,5,$data["epf_employer_deduction"],0,0,"R");
+            $countDecEmprEPFAdhoc = $countDec + $data["epf_employer_deduction"];
+        }
+		
+    }
+	$count_allEmprEPFAdhoc = $countJanEmprEPFAdhoc + $countFebEmprEPFAdhoc + $countMarEmprEPFAdhoc + $countAprEmprEPFAdhoc + $countMayEmprEPFAdhoc + $countJunEmprEPFAdhoc + $countJulEmprEPFAdhoc + $countAugEmprEPFAdhoc + $countSepEmprEPFAdhoc + $countOctEmprEPFAdhoc + $countNovEmprEPFAdhoc + $countDecEmprEPFAdhoc;
+	$format_count_allEmprEPFAdhoc = number_format("$count_allEmprEPFAdhoc",2);
+	
+    $pdf->Cell (17,5,$format_count_allEmprEPFAdhoc,0,1,"R");
 	
 	//Employer SOCSO section
 	$pdf->Cell (60,5,'Employer SOCSO',0,0);
@@ -1561,43 +1745,43 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	$pdf->SetFont("Arial","B", 8);
 	$pdf->Cell (60,5,'Total Employer Cost',0,0);
 	
-	$employer_cost_jan = $nett_pay_jan + $countJanEmprEPF + $countJanEmprSOCSO + $countJanEmprEIS;
+	$employer_cost_jan = $nett_pay_jan + $countJanEmprEPF + $countJanEmprSOCSO + $countJanEmprEIS + $countJanEmprEPFAdhoc;
 	$format_employer_cost_jan = number_format("$employer_cost_jan",2);
 	
-	$employer_cost_feb = $nett_pay_feb + $countFebEmprEPF + $countFebEmprSOCSO + $countFebEmprEIS;
+	$employer_cost_feb = $nett_pay_feb + $countFebEmprEPF + $countFebEmprSOCSO + $countFebEmprEIS + $countFebEmprEPFAdhoc;
 	$format_employer_cost_feb = number_format("$employer_cost_feb",2);
 	
-	$employer_cost_mar = $nett_pay_mar + $countMarEmprEPF + $countMarEmprSOCSO + $countMarEmprEIS;
+	$employer_cost_mar = $nett_pay_mar + $countMarEmprEPF + $countMarEmprSOCSO + $countMarEmprEIS + $countMarEmprEPFAdhoc;
 	$format_employer_cost_mar = number_format("$employer_cost_mar",2);
 	
-	$employer_cost_apr = $nett_pay_apr + $countAprEmprEPF + $countAprEmprSOCSO + $countAprEmprEIS;
+	$employer_cost_apr = $nett_pay_apr + $countAprEmprEPF + $countAprEmprSOCSO + $countAprEmprEIS + $countAprEmprEPFAdhoc;
 	$format_employer_cost_apr = number_format("$employer_cost_apr",2);
 	
-	$employer_cost_may = $nett_pay_may + $countMayEmprEPF + $countMayEmprSOCSO + $countMayEmprEIS;
+	$employer_cost_may = $nett_pay_may + $countMayEmprEPF + $countMayEmprSOCSO + $countMayEmprEIS + $countMayEmprEPFAdhoc;
 	$format_employer_cost_may = number_format("$employer_cost_may",2);
 	
-	$employer_cost_jun = $nett_pay_jun + $countJunEmprEPF + $countJunEmprSOCSO + $countJunEmprEIS;
+	$employer_cost_jun = $nett_pay_jun + $countJunEmprEPF + $countJunEmprSOCSO + $countJunEmprEIS + $countJunEmprEPFAdhoc;
 	$format_employer_cost_jun = number_format("$employer_cost_jun",2);
 	
-	$employer_cost_jul = $nett_pay_jul + $countJulEmprEPF + $countJulEmprSOCSO + $countJulEmprEIS;
+	$employer_cost_jul = $nett_pay_jul + $countJulEmprEPF + $countJulEmprSOCSO + $countJulEmprEIS + $countJulEmprEPFAdhoc;
 	$format_employer_cost_jul = number_format("$employer_cost_jul",2);
 	
-	$employer_cost_aug = $nett_pay_aug + $countAugEmprEPF + $countAugEmprSOCSO + $countAugEmprEIS;
+	$employer_cost_aug = $nett_pay_aug + $countAugEmprEPF + $countAugEmprSOCSO + $countAugEmprEIS + $countAugEmprEPFAdhoc;
 	$format_employer_cost_aug = number_format("$employer_cost_aug",2);
 	
-	$employer_cost_sep = $nett_pay_sep + $countSepEmprEPF + $countSepEmprSOCSO + $countSepEmprEIS;
+	$employer_cost_sep = $nett_pay_sep + $countSepEmprEPF + $countSepEmprSOCSO + $countSepEmprEIS + $countSepEmprEPFAdhoc;
 	$format_employer_cost_sep = number_format("$employer_cost_sep",2);
 	
-	$employer_cost_oct = $nett_pay_oct + $countOctEmprEPF + $countOctEmprSOCSO + $countOctEmprEIS;
+	$employer_cost_oct = $nett_pay_oct + $countOctEmprEPF + $countOctEmprSOCSO + $countOctEmprEIS + $countOctEmprEPFAdhoc;
 	$format_employer_cost_oct = number_format("$employer_cost_oct",2);
 	
-	$employer_cost_nov = $nett_pay_nov + $countNovEmprEPF + $countNovEmprSOCSO + $countNovEmprEIS;
+	$employer_cost_nov = $nett_pay_nov + $countNovEmprEPF + $countNovEmprSOCSO + $countNovEmprEIS + $countNovEmprEPFAdhoc;
 	$format_employer_cost_nov = number_format("$employer_cost_nov",2);
 	
-	$employer_cost_dec = $nett_pay_dec + $countDecEmprEPF + $countDecEmprSOCSO + $countDecEmprEIS;
+	$employer_cost_dec = $nett_pay_dec + $countDecEmprEPF + $countDecEmprSOCSO + $countDecEmprEIS + $countDecEmprEPFAdhoc;
 	$format_employer_cost_dec = number_format("$employer_cost_dec",2);
 	
-	$employer_cost_total = $nett_pay_total + $count_allEmprEPF + $count_allEmprSOCSO + $count_allEmprEIS;
+	$employer_cost_total = $nett_pay_total + $count_allEmprEPF + $count_allEmprSOCSO + $count_allEmprEIS + $count_allEmprEPFAdhoc;
 	$format_employer_cost_total = number_format("$employer_cost_total",2);
 
 	for($x=1;$x<=12;$x++){
@@ -1640,8 +1824,10 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 	}
 	$pdf->Cell (17,5,$format_employer_cost_total,"TB",1,"R");
 
-$pdf->AddPage();
+$count_emp = $count_emp +1;
 	
+if($count_emp < count($unique_employee))
+	$pdf->AddPage();
 }
 
 
