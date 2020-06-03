@@ -29,6 +29,9 @@ $username = $_SESSION["username"];
             $year = date("Y");
             $view_table = FALSE;
 
+            $specific_month_array = [];
+            $specific_year_array = [];
+                
             if(isset($_POST["submit"])){
                 $year = $_POST["year"]; 
                 $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_year = '$year'"); 

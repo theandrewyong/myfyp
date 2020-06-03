@@ -58,6 +58,13 @@ $format_total_employer_deduction = 0;
 $total_epf_employee_deduction = 0;
 $total_epf_employer_deduction = 0;
 $total_deduction_final = 0;
+
+$format_adhoc_total = 0;
+$format_total_wages = 0;
+$format_total_epf_employee_deduction = 0;
+$format_total_epf_employer_deduction = 0;
+$format_total_deduction_final = 0;
+
 //month end + adhoc
 while($select_result = mysqli_fetch_assoc($query)){
 	

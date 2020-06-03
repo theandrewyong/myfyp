@@ -72,7 +72,7 @@ if($data["process_adhoc_wage"] == 1){
 }
 	
 else {
-	$pdf->Cell (60,6,'',"L",0);
+	$pdf->Cell (60,6,' Wage',"L",0);
 	$pdf->SetFont('ZapfDingbats','', 9);
 	$pdf->Cell (35,6,'8',"LR",0,"C");
 	$pdf->SetFont("Arial","", 9);

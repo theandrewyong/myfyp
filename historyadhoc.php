@@ -25,7 +25,7 @@ $get_year = $_GET["year"];
             <h1 class="mt-4"><a href="historypayroll.php" class="btn btn-primary">Back</a> AdHoc History Details</h1>
             <hr>
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-12">
             <div class="p-3 bg-white rounded shadow mb-5">
                 <div class="table-responsive">
                     <table id="example" class="table table-striped table-bordered">
@@ -54,15 +54,6 @@ $get_year = $_GET["year"];
                     </table>
                 </div>     
             </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="p-3 bg-white rounded shadow mb-5">
-                        <h5>Adhoc History for <?php echo $get_month . '/' . $get_year; ?></h5>
-                    <div class="form-group">
-                    <label for="username">Desc1</label>
-                        <input type="text" class="form-control" id="username" name="edited_username" value="<?php echo $admin_username; ?>">
-                    </div>
-                    </div>
                 </div>
             </div>
 
