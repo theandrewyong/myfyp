@@ -269,6 +269,8 @@ while($validation = mysqli_fetch_assoc($validate)){
                                     }
 
                                     }else{
+                                        
+                                    $adhoc_amt = 0;
                                     //both pp and adhoc
                                     $get_info_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id");
                                     $each_emp_wages = 0;
@@ -350,7 +352,7 @@ while($validation = mysqli_fetch_assoc($validate)){
                                         $sum_adhoc_amt = $adhoc_amt;
                                         $sum_total_netpay =  $sum_gross_pay - $sum_gross_deduct;
 
-                                        
+                                       // $gg = number_format(0.00,2);
 
                                         echo '<tr>';
                                         echo '<td>' . $emp_name . '</td>';
@@ -363,7 +365,11 @@ while($validation = mysqli_fetch_assoc($validate)){
                                         echo '<td style="color:blue;">' . $sum_advance_paid . '</td>';
                                         echo '<td style="color:blue;">' . $sum_bonus . '</td>';
                                         echo '<td style="color:blue;">' . $sum_others . '</td>';
-                                        echo '<td style="color:blue;">' . $sum_adhoc_amt . '</td>';
+                                        if(!empty($sum_adhoc_amt)){
+                                            echo '<td style="color:blue;">' . $sum_adhoc_amt . '</td>';   
+                                        }else{
+                                            echo '<td style="color:blue;">' . number_format(0.00,2) . '</td>'; 
+                                        }
                                         echo '<td style="color:green;">' . number_format($sum_gross_pay,2) . '</td>';
 
                                         echo '<td style="color:red;">' . '-' . number_format($total_employee_pp_adhoc_epf,2) . '</td>';
