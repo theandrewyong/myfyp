@@ -36,14 +36,27 @@ $pdf->Cell (0,10,"Smartsoft Co. ",0,1,"L");
 
 $get_info_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id");
 
+$get_info_sql2 = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id");
+
 $each_emp_wages = 0;
 
-while($select_result = mysqli_fetch_assoc($get_info_sql)){
+if(mysqli_num_rows($get_info_sql)>0){
+	while($select_result = mysqli_fetch_assoc($get_info_sql)){
 	$emp_id = $select_result["emp_id"];
 	$emp_wages = $select_result["process_payroll_wage"];
 	$emp_id_array[] = $emp_id;
 	$each_emp_wages = $each_emp_wages + $emp_wages;           
 }
+}
+
+else {
+	while($select_result = mysqli_fetch_assoc($get_info_sql2)){
+	$emp_id = $select_result["emp_id"];
+	$emp_id_array[] = $emp_id;         
+}
+}
+
+
 
 $emp_id_unique = array_unique($emp_id_array);
 
@@ -70,7 +83,7 @@ $pdf->Cell (22,5,'Director Fees',"B",0,"R");
 $pdf->Cell (22,5,'Advance Paid',"B",0,"R");
 $pdf->Cell (16,5,'Claims',"B",0,"R");
 $pdf->Cell (16,5,'Bonus',"B",0,"R");
-$pdf->Cell (14,5,'',"B",0);
+$pdf->Cell (14,5,'Adhoc',"B",0,"R");
 $pdf->Cell (20,5,'',"B",0);
 $pdf->Cell (16,5,'EPF ER',"B",0,"R");
 $pdf->Cell (18,5,'SOCSO ER',"B",0,"R");
@@ -90,7 +103,8 @@ $total_claims = 0;
 $total_director_fees = 0;    
 $total_advance_paid = 0;    
 $total_bonus = 0;    
-$total_others = 0;    
+$total_others = 0; 
+$total_adhoc = 0;
 $total_epf = 0;    
 $total_socso = 0;    
 $total_eis = 0;    
@@ -117,13 +131,19 @@ foreach($emp_id_unique as $eiu){
 	//count the total wages for each employee
 	$sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_month = '$get_month' AND process_payroll_process_year = '$get_year' AND emp_id = '$eiu'");
 	$get_name_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$eiu'");
+	$sql2 = mysqli_query($conn, "SELECT * FROM process_adhoc WHERE process_adhoc_process_month = '$get_month' AND process_adhoc_process_year = '$get_year' AND emp_id = '$eiu'");
+	
+	$usql2 = mysqli_fetch_assoc($sql2);
 	$namesql = mysqli_fetch_assoc($get_name_sql);
 	$usql = mysqli_fetch_assoc($sql);
 	
 	$emp_name = $namesql["emp_full_name"];
-	$sum_netpay = $usql["process_payroll_net_pay"];
+	$sum_netpay = $usql["process_payroll_net_pay"] + $usql2["adhoc_amt"] - $usql2["epf_employee_deduction"];
                                     
 	$epf_employer_deduction = $usql["epf_employer_deduction"];
+	$epf_employer_deduction2 = $usql2["epf_employer_deduction"];
+	$final_epf_employer = $epf_employer_deduction + $epf_employer_deduction2;
+	
 	$socso_employer_deduction = $usql["socso_employer_deduction"];
 	$eis_employer_deduction = $usql["eis_employer_deduction"];
 
@@ -136,12 +156,16 @@ foreach($emp_id_unique as $eiu){
 	$sum_advance_paid = $usql["process_payroll_advance_paid"];
 	$sum_bonus = $usql["process_payroll_bonus"];
 	$sum_others = $usql["process_payroll_others"];
+	$sum_adhoc = $usql2["adhoc_amt"];
 
-	$sum_gross_pay = $sum_gross_pay + $sum_wage + $sum_overtime + $sum_commission + $sum_allowance + $sum_claims + $sum_director_fees + $sum_advance_paid + $sum_bonus + $sum_others;
+	$sum_gross_pay = $sum_gross_pay + $sum_wage + $sum_overtime + $sum_commission + $sum_allowance + $sum_claims + $sum_director_fees + $sum_advance_paid + $sum_bonus + $sum_others + $sum_adhoc;
 
 	$total_gross_pay = $total_gross_pay + $sum_gross_pay;
 
 	$sum_epf = $usql["epf_employee_deduction"];
+	$sum_epf2 = $usql2["epf_employee_deduction"];
+	$final_epf = $sum_epf + $sum_epf2;
+	
 	$sum_socso = $usql["socso_employee_deduction"];
 	$sum_eis = $usql["eis_employee_deduction"];
 	$sum_deduction = $usql["process_payroll_additional_deduction"];
@@ -151,12 +175,12 @@ foreach($emp_id_unique as $eiu){
 
 	$sum_adjustment = $usql["process_payroll_adjustment"];
 
-	$sum_gross_deduct = $sum_gross_deduct + $sum_epf + $sum_socso + $sum_eis + $sum_deduction + $sum_loan + $sum_unpaid_leave + $sum_advance_deduct;
+	$sum_gross_deduct = $sum_gross_deduct + $final_epf + $sum_socso + $sum_eis + $sum_deduction + $sum_loan + $sum_unpaid_leave + $sum_advance_deduct;
 
 	$total_gross_deduct = $total_gross_deduct + $sum_gross_deduct;
 	
 	//employer
-	$total_employer_epf = $total_employer_epf + $epf_employer_deduction;
+	$total_employer_epf = $total_employer_epf + $final_epf_employer;
 	$total_employer_socso = $total_employer_socso + $socso_employer_deduction;
 	$total_employer_eis = $total_employer_eis + $eis_employer_deduction;
 	
@@ -168,13 +192,13 @@ foreach($emp_id_unique as $eiu){
 	$pdf->Cell (16,7,$sum_overtime,"",0,"R");
 	$pdf->Cell (16,7,$sum_allowance,"",0,"R");
 	$pdf->Cell (14,7,$sum_others,"",0,"R");
-	$pdf->Cell (20,7,$sum_gross_pay,"",0,"R");
-	$pdf->Cell (16,7,$sum_epf,"",0,"R");
+	$pdf->Cell (20,7,number_format($sum_gross_pay,2),"",0,"R");
+	$pdf->Cell (16,7,number_format($final_epf,2),"",0,"R");
 	$pdf->Cell (18,7,$sum_socso,"",0,"R");
 	$pdf->Cell (14,7,$sum_eis,"",0,"R");
 	$pdf->Cell (22,7,$sum_deduction,"",0,"R");
 	$pdf->Cell (22,7,$sum_loan,"",0,"R");
-	$pdf->Cell (16,7,$sum_gross_deduct,"",0,"R");
+	$pdf->Cell (16,7,number_format($sum_gross_deduct,2),"",0,"R");
 	$pdf->Cell (18,7,$sum_adjustment,"",1,"R");
 
 	$pdf->Cell (40,5,'',"",0);
@@ -182,15 +206,15 @@ foreach($emp_id_unique as $eiu){
 	$pdf->Cell (22,5,$sum_advance_paid,"",0,"R");
 	$pdf->Cell (16,5,$sum_claims,"",0,"R");
 	$pdf->Cell (16,5,$sum_bonus,"",0,"R");
-	$pdf->Cell (14,5,'',"",0);
+	$pdf->Cell (14,5,$sum_adhoc,"",0,"R");
 	$pdf->Cell (20,5,'',"",0);
-	$pdf->Cell (16,5,$epf_employer_deduction,"",0,"R");
+	$pdf->Cell (16,5,number_format($final_epf_employer,2),"",0,"R");
 	$pdf->Cell (18,5,$socso_employer_deduction,"",0,"R");
 	$pdf->Cell (14,5,$eis_employer_deduction,"",0,"R");
 	$pdf->Cell (22,5,$sum_unpaid_leave,"",0,"R");
 	$pdf->Cell (22,5,$sum_advance_deduct,"",0,"R");
 	$pdf->Cell (16,5,'',"",0,"R");
-	$pdf->Cell (18,5,$sum_netpay,"",1,"R");
+	$pdf->Cell (18,5,number_format($sum_netpay,2),"",1,"R");
 	
 	$pdf->Cell (40,2,'',"",0);
 	$pdf->Cell (22,2,'',"",0,"R");
@@ -234,7 +258,10 @@ foreach($emp_id_unique as $eiu){
 	$total_others = $total_others + $sum_others;
 	$format_total_others = number_format($total_others,2);
 	
-	$total_epf = $total_epf + $sum_epf;
+	$total_adhoc = $total_adhoc + $sum_adhoc;
+	$format_total_adhoc = number_format($total_adhoc,2);
+	
+	$total_epf = $total_epf + $final_epf;
 	$format_total_epf = number_format($total_epf,2);
 	
 	$total_socso = $total_socso + $sum_socso;

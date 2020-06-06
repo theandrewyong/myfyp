@@ -32,7 +32,6 @@ $emp_unique_id = array_unique ($emp_id_array);
 
 $loopcount = 0;
 foreach ($emp_unique_id as $dd) {
-	
 //employee details **
 $query=@mysqli_query($conn,"select process_adhoc.*, employee_info.* from process_adhoc inner join employee_info on process_adhoc.emp_id = employee_info.emp_id where process_adhoc.emp_id='$dd' and process_adhoc.process_adhoc_process_month = '$get_month'");
 	
@@ -221,10 +220,10 @@ $pdf->Cell (0,5,'____________________________________________',"0",1,"R");
 $pdf->Cell (0,6,'Employee Signature',"0",1,"R");
 $pdf->Cell (0,3,"",0,1,"L");
 
-if ($loopcount%2){
+$loopcount = $loopcount + 1;
+if($loopcount < count($emp_unique_id) && $loopcount%2==0){
 	$pdf->AddPage();
 }
-$loopcount = $loopcount + 1;
 }
 
 

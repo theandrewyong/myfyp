@@ -25,12 +25,30 @@ while($data=@mysqli_fetch_array($query)) {
 }
 
 //get unique employee
-$count_employee_by_year_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_year = '$get_year'");
-while($result = mysqli_fetch_assoc($count_employee_by_year_sql)){
+$unique_employee = [];
 
-//make it unique
-$employee_id_array[] = $result["emp_id"];
-$unique_employee = array_unique($employee_id_array);
+$count_employee_by_year_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_year = '$get_year'");
+					
+$count_employee_by_year_sql2 = mysqli_query($conn, "SELECT * FROM process_adhoc WHERE process_adhoc_process_year = '$get_year'");
+
+if(mysqli_num_rows($count_employee_by_year_sql)>0){
+
+	while($result = mysqli_fetch_assoc($count_employee_by_year_sql)){
+	//make it unique 
+	$employee_id_array[] = $result["emp_id"];
+	$unique_employee = array_unique($employee_id_array);
+	}
+
+}
+
+else {
+	while($result = mysqli_fetch_assoc($count_employee_by_year_sql2)){
+
+	//make it unique
+	$employee_id_array[] = $result["emp_id"];
+	$unique_employee = array_unique($employee_id_array);
+	}
+
 }
 
 $countJan = 0;
@@ -850,8 +868,8 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	$pdf->Cell (60,5,'Employee EPF (Adhoc)',0,0);
 	for($i=1;$i<=12;$i++){
 		$query2 = mysqli_query($conn, "select process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info WHERE process_adhoc_process_month = '$i' AND process_adhoc.emp_id = '$ua' AND process_adhoc_process_year = '$get_year'");
-		
 		$data = mysqli_fetch_assoc($query2);
+		
 		if($i == 1){
             $pdf->Cell (17,5,$data["epf_employee_deduction"],0,0,"R");
             $countJanEmpEPFAdhoc = $countJan + $data["epf_employee_deduction"];
@@ -1271,7 +1289,7 @@ $pdf->Cell (17,5,$format_total_earnings_total,"TB",1,"R");
 	$pdf->SetFont("Arial","B", 8);
 	$pdf->Cell (60,5,'Total Deductions',0,0);
 
-	//total earnings by month formatted
+	//total deductions by month formatted
 	$total_deductions_jan = $countJanEmpEPF + $countJanEmpSOCSO + $countJanEmpEIS + $countJanDeduction + $countJanLoan + $countJanUnpaidLeave + $countJanAdvanceDeduct + $countJanEmpEPFAdhoc;
 	$format_total_deductions_jan = number_format("$total_deductions_jan",2);
 	
@@ -1826,8 +1844,10 @@ $pdf->Cell (17,5,$format_total_deductions_total,"TB",1,"R");
 
 $count_emp = $count_emp +1;
 	
-if($count_emp < count($unique_employee))
+if($count_emp < count($unique_employee)){
 	$pdf->AddPage();
+}
+	
 }
 
 

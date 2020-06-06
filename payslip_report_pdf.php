@@ -30,7 +30,7 @@ while($select_emp_process = mysqli_fetch_assoc($select_all_process)){
 
 $emp_unique_id = array_unique ($emp_id_array);
 
-$loopcount = 1;
+$loopcount = 0;
 foreach ($emp_unique_id as $dd) {
 //title 
 $pdf->SetFont("Arial","B", 15);
@@ -283,7 +283,7 @@ $pdf->Cell (0,4.5,'Employee Signature',"0",1,"R");
 $pdf->Cell (0,3,"",0,1,"L");
 
 $loopcount = $loopcount + 1;
-if ($loopcount%2){
+if($loopcount < count($emp_unique_id) && $loopcount%2==0){
 	$pdf->AddPage();
 }
 }

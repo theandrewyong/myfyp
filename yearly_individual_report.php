@@ -39,6 +39,7 @@
 <h1 class="mt-4"><a href="reports.php" class="btn btn-primary">Back</a> Yealy Individual Report</h1>
 <hr>
             <?php
+				$unique_employee = [];
                 $year = date("Y");
                 $view_table = FALSE;
                 if(isset($_POST["submit"])){
@@ -46,17 +47,45 @@
                 
 				
 				$count_employee_by_year_sql = mysqli_query($conn, "SELECT * FROM process_payroll WHERE process_payroll_process_year = '$year'");
-				while($result = mysqli_fetch_assoc($count_employee_by_year_sql)){
-
-				//make it unique
-				$employee_id_array[] = $result["emp_id"];
-				$unique_employee = array_unique($employee_id_array);
+					
+				$count_employee_by_year_sql2 = mysqli_query($conn, "SELECT * FROM process_adhoc WHERE process_adhoc_process_year = '$year'");
+					
+				if(mysqli_num_rows($count_employee_by_year_sql)>0){
+					
+					while($result = mysqli_fetch_assoc($count_employee_by_year_sql)){
+					//make it unique 
+					$employee_id_array[] = $result["emp_id"];
+					$unique_employee = array_unique($employee_id_array);
+					}
+					
 				}
+	
+				else {
+					while($result = mysqli_fetch_assoc($count_employee_by_year_sql2)){
+
+					//make it unique
+					$employee_id_array[] = $result["emp_id"];
+					$unique_employee = array_unique($employee_id_array);
+					}
+					
+				}
+				
+					
+				
+				
 				
 				//validation
 				$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
 					while($validation = mysqli_fetch_assoc($validate)){
 						if ($validation["process_payroll_process_year"]==$year){
+							$view_table = TRUE;
+						}
+					}
+					
+				//validation
+				$validate2 = mysqli_query($conn, "SELECT * FROM process_adhoc");
+					while($validation2 = mysqli_fetch_assoc($validate2)){
+						if ($validation2["process_adhoc_process_year"]==$year){
 							$view_table = TRUE;
 						}
 					}
@@ -100,21 +129,29 @@
                 </thead>
             <tbody>
             <?php
-				//hide errors
-				//error_reporting(0);
-				//ini_set('display_errors', 0);
-				
 				$id = "";
                 if($view_table){
                     foreach($unique_employee as $ua){
 						$select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_year = '$year' AND process_payroll.emp_id = '$ua'"); 
 						$data = mysqli_fetch_assoc($select_sql); 
 						
+						$select_sql2 = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_process_year = '$year' AND process_adhoc.emp_id = '$ua'"); 
+						$data2 = mysqli_fetch_assoc($select_sql2);
+
+						if(mysqli_num_rows($select_sql)>0){
+							$yid_display = $data["emp_display_id"];
+							$yid_name = $data["emp_full_name"];
+							$id = $data["emp_id"];
+							
+						}
 						
-						$yid_display = $data["emp_display_id"];
-                        $yid_name = $data["emp_full_name"];
-                        $id = $data["emp_id"];
-                            
+						else{
+							$yid_display = $data2["emp_display_id"];
+							$yid_name = $data2["emp_full_name"];
+							$id = $data2["emp_id"];
+							
+						}
+  
                         echo '<tr>';
                         echo '<td>' . $yid_display . '</td>';
                         echo '<td>' . $yid_name . '</td>';

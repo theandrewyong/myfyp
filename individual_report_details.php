@@ -42,7 +42,17 @@
 <hr>
 	<?php 
 		$get_sql_1 = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_year = '$get_year' AND process_payroll.emp_id = '$get_emp_id'");  
-		$data = mysqli_fetch_assoc($get_sql_1); 
+	
+		$get_sql_2 = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_process_year = '$get_year' AND process_adhoc.emp_id = '$get_emp_id'"); 
+	
+		if(mysqli_num_rows($get_sql_1)>0) {
+			$data = mysqli_fetch_assoc($get_sql_1); 
+		}
+	
+		else {
+			$data = mysqli_fetch_assoc($get_sql_2); 
+		}
+		
 	?>
     <div class="row">
         <div class="col-12">
@@ -729,41 +739,107 @@
 				echo '<td>' . $format_count_allOthers . '</td>';
 				echo '</tr>';
 				
+				//Adhoc
+				echo '<tr>';
+                echo '<td>' . 'Adhoc Amount' . '</td>';                  
+                for($i=1;$i<=12;$i++){
+					
+					$query2 = mysqli_query($conn, "select process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info WHERE process_adhoc_process_month = '$i' AND process_adhoc.emp_id = '$get_emp_id' AND process_adhoc_process_year = '$get_year'");
+					$data = mysqli_fetch_assoc($query2);
+
+					if($i == 1){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countJanAdhoc = $countJan + $data["adhoc_amt"];
+					}
+					if($i == 2){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countFebAdhoc = $countFeb + $data["adhoc_amt"];
+					}
+					if($i == 3){
+						echo '<td>' . $data["adhoc_amt"] . '</td>'; 
+						$countMarAdhoc = $countMar + $data["adhoc_amt"];
+					}
+					if($i == 4){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countAprAdhoc = $countApr + $data["adhoc_amt"];
+					}
+					if($i == 5){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countMayAdhoc = $countMay + $data["adhoc_amt"];
+					}
+					if($i == 6){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countJunAdhoc = $countJun + $data["adhoc_amt"];
+					}
+					if($i == 7){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countJulAdhoc = $countJul + $data["adhoc_amt"];
+					}
+					if($i == 8){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countAugAdhoc = $countAug + $data["adhoc_amt"];
+					}
+					if($i == 9){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countSepAdhoc = $countSep + $data["adhoc_amt"];
+					}
+					if($i == 10){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countOctAdhoc = $countOct + $data["adhoc_amt"];
+					} 
+					if($i == 11){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countNovAdhoc = $countNov + $data["adhoc_amt"];
+					}
+					if($i == 12){
+						echo '<td>' . $data["adhoc_amt"] . '</td>';
+						$countDecAdhoc = $countDec + $data["adhoc_amt"];
+					}
+
+				}
+				
+				
+				$count_allAdhoc = $countJanAdhoc + $countFebAdhoc + $countMarAdhoc + $countAprAdhoc + $countMayAdhoc + $countJunAdhoc + $countJulAdhoc + $countAugAdhoc + $countSepAdhoc + $countOctAdhoc + $countNovAdhoc + $countDecAdhoc;
+				$format_count_allAdhoc = number_format("$count_allAdhoc",2);
+
+				echo '<td>' . $format_count_allAdhoc . '</td>';
+				echo '</tr>';
+				
 				//total earnings by month formatted
-					$total_earnings_jan = $countJanWage + $countJanOvertime + $countJanCommission + $countJanAllowance + $countJanClaims + $countJanDirectorFees + $countJanAdvancePaid + $countJanBonus + $countJanOthers;
+					$total_earnings_jan = $countJanWage + $countJanOvertime + $countJanCommission + $countJanAllowance + $countJanClaims + $countJanDirectorFees + $countJanAdvancePaid + $countJanBonus + $countJanOthers + $countJanAdhoc;
 					$format_total_earnings_jan = number_format("$total_earnings_jan",2);
 
-					$total_earnings_feb = $countFebWage + $countFebOvertime + $countFebCommission + $countFebAllowance + $countFebClaims + $countFebDirectorFees + $countFebAdvancePaid + $countFebBonus + $countFebOthers;
+					$total_earnings_feb = $countFebWage + $countFebOvertime + $countFebCommission + $countFebAllowance + $countFebClaims + $countFebDirectorFees + $countFebAdvancePaid + $countFebBonus + $countFebOthers + $countFebAdhoc;
 					$format_total_earnings_feb = number_format("$total_earnings_feb",2);
 
-					$total_earnings_mar = $countMarWage + $countMarOvertime + $countMarCommission + $countMarAllowance + $countMarClaims + $countMarDirectorFees + $countMarAdvancePaid + $countMarBonus + $countMarOthers;
+					$total_earnings_mar = $countMarWage + $countMarOvertime + $countMarCommission + $countMarAllowance + $countMarClaims + $countMarDirectorFees + $countMarAdvancePaid + $countMarBonus + $countMarOthers + $countMarAdhoc;
 					$format_total_earnings_mar = number_format("$total_earnings_mar",2);
 
-					$total_earnings_apr = $countAprWage + $countAprOvertime + $countAprCommission + $countAprAllowance + $countAprClaims + $countAprDirectorFees + $countAprAdvancePaid + $countAprBonus + $countAprOthers;
+					$total_earnings_apr = $countAprWage + $countAprOvertime + $countAprCommission + $countAprAllowance + $countAprClaims + $countAprDirectorFees + $countAprAdvancePaid + $countAprBonus + $countAprOthers + $countAprAdhoc;
 					$format_total_earnings_apr = number_format("$total_earnings_apr",2);
 
-					$total_earnings_may = $countMayWage + $countMayOvertime + $countMayCommission + $countMayAllowance + $countMayClaims + $countMayDirectorFees + $countMayAdvancePaid + $countMayBonus + $countMayOthers;
+					$total_earnings_may = $countMayWage + $countMayOvertime + $countMayCommission + $countMayAllowance + $countMayClaims + $countMayDirectorFees + $countMayAdvancePaid + $countMayBonus + $countMayOthers + $countMayAdhoc;
 					$format_total_earnings_may = number_format("$total_earnings_may",2);
 
-					$total_earnings_jun = $countJunWage + $countJunOvertime + $countJunCommission + $countJunAllowance + $countJunClaims + $countJunDirectorFees + $countJunAdvancePaid + $countJunBonus + $countJunOthers;
+					$total_earnings_jun = $countJunWage + $countJunOvertime + $countJunCommission + $countJunAllowance + $countJunClaims + $countJunDirectorFees + $countJunAdvancePaid + $countJunBonus + $countJunOthers + $countJunAdhoc;
 					$format_total_earnings_jun = number_format("$total_earnings_jun",2);
 
-					$total_earnings_jul = $countJulWage + $countJulOvertime + $countJulCommission + $countJulAllowance + $countJulClaims + $countJulDirectorFees + $countJulAdvancePaid + $countJulBonus + $countJulOthers;
+					$total_earnings_jul = $countJulWage + $countJulOvertime + $countJulCommission + $countJulAllowance + $countJulClaims + $countJulDirectorFees + $countJulAdvancePaid + $countJulBonus + $countJulOthers + $countJulAdhoc;
 					$format_total_earnings_jul = number_format("$total_earnings_jul",2);
 
-					$total_earnings_aug = $countAugWage + $countAugOvertime + $countAugCommission + $countAugAllowance + $countAugClaims + $countAugDirectorFees + $countAugAdvancePaid + $countAugBonus + $countAugOthers;
+					$total_earnings_aug = $countAugWage + $countAugOvertime + $countAugCommission + $countAugAllowance + $countAugClaims + $countAugDirectorFees + $countAugAdvancePaid + $countAugBonus + $countAugOthers + $countAugAdhoc;
 					$format_total_earnings_aug = number_format("$total_earnings_aug",2);
 
-					$total_earnings_sep = $countSepWage + $countSepOvertime + $countSepCommission + $countSepAllowance + $countSepClaims + $countSepDirectorFees + $countSepAdvancePaid + $countSepBonus + $countSepOthers;
+					$total_earnings_sep = $countSepWage + $countSepOvertime + $countSepCommission + $countSepAllowance + $countSepClaims + $countSepDirectorFees + $countSepAdvancePaid + $countSepBonus + $countSepOthers + $countSepAdhoc;
 					$format_total_earnings_sep = number_format("$total_earnings_sep",2);
 
-					$total_earnings_oct = $countOctWage + $countOctOvertime + $countOctCommission + $countOctAllowance + $countOctClaims + $countOctDirectorFees + $countOctAdvancePaid + $countOctBonus + $countOctOthers;
+					$total_earnings_oct = $countOctWage + $countOctOvertime + $countOctCommission + $countOctAllowance + $countOctClaims + $countOctDirectorFees + $countOctAdvancePaid + $countOctBonus + $countOctOthers + $countOctAdhoc;
 					$format_total_earnings_oct = number_format("$total_earnings_oct",2);
 
-					$total_earnings_nov = $countNovWage + $countNovOvertime + $countNovCommission + $countNovAllowance + $countNovClaims + $countNovDirectorFees + $countNovAdvancePaid + $countNovBonus + $countNovOthers;
+					$total_earnings_nov = $countNovWage + $countNovOvertime + $countNovCommission + $countNovAllowance + $countNovClaims + $countNovDirectorFees + $countNovAdvancePaid + $countNovBonus + $countNovOthers + $countNovAdhoc;
 					$format_total_earnings_nov = number_format("$total_earnings_nov",2);
 
-					$total_earnings_dec = $countDecWage + $countDecOvertime + $countDecCommission + $countDecAllowance + $countDecClaims + $countDecDirectorFees + $countDecAdvancePaid + $countDecBonus + $countDecOthers;
+					$total_earnings_dec = $countDecWage + $countDecOvertime + $countDecCommission + $countDecAllowance + $countDecClaims + $countDecDirectorFees + $countDecAdvancePaid + $countDecBonus + $countDecOthers + $countDecAdhoc;
 					$format_total_earnings_dec = number_format("$total_earnings_dec",2);
 				
 					echo '<th>' . 'Total Earnings' . '</th>';
@@ -806,7 +882,7 @@
 						}                        
 
 					}
-					$total_earnings_total = $count_allWage + $count_allOvertime + $count_allCommission + $count_allAllowance + $count_allClaims + $count_allDirectorFees + $count_allAdvancePaid + $count_allBonus + $count_allOthers;
+					$total_earnings_total = $count_allWage + $count_allOvertime + $count_allCommission + $count_allAllowance + $count_allClaims + $count_allDirectorFees + $count_allAdvancePaid + $count_allBonus + $count_allOthers + $count_allAdhoc;
 					$format_total_earnings_total = number_format("$total_earnings_total",2);
 					echo '<th>' . $format_total_earnings_total . '</th>';
 				
@@ -874,6 +950,72 @@
 				$format_count_allEmpEPF = number_format("$count_allEmpEPF",2);
 
 				echo '<td>' . $format_count_allEmpEPF . '</td>';
+				echo '</tr>';
+				
+				//EPF Adhoc
+				echo '<tr>';
+                echo '<td>' . 'Employee EPF (Adhoc)' . '</td>';                  
+                for($i=1;$i<=12;$i++){
+					
+					$query2 = mysqli_query($conn, "select process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info WHERE process_adhoc_process_month = '$i' AND process_adhoc.emp_id = '$get_emp_id' AND process_adhoc_process_year = '$get_year'");
+					$data = mysqli_fetch_assoc($query2);
+
+					if($i == 1){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countJanEmpEPFAdhoc = $countJan + $data["epf_employee_deduction"];
+					}
+					if($i == 2){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countFebEmpEPFAdhoc = $countFeb + $data["epf_employee_deduction"];
+					}
+					if($i == 3){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>'; 
+						$countMarEmpEPFAdhoc = $countMar + $data["epf_employee_deduction"];
+					}
+					if($i == 4){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countAprEmpEPFAdhoc = $countApr + $data["epf_employee_deduction"];
+					}
+					if($i == 5){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countMayEmpEPFAdhoc = $countMay + $data["epf_employee_deduction"];
+					}
+					if($i == 6){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countJunEmpEPFAdhoc = $countJun + $data["epf_employee_deduction"];
+					}
+					if($i == 7){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countJulEmpEPFAdhoc = $countJul + $data["epf_employee_deduction"];
+					}
+					if($i == 8){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countAugEmpEPFAdhoc = $countAug + $data["epf_employee_deduction"];
+					}
+					if($i == 9){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countSepEmpEPFAdhoc = $countSep + $data["epf_employee_deduction"];
+					}
+					if($i == 10){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countOctEmpEPFAdhoc = $countOct + $data["epf_employee_deduction"];
+					} 
+					if($i == 11){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countNovEmpEPFAdhoc = $countNov + $data["epf_employee_deduction"];
+					}
+					if($i == 12){
+						echo '<td>' . $data["epf_employee_deduction"] . '</td>';
+						$countDecEmpEPFAdhoc = $countDec + $data["epf_employee_deduction"];
+					}
+
+				}
+				
+				
+				$count_allEmpEPFAdhoc = $countJanEmpEPFAdhoc + $countFebEmpEPFAdhoc + $countMarEmpEPFAdhoc + $countAprEmpEPFAdhoc + $countMayEmpEPFAdhoc + $countJunEmpEPFAdhoc + $countJulEmpEPFAdhoc + $countAugEmpEPFAdhoc + $countSepEmpEPFAdhoc + $countOctEmpEPFAdhoc + $countNovEmpEPFAdhoc + $countDecEmpEPFAdhoc;
+				$format_count_allEmpEPFAdhoc = number_format("$count_allEmpEPFAdhoc",2);
+
+				echo '<td>' . $format_count_allEmpEPFAdhoc . '</td>';
 				echo '</tr>';
 				
 				//SOCSO
@@ -1272,42 +1414,42 @@
 				echo '<td>' . $format_count_allAdvanceDeduct . '</td>';
 				echo '</tr>';
 				
-					//total earnings by month formatted
-						$total_deductions_jan = $countJanEmpEPF + $countJanEmpSOCSO + $countJanEmpEIS + $countJanDeduction + $countJanLoan + $countJanUnpaidLeave + $countJanAdvanceDeduct;
-						$format_total_deductions_jan = number_format("$total_deductions_jan",2);
+					//total deductions by month formatted
+					$total_deductions_jan = $countJanEmpEPF + $countJanEmpSOCSO + $countJanEmpEIS + $countJanDeduction + $countJanLoan + $countJanUnpaidLeave + $countJanAdvanceDeduct + $countJanEmpEPFAdhoc;
+					$format_total_deductions_jan = number_format("$total_deductions_jan",2);
 
-						$total_deductions_feb = $countFebEmpEPF + $countFebEmpSOCSO + $countFebEmpEIS + $countFebDeduction + $countFebLoan + $countFebUnpaidLeave + $countFebAdvanceDeduct;
-						$format_total_deductions_feb = number_format("$total_deductions_feb",2);
+					$total_deductions_feb = $countFebEmpEPF + $countFebEmpSOCSO + $countFebEmpEIS + $countFebDeduction + $countFebLoan + $countFebUnpaidLeave + $countFebAdvanceDeduct + $countFebEmpEPFAdhoc;
+					$format_total_deductions_feb = number_format("$total_deductions_feb",2);
 
-						$total_deductions_mar = $countMarEmpEPF + $countMarEmpSOCSO + $countMarEmpEIS + $countMarDeduction + $countMarLoan + $countMarUnpaidLeave + $countMarAdvanceDeduct;
-						$format_total_deductions_mar = number_format("$total_deductions_mar",2);
+					$total_deductions_mar = $countMarEmpEPF + $countMarEmpSOCSO + $countMarEmpEIS + $countMarDeduction + $countMarLoan + $countMarUnpaidLeave + $countMarAdvanceDeduct + $countMarEmpEPFAdhoc;
+					$format_total_deductions_mar = number_format("$total_deductions_mar",2);
 
-						$total_deductions_apr = $countAprEmpEPF + $countAprEmpSOCSO + $countAprEmpEIS + $countAprDeduction + $countAprLoan + $countAprUnpaidLeave + $countAprAdvanceDeduct;
-						$format_total_deductions_apr = number_format("$total_deductions_apr",2);
+					$total_deductions_apr = $countAprEmpEPF + $countAprEmpSOCSO + $countAprEmpEIS + $countAprDeduction + $countAprLoan + $countAprUnpaidLeave + $countAprAdvanceDeduct  + $countAprEmpEPFAdhoc;
+					$format_total_deductions_apr = number_format("$total_deductions_apr",2);
 
-						$total_deductions_may = $countMayEmpEPF + $countMayEmpSOCSO + $countMayEmpEIS + $countMayDeduction + $countMayLoan + $countMayUnpaidLeave + $countMayAdvanceDeduct;
-						$format_total_deductions_may = number_format("$total_deductions_may",2);
+					$total_deductions_may = $countMayEmpEPF + $countMayEmpSOCSO + $countMayEmpEIS + $countMayDeduction + $countMayLoan + $countMayUnpaidLeave + $countMayAdvanceDeduct + $countMayEmpEPFAdhoc;
+					$format_total_deductions_may = number_format("$total_deductions_may",2);
 
-						$total_deductions_jun = $countJunEmpEPF + $countJunEmpSOCSO + $countJunEmpEIS + $countJunDeduction + $countJunLoan + $countJunUnpaidLeave + $countJunAdvanceDeduct;
-						$format_total_deductions_jun = number_format("$total_deductions_jun",2);
+					$total_deductions_jun = $countJunEmpEPF + $countJunEmpSOCSO + $countJunEmpEIS + $countJunDeduction + $countJunLoan + $countJunUnpaidLeave + $countJunAdvanceDeduct + $countJunEmpEPFAdhoc;
+					$format_total_deductions_jun = number_format("$total_deductions_jun",2);
 
-						$total_deductions_jul = $countJulEmpEPF + $countJulEmpSOCSO + $countJulEmpEIS + $countJulDeduction + $countJulLoan + $countJulUnpaidLeave + $countJulAdvanceDeduct;
-						$format_total_deductions_jul = number_format("$total_deductions_jul",2);
+					$total_deductions_jul = $countJulEmpEPF + $countJulEmpSOCSO + $countJulEmpEIS + $countJulDeduction + $countJulLoan + $countJulUnpaidLeave + $countJulAdvanceDeduct + $countJulEmpEPFAdhoc;
+					$format_total_deductions_jul = number_format("$total_deductions_jul",2);
 
-						$total_deductions_aug = $countAugEmpEPF + $countAugEmpSOCSO + $countAugEmpEIS + $countAugDeduction + $countAugLoan + $countAugUnpaidLeave + $countAugAdvanceDeduct;
-						$format_total_deductions_aug = number_format("$total_deductions_aug",2);
+					$total_deductions_aug = $countAugEmpEPF + $countAugEmpSOCSO + $countAugEmpEIS + $countAugDeduction + $countAugLoan + $countAugUnpaidLeave + $countAugAdvanceDeduct + $countAugEmpEPFAdhoc;
+					$format_total_deductions_aug = number_format("$total_deductions_aug",2);
 
-						$total_deductions_sep = $countSepEmpEPF + $countSepEmpSOCSO + $countSepEmpEIS + $countSepDeduction + $countSepLoan + $countSepUnpaidLeave + $countSepAdvanceDeduct;
-						$format_total_deductions_sep = number_format("$total_deductions_sep",2);
+					$total_deductions_sep = $countSepEmpEPF + $countSepEmpSOCSO + $countSepEmpEIS + $countSepDeduction + $countSepLoan + $countSepUnpaidLeave + $countSepAdvanceDeduct + $countSepEmpEPFAdhoc;
+					$format_total_deductions_sep = number_format("$total_deductions_sep",2);
 
-						$total_deductions_oct = $countOctEmpEPF + $countOctEmpSOCSO + $countOctEmpEIS + $countOctDeduction + $countOctLoan + $countOctUnpaidLeave + $countOctAdvanceDeduct;
-						$format_total_deductions_oct = number_format("$total_deductions_oct",2);
+					$total_deductions_oct = $countOctEmpEPF + $countOctEmpSOCSO + $countOctEmpEIS + $countOctDeduction + $countOctLoan + $countOctUnpaidLeave + $countOctAdvanceDeduct + $countOctEmpEPFAdhoc;
+					$format_total_deductions_oct = number_format("$total_deductions_oct",2);
 
-						$total_deductions_nov = $countNovEmpEPF + $countNovEmpSOCSO + $countNovEmpEIS + $countNovDeduction + $countNovLoan + $countNovUnpaidLeave + $countNovAdvanceDeduct;
-						$format_total_deductions_nov = number_format("$total_deductions_nov",2);
+					$total_deductions_nov = $countNovEmpEPF + $countNovEmpSOCSO + $countNovEmpEIS + $countNovDeduction + $countNovLoan + $countNovUnpaidLeave + $countNovAdvanceDeduct + $countNovEmpEPFAdhoc;
+					$format_total_deductions_nov = number_format("$total_deductions_nov",2);
 
-						$total_deductions_dec = $countDecEmpEPF + $countDecEmpSOCSO + $countDecEmpEIS + $countDecDeduction + $countDecLoan + $countDecUnpaidLeave + $countDecAdvanceDeduct;
-						$format_total_deductions_dec = number_format("$total_deductions_dec",2);
+					$total_deductions_dec = $countDecEmpEPF + $countDecEmpSOCSO + $countDecEmpEIS + $countDecDeduction + $countDecLoan + $countDecUnpaidLeave + $countDecAdvanceDeduct + $countDecEmpEPFAdhoc;
+					$format_total_deductions_dec = number_format("$total_deductions_dec",2);
 				
 				echo '<th>' . 'Total Deductions' . '</th>';
 				for($x=1;$x<=12;$x++){
@@ -1349,7 +1491,7 @@
 					}                        
 
 				}
-				$total_deductions_total = $count_allEmpEPF + $count_allEmpSOCSO + $count_allEmpEIS + $count_allDeduction + $count_allLoan + $count_allUnpaidLeave + $count_allAdvanceDeduct;
+				$total_deductions_total = $count_allEmpEPF + $count_allEmpSOCSO + $count_allEmpEIS + $count_allDeduction + $count_allLoan + $count_allUnpaidLeave + $count_allAdvanceDeduct + $count_allEmpEPFAdhoc;
 				$format_total_deductions_total = number_format("$total_deductions_total",2);
 				
 				echo '<th>' . $format_total_deductions_total . '</th>';
@@ -1568,6 +1710,72 @@
 				echo '<td>' . $format_count_allEmprEPF . '</td>';
 				echo '</tr>';
 				
+				//Employer EPF Adhoc
+				echo '<tr>';
+                echo '<td>' . 'Employer EPF (Adhoc)' . '</td>';                  
+                for($i=1;$i<=12;$i++){
+					
+					$query2 = mysqli_query($conn, "select process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info WHERE process_adhoc_process_month = '$i' AND process_adhoc.emp_id = '$get_emp_id' AND process_adhoc_process_year = '$get_year'");
+					$data = mysqli_fetch_assoc($query2);
+
+					if($i == 1){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countJanEmprEPFAdhoc = $countJan + $data["epf_employer_deduction"];
+					}
+					if($i == 2){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countFebEmprEPFAdhoc = $countFeb + $data["epf_employer_deduction"];
+					}
+					if($i == 3){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>'; 
+						$countMarEmprEPFAdhoc = $countMar + $data["epf_employer_deduction"];
+					}
+					if($i == 4){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countAprEmprEPFAdhoc = $countApr + $data["epf_employer_deduction"];
+					}
+					if($i == 5){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countMayEmprEPFAdhoc = $countMay + $data["epf_employer_deduction"];
+					}
+					if($i == 6){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countJunEmprEPFAdhoc = $countJun + $data["epf_employer_deduction"];
+					}
+					if($i == 7){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countJulEmprEPFAdhoc = $countJul + $data["epf_employer_deduction"];
+					}
+					if($i == 8){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countAugEmprEPFAdhoc = $countAug + $data["epf_employer_deduction"];
+					}
+					if($i == 9){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countSepEmprEPFAdhoc = $countSep + $data["epf_employer_deduction"];
+					}
+					if($i == 10){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countOctEmprEPFAdhoc = $countOct + $data["epf_employer_deduction"];
+					} 
+					if($i == 11){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countNovEmprEPFAdhoc = $countNov + $data["epf_employer_deduction"];
+					}
+					if($i == 12){
+						echo '<td>' . $data["epf_employer_deduction"] . '</td>';
+						$countDecEmprEPFAdhoc = $countDec + $data["epf_employer_deduction"];
+					}
+
+				}
+				
+				
+				$count_allEmprEPFAdhoc = $countJanEmprEPFAdhoc + $countFebEmprEPFAdhoc + $countMarEmprEPFAdhoc + $countAprEmprEPFAdhoc + $countMayEmprEPFAdhoc + $countJunEmprEPFAdhoc + $countJulEmprEPFAdhoc + $countAugEmprEPFAdhoc + $countSepEmprEPFAdhoc + $countOctEmprEPFAdhoc + $countNovEmprEPFAdhoc + $countDecEmprEPFAdhoc;
+				$format_count_allEmprEPFAdhoc = number_format("$count_allEmprEPFAdhoc",2);
+
+				echo '<td>' . $format_count_allEmprEPFAdhoc . '</td>';
+				echo '</tr>';
+				
 				//Employer SOCSO
 				echo '<tr>';
                 echo '<td>' . 'Employer SOCSO' . '</td>';                  
@@ -1701,43 +1909,43 @@
 				echo '</tr>';
 				
 				//yearly individual total Employer Cost
-				$employer_cost_jan = $nett_pay_jan + $countJanEmprEPF + $countJanEmprSOCSO + $countJanEmprEIS;
+				$employer_cost_jan = $nett_pay_jan + $countJanEmprEPF + $countJanEmprSOCSO + $countJanEmprEIS + $countJanEmprEPFAdhoc;
 				$format_employer_cost_jan = number_format("$employer_cost_jan",2);
 
-				$employer_cost_feb = $nett_pay_feb + $countFebEmprEPF + $countFebEmprSOCSO + $countFebEmprEIS;
+				$employer_cost_feb = $nett_pay_feb + $countFebEmprEPF + $countFebEmprSOCSO + $countFebEmprEIS + $countFebEmprEPFAdhoc;
 				$format_employer_cost_feb = number_format("$employer_cost_feb",2);
 
-				$employer_cost_mar = $nett_pay_mar + $countMarEmprEPF + $countMarEmprSOCSO + $countMarEmprEIS;
+				$employer_cost_mar = $nett_pay_mar + $countMarEmprEPF + $countMarEmprSOCSO + $countMarEmprEIS + $countMarEmprEPFAdhoc;
 				$format_employer_cost_mar = number_format("$employer_cost_mar",2);
 
-				$employer_cost_apr = $nett_pay_apr + $countAprEmprEPF + $countAprEmprSOCSO + $countAprEmprEIS;
+				$employer_cost_apr = $nett_pay_apr + $countAprEmprEPF + $countAprEmprSOCSO + $countAprEmprEIS + $countAprEmprEPFAdhoc;
 				$format_employer_cost_apr = number_format("$employer_cost_apr",2);
 
-				$employer_cost_may = $nett_pay_may + $countMayEmprEPF + $countMayEmprSOCSO + $countMayEmprEIS;
+				$employer_cost_may = $nett_pay_may + $countMayEmprEPF + $countMayEmprSOCSO + $countMayEmprEIS + $countMayEmprEPFAdhoc;
 				$format_employer_cost_may = number_format("$employer_cost_may",2);
 
-				$employer_cost_jun = $nett_pay_jun + $countJunEmprEPF + $countJunEmprSOCSO + $countJunEmprEIS;
+				$employer_cost_jun = $nett_pay_jun + $countJunEmprEPF + $countJunEmprSOCSO + $countJunEmprEIS + $countJunEmprEPFAdhoc;
 				$format_employer_cost_jun = number_format("$employer_cost_jun",2);
 
-				$employer_cost_jul = $nett_pay_jul + $countJulEmprEPF + $countJulEmprSOCSO + $countJulEmprEIS;
+				$employer_cost_jul = $nett_pay_jul + $countJulEmprEPF + $countJulEmprSOCSO + $countJulEmprEIS + $countJulEmprEPFAdhoc;
 				$format_employer_cost_jul = number_format("$employer_cost_jul",2);
 
-				$employer_cost_aug = $nett_pay_aug + $countAugEmprEPF + $countAugEmprSOCSO + $countAugEmprEIS;
+				$employer_cost_aug = $nett_pay_aug + $countAugEmprEPF + $countAugEmprSOCSO + $countAugEmprEIS + $countAugEmprEPFAdhoc;
 				$format_employer_cost_aug = number_format("$employer_cost_aug",2);
 
-				$employer_cost_sep = $nett_pay_sep + $countSepEmprEPF + $countSepEmprSOCSO + $countSepEmprEIS;
+				$employer_cost_sep = $nett_pay_sep + $countSepEmprEPF + $countSepEmprSOCSO + $countSepEmprEIS + $countSepEmprEPFAdhoc;
 				$format_employer_cost_sep = number_format("$employer_cost_sep",2);
 
-				$employer_cost_oct = $nett_pay_oct + $countOctEmprEPF + $countOctEmprSOCSO + $countOctEmprEIS;
+				$employer_cost_oct = $nett_pay_oct + $countOctEmprEPF + $countOctEmprSOCSO + $countOctEmprEIS + $countOctEmprEPFAdhoc;
 				$format_employer_cost_oct = number_format("$employer_cost_oct",2);
 
-				$employer_cost_nov = $nett_pay_nov + $countNovEmprEPF + $countNovEmprSOCSO + $countNovEmprEIS;
+				$employer_cost_nov = $nett_pay_nov + $countNovEmprEPF + $countNovEmprSOCSO + $countNovEmprEIS + $countNovEmprEPFAdhoc;
 				$format_employer_cost_nov = number_format("$employer_cost_nov",2);
 
-				$employer_cost_dec = $nett_pay_dec + $countDecEmprEPF + $countDecEmprSOCSO + $countDecEmprEIS;
+				$employer_cost_dec = $nett_pay_dec + $countDecEmprEPF + $countDecEmprSOCSO + $countDecEmprEIS + $countDecEmprEPFAdhoc;
 				$format_employer_cost_dec = number_format("$employer_cost_dec",2);
 
-				$employer_cost_total = $nett_pay_total + $count_allEmprEPF + $count_allEmprSOCSO + $count_allEmprEIS;
+				$employer_cost_total = $nett_pay_total + $count_allEmprEPF + $count_allEmprSOCSO + $count_allEmprEIS + $count_allEmprEPFAdhoc;
 				$format_employer_cost_total = number_format("$employer_cost_total",2);
 
 				echo '<th>' . 'Total Employer Cost' . '</th>';
