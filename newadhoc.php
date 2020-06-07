@@ -75,6 +75,7 @@ if(isset($_POST["submit"])){
 
                         $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_process_date, process_adhoc_from, process_adhoc_to, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_type, process_adhoc_wage, process_adhoc_allowance, process_adhoc_commission, process_adhoc_claims, process_adhoc_bonus, process_adhoc_others, process_adhoc_unpaid_leave, epf_employee_deduction, epf_employer_deduction, process_adhoc_process_month, process_adhoc_process_year, adhoc_amt, cal_epf) VALUES ('${"check_ca$i"}', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$adhoc_type', '$adhoc_wages', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_bonus', '$adhoc_others', '$adhoc_unpaid_leave', '$epf_employee_deduction', '$epf_employer_deduction', '$process_month', '$process_year', '$adhoc_amt', '$cal_epf')");
                         
+                        $delete_adhoc = mysqli_query($conn, "DELETE FROM adhoc_pending WHERE emp_id = '${"check_ca$i"}'");
                         
                         //Function to get existing data from process payroll and update together with adhoc data
                       //  $get_pp_epf = mysqli_query($conn, "SELECT * FROM process_payroll WHERE emp_id = '${"check_ca$i"}'");
@@ -97,6 +98,8 @@ if(isset($_POST["submit"])){
                         $epf_employer_deduction = 0; //get employer epf value
 
                         $insert_process_adhoc_sql = mysqli_query($conn, "INSERT INTO process_adhoc (emp_id, process_adhoc_process_date, process_adhoc_from, process_adhoc_to, process_adhoc_desc_1, process_adhoc_desc_2, process_adhoc_ref_1, process_adhoc_ref_2, process_adhoc_type, process_adhoc_wage, process_adhoc_allowance, process_adhoc_commission, process_adhoc_claims, process_adhoc_bonus, process_adhoc_others, process_adhoc_unpaid_leave, epf_employee_deduction, epf_employer_deduction, process_adhoc_process_month, process_adhoc_process_year, adhoc_amt, cal_epf) VALUES ('${"check_ca$i"}', '$process_date', '$process_from', '$process_to', '$process_desc1', '$process_desc2', '$process_ref1', '$process_ref2', '$adhoc_type', '$adhoc_wages', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_bonus', '$adhoc_others', '$adhoc_unpaid_leave', '$epf_employee_deduction', '$epf_employer_deduction', '$process_month', '$process_year', '$adhoc_amt', '$cal_epf')");
+                        
+                        $delete_adhoc = mysqli_query($conn, "DELETE FROM adhoc_pending WHERE emp_id = '${"check_ca$i"}'");
                         
                         //Function to get existing data from process payroll and update together with adhoc data
                       //  $get_pp_epf = mysqli_query($conn, "SELECT * FROM process_payroll WHERE emp_id = '${"check_ca$i"}'");

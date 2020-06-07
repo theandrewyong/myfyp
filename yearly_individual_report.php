@@ -157,7 +157,7 @@
                         echo '<td>' . $yid_name . '</td>';
                         ?>
                 
-                        <td><a target="_blank" href="individual_report_details.php?year=<?php echo $year . '&id=' . $id;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Details</a></td>
+                        <td><a href="individual_report_details.php?year=<?php echo $year . '&id=' . $id;?>" class="btn btn-info <?php if(!$view_table){echo 'disabled';} ?>">Details</a></td>
                 
                     <?php
                         echo '</tr>';                       

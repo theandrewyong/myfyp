@@ -219,15 +219,15 @@
             ?> 
                 <tr>
                     <td><b>Total</b></td>
-                    <td><b><?php echo $total_adhoc_wages;?></b></td>
-                    <td><b><?php echo $total_adhoc_commission;?></b></td>
-                    <td><b><?php echo $total_adhoc_allowance;?></b></td>
-                    <td><b><?php echo $total_adhoc_claims;?></b></td>
-                    <td><b><?php echo $total_adhoc_bonus;?></b></td>
-                    <td><b><?php echo $total_adhoc_others;?></b></td>
-                    <td><b><?php echo $total_adhoc_unpaid_leave;?></b></td>
-					<td><b><?php echo $format_total_adhoc_epf;?></b></td>
-					<td><b><?php echo $format_total_adhoc_amount;?></b></td>
+                    <td><b><?php echo number_format($total_adhoc_wages,2);?></b></td>
+                    <td><b><?php echo number_format($total_adhoc_commission,2);?></b></td>
+                    <td><b><?php echo number_format($total_adhoc_allowance,2);?></b></td>
+                    <td><b><?php echo number_format($total_adhoc_claims,2);?></b></td>
+                    <td><b><?php echo number_format($total_adhoc_bonus,2);?></b></td>
+                    <td><b><?php echo number_format($total_adhoc_others,2);?></b></td>
+                    <td><b><?php echo number_format($total_adhoc_unpaid_leave,2);?></b></td>
+					<td><b><?php echo number_format($format_total_adhoc_epf,2);?></b></td>
+					<td><b><?php echo number_format($format_total_adhoc_amount,2);?></b></td>
                 </tr>                
             </tbody>
             </table>

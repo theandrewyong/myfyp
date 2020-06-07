@@ -21,7 +21,7 @@ $pdf->AliasNbPages("{pages}");
 $pdf->AddPage();
 $pdf->SetFont("Arial","", 11);
 
-$select_all_process = mysqli_query($conn,"select * from process_adhoc");
+$select_all_process = mysqli_query($conn,"select * from process_adhoc WHERE process_adhoc_process_month = '$get_month' AND process_adhoc_process_year = '$get_year'");
 
 while($select_emp_process = mysqli_fetch_assoc($select_all_process)){
 	$emp_id = $select_emp_process["emp_id"];

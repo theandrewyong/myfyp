@@ -196,22 +196,22 @@
             ?> 
                 <tr>
                     <td><b>Total</b></td>
-                    <td><b><?php echo $total_payslip_wages;?></b></td>
-                    <td><b><?php echo $total_payslip_overtime;?></b></td>
-                    <td><b><?php echo $total_payslip_commission;?></b></td>
-                    <td><b><?php echo $total_payslip_allowance;?></b></td>
-                    <td><b><?php echo $total_payslip_claims;?></b></td>
-                    <td><b><?php echo $total_payslip_director_fees;?></b></td>
-                    <td><b><?php echo $total_payslip_advance_paid;?></b></td>
-                    <td><b><?php echo $total_payslip_bonus;?></b></td>
-                    <td><b><?php echo $total_payslip_others;?></b></td>
-                    <td><b><?php echo $total_payslip_epf;?></b></td>
-                    <td><b><?php echo $total_payslip_socso;?></b></td>
-                    <td><b><?php echo $total_payslip_eis;?></b></td>
-                    <td><b><?php echo $total_payslip_deduction;?></b></td>
-                    <td><b><?php echo $total_payslip_loan;?></b></td>
-                    <td><b><?php echo $total_payslip_unpaid_leave;?></b></td>
-                    <td><b><?php echo $total_payslip_advance_deduct;?></b></td>
+                    <td><b><?php echo number_format($total_payslip_wages,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_overtime,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_commission,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_allowance,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_claims,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_director_fees,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_advance_paid,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_bonus,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_others,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_epf,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_socso,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_eis,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_deduction,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_loan,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_unpaid_leave,2);?></b></td>
+                    <td><b><?php echo number_format($total_payslip_advance_deduct,2);?></b></td>
                 </tr>                
             </tbody>
             </table>

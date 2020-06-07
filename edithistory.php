@@ -144,7 +144,7 @@ $net_pay = $total_gross_pay - $total_gross_deduct + $employee_adjustment;
             <h1 class="mt-4"><a href="historydetails.php?month=<?php echo $get_month; ?>&year=<?php echo $get_year; ?>" class="btn btn-primary">Back</a> Edit History</h1>
             <hr>
             <div class="p-3 bg-white rounded shadow mb-5">
-            <form action="edithistory.php?pid=<?php echo $process_id; ?>" method="post" enctype="multipart/form-data" autocomplete="off">
+            <form action="edithistory.php?pid=<?php echo $process_id; ?>&month=<?php echo $get_month; ?>&year=<?php echo $get_year; ?>" method="post" enctype="multipart/form-data" autocomplete="off">
                 <div class="row">
                     <div class="col-md-6 col-12">
                         <div class="row">
