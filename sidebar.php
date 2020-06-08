@@ -56,10 +56,10 @@
     <a href="view.php" class="<?php if($view){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">View</a>
         
     <a href="dashboard.php" class="<?php if($dashboard){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Dashboard</a>        
-
-    <a href="adminpanel.php" class="<?php if($admin_panel){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Admin Panel</a> 
         
     <a href="tools.php" class="<?php if($tools){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Tools</a>
+        
+    <a href="adminpanel.php" class="<?php if($admin_panel){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Admin Panel</a>        
 
     </div>
 </div>
