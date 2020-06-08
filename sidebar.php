@@ -59,8 +59,13 @@
         
     <a href="tools.php" class="<?php if($tools){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Tools</a>
         
+    <?php 
+      if($_SESSION["permission"] == 1){  
+    ?>
     <a href="adminpanel.php" class="<?php if($admin_panel){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Admin Panel</a>        
-
+    <?php
+      }
+    ?>
     </div>
 </div>
 
