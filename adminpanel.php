@@ -18,7 +18,9 @@ $username1 = "";
 $password = "";
 $permission = ""; 
 
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+    //check if username and password is empty to validate the error
     if(empty($_POST["username"])){
         $error_username = '<span class="text-danger"> *Invalid Username</span>';
         $error = TRUE;
@@ -32,10 +34,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $password = mysqli_escape_string($conn, test_input($_POST["password"]));
     }
     
-    
+    //set permission
     $permission = mysqli_escape_string($conn, test_input($_POST["permission"]));
 
+    //get all data from account table
     $accounts_sql = mysqli_query($conn, "SELECT * FROM account");
+    //check if username already exists
     while($accounts_result = mysqli_fetch_assoc($accounts_sql)){
         if($accounts_result["username"] == $username1){
             $error_acc_exists = '<span class="text-danger"> *Username already exists</span>';
@@ -43,6 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
 
+    //if no error, insert to database
     if($error == FALSE){        
         $new_user_sql = "INSERT INTO account (username, password, permission) VALUES (?,?,?)";
         $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
@@ -53,7 +58,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 }
 
-
+//filter special character for security purposes
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -169,9 +174,6 @@ $(document).ready( function() {
         "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
     } );
 } );    
-    
 </script>
-  
 </body>
-
 </html>

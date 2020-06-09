@@ -26,46 +26,36 @@ $get_year = $_GET["year"];
             <hr>
             <div class="row">
                 <div class="col-md-12">
-            <div class="p-3 bg-white rounded shadow mb-5">
-                <div class="table-responsive">
-                    <table id="example" class="table table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Employee Name</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                        </thead>
-                    <tbody>
-                    <?php
-                    $select_all_sql = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_process_month = '$get_month' AND process_adhoc_process_year = '$get_year'");
-                        while($data = mysqli_fetch_assoc($select_all_sql)){
-                            $process_id = $data["process_adhoc_id"];
-                            echo "<tr>";
-                            echo "<td>" . $data["emp_display_id"] . "</td>";
-                            echo "<td>" . $data["emp_full_name"] . "</td>";
-                            echo "<td>" . '<a class="btn btn-primary" href="editadhochistory.php?pid=' . $process_id . '&month=' . $get_month . '&year=' . $get_year . '">Edit History</a>' . "</td>";
-                            echo "<td>" . '<a class="btn btn-danger" href="deleteEmployeeAhHistory.php?pid=' . $process_id . '&month=' . $get_month . '&year=' . $get_year . '" onclick="return confirm(\'Confirm Delete?\')">Delete History</a>' . "</td>";
-                            echo "</tr>";
-                        }        
-                    ?>
-                    </tbody>
-                    </table>
-                </div>     
-            </div>
-                </div>
-                <!--<div class="col-md-3">
                     <div class="p-3 bg-white rounded shadow mb-5">
-                        <h5>Adhoc History for <?php echo $get_month . '/' . $get_year; ?></h5>
-                    <div class="form-group">
-                    <label for="username">Desc1</label>
-                        <input type="text" class="form-control" id="username" name="edited_username" value="<?php echo $admin_username; ?>">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Employee Name</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                            <tbody>
+                            <?php
+                            $select_all_sql = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_process_month = '$get_month' AND process_adhoc_process_year = '$get_year'");
+                                while($data = mysqli_fetch_assoc($select_all_sql)){
+                                    $process_id = $data["process_adhoc_id"];
+                                    echo "<tr>";
+                                    echo "<td>" . $data["emp_display_id"] . "</td>";
+                                    echo "<td>" . $data["emp_full_name"] . "</td>";
+                                    echo "<td>" . '<a class="btn btn-primary" href="editadhochistory.php?pid=' . $process_id . '&month=' . $get_month . '&year=' . $get_year . '">Edit History</a>' . "</td>";
+                                    echo "<td>" . '<a class="btn btn-danger" href="deleteEmployeeAhHistory.php?pid=' . $process_id . '&month=' . $get_month . '&year=' . $get_year . '" onclick="return confirm(\'Confirm Delete?\')">Delete History</a>' . "</td>";
+                                    echo "</tr>";
+                                }        
+                            ?>
+                            </tbody>
+                            </table>
+                        </div>     
                     </div>
-                    </div>
-                </div>-->
+                </div>
             </div>
-
         </div>
     </div>
 </div>
