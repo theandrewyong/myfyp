@@ -8,7 +8,7 @@ $username = $_SESSION["username"];
 $process_id = $_GET["id"];
 
 if(isset($_POST["submit"])){
-    //get all new value from edited history
+    //Get all input and set to variables
     $new_wages = $_POST["new_wages"];
     $new_overtime = $_POST["new_overtime"];
     $new_commission = $_POST["new_commission"];
@@ -18,34 +18,35 @@ if(isset($_POST["submit"])){
     $new_advance_paid = $_POST["new_advance_paid"];
     $new_bonus = $_POST["new_bonus"];
     $new_others = $_POST["new_others"];
-    //$new_epf = $_POST["new_epf"];
-    //$new_socso = $_POST["new_socso"];
     $new_eis = $_POST["new_eis"];
     $new_additional_deduction = $_POST["new_additional_deduction"];
     $new_loan = $_POST["new_loan"];
     $new_unpaid_leave = $_POST["new_unpaid_leave"];
     $new_advance_deduct = $_POST["new_advance_deduct"];
     $new_adjustment = $_POST["new_adjustment"];
-    // end get all new value from edited history
-    
-    //count epf contribution
+
+    //Count epf contribution
     $new_epf = $new_wages + $new_bonus + $new_allowance + $new_commission + $new_claims + $new_unpaid_leave + $new_others;
-    //select all data from epf view table
+    //Select all data from epf view table
     $epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula"); 
-    //while epf view table data exists
+    //While epf view table data exists
     while($ef = mysqli_fetch_assoc($epf_formula_sql)){
-        $ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
-        $ef_end = $ef["epf_formula_wage_end"]; //get epf ending wages value
+        //Get epf starting wages value
+        $ef_start = $ef["epf_formula_wage_start"]; 
+        //Get epf ending wages value
+        $ef_end = $ef["epf_formula_wage_end"]; 
         
-        //if epf contribution is in between start and end wages in view table
+        //If epf contribution is in between start and end wages in view table
         if(($new_epf >= $ef_start) && ($new_epf <= $ef_end)){
-            $epf_employee_deduction = $ef["epf_formula_employee_amt"]; //get employee epf deduction value
-            $epf_employer_deduction = $ef["epf_formula_employer_amt"]; //get employer epf deduction value
+            //get employee epf deduction value
+            $epf_employee_deduction = $ef["epf_formula_employee_amt"]; 
+            //get employer epf deduction value
+            $epf_employer_deduction = $ef["epf_formula_employer_amt"]; 
         }
     }
-    //count socso contribution
+    //Count socso contribution
     $new_socso = $new_wages + $new_others + $new_overtime + $new_allowance + $new_commission;
-    //select all data from socso view table
+    //Select all data from socso view table
     $socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula");
     //while socso view table data exists
     while($sc = mysqli_fetch_assoc($socso_formula_sql)){
@@ -84,9 +85,10 @@ if(isset($_POST["submit"])){
     
     $update_sql = mysqli_query($conn, "UPDATE process_payroll SET process_payroll_wage = '$new_wages', process_payroll_overtime = '$new_overtime', process_payroll_commission = '$new_commission', process_payroll_allowance = '$new_allowance', process_payroll_claims = '$new_claims', process_payroll_director_fees = '$new_director_fees', process_payroll_advance_paid = '$new_advance_paid', process_payroll_bonus = '$new_bonus', process_payroll_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', socso_employee_deduction = '$socso_employee_deduction', socso_employer_deduction = '$socso_employer_deduction', eis_employee_deduction = '$eis_employee_deduction', eis_employer_deduction = '$eis_employer_deduction', process_payroll_additional_deduction = '$new_additional_deduction', process_payroll_loan = '$new_loan', process_payroll_unpaid_leave = '$new_unpaid_leave', process_payroll_advance_deduct = '$new_advance_deduct', process_payroll_adjustment = '$new_adjustment', process_payroll_net_pay = '$new_netpay' WHERE process_payroll_id = '$process_id'");
 }        
-
+//Select all data from both tales
 $get_all_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_id = '$process_id'");
 $get_result = mysqli_fetch_assoc($get_all_sql);
+//Declare variables from table
 $process_date = $get_result["process_payroll_process_date"];
 $process_from = $get_result["process_payroll_from"];
 $process_to = $get_result["process_payroll_to"];
@@ -115,6 +117,7 @@ $employer_socso = $get_result["socso_employer_deduction"];
 $employer_eis = $get_result["eis_employer_deduction"];
 $adjustment = $get_result["process_payroll_adjustment"];
 
+//Count required total into a variables
 $total_gross_pay = $employee_wages + $employee_overtime + $employee_commission + $employee_allowance + $employee_claims + $employee_director_fees + $employee_advance_paid + $employee_bonus + $employee_others;
 
 $total_gross_deduct = $employee_epf + $employee_socso + $employee_eis + $additional_employee_deduction + $employee_loan + $employee_unpaid_leave + $employee_advance_deduct;
@@ -295,11 +298,11 @@ $("#menu-toggle").click(function(e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
 });
-
+//Get gross and net value and show in html page
 document.getElementById("total_gross_pay").innerHTML = <?php echo $total_gross_pay; ?>;    
 document.getElementById("total_gross_deduct").innerHTML = <?php echo $total_gross_deduct; ?>;    
 document.getElementById("net_pay").innerHTML = <?php echo $net_pay; ?>;    
-
+//Function for live count from all input
 function countNetPay() {
     var wages = document.getElementById("wages").value;
     var overtime = document.getElementById("overtime").value;

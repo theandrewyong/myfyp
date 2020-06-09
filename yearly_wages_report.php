@@ -44,6 +44,7 @@ $username = $_SESSION["username"];
                     }
                 }
             }
+            //Get unique year and month
             $select_all_processed_payroll = mysqli_query($conn, "SELECT * FROM process_payroll");
             while($select_result = mysqli_fetch_assoc($select_all_processed_payroll)){
                 $specific_month = $select_result["process_payroll_process_month"];
@@ -124,13 +125,14 @@ $username = $_SESSION["username"];
 							
 							if(count($unique_employee)>0){
 							
+                                
                             foreach($unique_employee as $ua){
                             echo '<tr>';
 								
 							$name_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$ua'");
 							$result = mysqli_fetch_assoc($name_sql);
                             echo '<td>' . $result["emp_full_name"] . '</td>';
-								
+				            //For all 12 months, show results
                             for($i=1;$i<=12;$i++){
                             $each_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll.emp_id = '$ua' AND process_payroll_process_month = '$i'");
 

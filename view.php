@@ -7,45 +7,46 @@ if(empty($_SESSION["username"])){
 $username = $_SESSION["username"];
 
 $message1='';
+//Require php excel class
 require_once "Classes/PHPExcel.php";
 
-//import EPF
+//import EPF function
 if(isset($_POST["import_epf"])){
-		
+    //Check files to make sure it is not empty
 	if(($_FILES["epf_excel"]["tmp_name"])!=''){
-		
+		//Get extension name from end array
 		$array = explode(".", $_FILES["epf_excel"]["name"]);
         $extension = end($array);
+        //If extension is xlsx
 		if($extension=="xlsx"){
+            //Call class function
 			$tmpfname = $_FILES["epf_excel"]["tmp_name"];
 			$excelReader = PHPExcel_IOFactory::createReaderForFile($tmpfname);
 			$excelObj = $excelReader->load($tmpfname);
 			$worksheet = $excelObj->getSheet(0);
 			$lastRow = $worksheet->getHighestRow();
-
+            //Row from excel file
 			for ($row = 1; $row <= $lastRow; $row++) {
-
-				//insert to array
+            //Insert excel value into array
 			 $my_array[] = $worksheet->getCell('A'.$row)->getValue();
 			 $my_epf_start[] = $worksheet->getCell('D'.$row)->getValue();
 			 $my_epf_end[] = $worksheet->getCell('E'.$row)->getValue();
 			 $my_epf_emp[] = $worksheet->getCell('F'.$row)->getValue();
 			 $my_epf_empr[] = $worksheet->getCell('G'.$row)->getValue();
-
-				
 			}
 		$count = 0;
-		
+		//Foreach data inside array
 		foreach($my_array as $ma){
+            //Select data tp get epf formula id from existing table data
 			$get_epf_id_sql = mysqli_query($conn, "SELECT * FROM epf_formula WHERE epf_formula_id = '$ma'");
 			$gei_result = mysqli_fetch_assoc($get_epf_id_sql);
 			$gr_id = $gei_result["epf_formula_id"];
 
-			//do update
+			//Update table based on array
 			$update_sql = mysqli_query($conn, "UPDATE epf_formula SET epf_formula_wage_start = '$my_epf_start[$count]', epf_formula_wage_end = '$my_epf_end[$count]', epf_formula_employee_amt = '$my_epf_emp[$count]', epf_formula_employer_amt = '$my_epf_empr[$count]' WHERE epf_formula_id = '$gr_id'");
 			$count = $count + 1;
 			}
-			$message1 = '<label class="text-success">Excel Successfully Imported</label>';
+			$message1 = '<label class="text-success">Excel Successfully Imported</label>'; //Feedback message
     }
 		else {
 			$message1 = '<label class="text-danger">Kindly convert your Excel file to .xlsx to ensure Data Stability</label>';
@@ -55,11 +56,8 @@ if(isset($_POST["import_epf"])){
 	
 	else{
 		$message1 = '<label class="text-danger">Please Select a File</label>';
-	}
-		
-	
+	}	
 }
-
 //import SOCSO
 $message2='';
 if(isset($_POST["import_socso"])){
@@ -437,7 +435,6 @@ if(isset($_POST["import_eis"])){
                     </div>    
                 <!-- EIS table end -->  
 					<br/>
-
                 </div>
                 </div>
             </div> 
@@ -445,12 +442,11 @@ if(isset($_POST["import_eis"])){
     </div>
 </div>
 <style>
-  
-    .ggwp {
-        width: 100%;
-    }
-    
-    </style>
+/* CSS style for individual input box width */
+.ggwp {
+    width: 100%;
+}
+</style>
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -460,7 +456,7 @@ $("#menu-toggle").click(function(e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
 });
-
+//Function for customized data tables
 $(document).ready(function() {
     // Setup - add a text input to each footer cell
     $('#example tfoot th').each( function () {
@@ -468,7 +464,7 @@ $(document).ready(function() {
         $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
     } );
  
-    // DataTable
+    //DataTable
     var table = $('#example').DataTable({
         responsive: true,
         language: {
@@ -477,6 +473,7 @@ $(document).ready(function() {
         searchPlaceholder: "Search records"
         },
         "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">',
+        //inistComplete function for individual column search
         initComplete: function () {
             // Apply the search
             this.api().columns().every( function () {

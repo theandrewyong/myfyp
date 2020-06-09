@@ -7,12 +7,13 @@ if(empty($_SESSION["username"])){
 $username = $_SESSION["username"];
 
 $message = '';
+//If import button is clicked
 if(isset($_POST["import"])){
-
+    //If file name is not empty
     if($_FILES["database"]["name"] != ''){
         $array = explode(".", $_FILES["database"]["name"]);
         $extension = end($array);
-
+        //Make sure extension is sql
         if($extension == 'sql'){
             $connect = mysqli_connect("localhost", "root", "", "payroll_db");
             $drop_table = mysqli_query($conn, "DROP DATABASE payroll_db");
@@ -86,6 +87,7 @@ if(isset($_POST["export"])){
         $return .= "\n\n\n";
     }
 
+    //Write file
     $handle = fopen("C:\Users\Public\Downloads\backup.sql","w+");
     fwrite($handle, "SET FOREIGN_KEY_CHECKS = 0;\n");
     fwrite($handle,$return);
@@ -155,6 +157,7 @@ e.preventDefault();
 $("#wrapper").toggleClass("toggled");
 });
     
+//Custom file input    
 // Add the following code if you want the name of the file appear on select
 $(".custom-file-input").on("change", function() {
   var fileName = $(this).val().split("\\").pop();

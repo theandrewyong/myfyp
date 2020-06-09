@@ -5,11 +5,11 @@ if(empty($_SESSION["username"])){
     header("location:index.php");
 }
 $username = $_SESSION["username"];
-
+//Select all data from employee info table
 $select_all_employee_sql = mysqli_query($conn, "SELECT * FROM employee_info");
 
 if(isset($_POST["submit"])){
-    
+    //Declare variables from input value
     $get_adhoc_emp_name = $_POST["adhoc_emp_name"];
     $adhoc_type = $_POST["adhoc_type"];
     $adhoc_wages = $_POST["adhoc_wages"];
@@ -20,14 +20,15 @@ if(isset($_POST["submit"])){
     $adhoc_unpaid_leave = $_POST["adhoc_unpaid_leave"];
     $adhoc_others = $_POST["adhoc_others"];
     $get_adhoc_amt = $_POST["adhoc_amt"];
-
+    //Get all employee id from employee info id where id is from input
     $get_id_sql = mysqli_query($conn, "SELECT emp_id FROM employee_info WHERE emp_full_name = '$get_adhoc_emp_name'");
     $id_result = mysqli_fetch_assoc($get_id_sql);
     $get_adhoc_emp_id = $id_result["emp_id"];
+    //Set adhoc status to pending
     $get_adhoc_status = "PENDING";
-    
+    //Insert values to adhoc pending table
     mysqli_query($conn, "INSERT INTO adhoc_pending (emp_id, emp_full_name, adhoc_type, adhoc_wages, adhoc_bonus, adhoc_allowance, adhoc_commission, adhoc_claims, adhoc_unpaid_leave, adhoc_others, adhoc_amt, adhoc_status) VALUES ('$get_adhoc_emp_id','$get_adhoc_emp_name','$adhoc_type','$adhoc_wages', '$adhoc_bonus', '$adhoc_allowance', '$adhoc_commission', '$adhoc_claims', '$adhoc_unpaid_leave', '$adhoc_others','$get_adhoc_amt','$get_adhoc_status')");
-    
+    //Direct to newadhoc page
     header("location:newadhoc.php");
 }
 
@@ -55,8 +56,8 @@ if(isset($_POST["submit"])){
                     <select id="" class="form-control" name="adhoc_emp_name">
                         <option>Select Employee</option>
                         <?php
+                        //Display value in a table from all employee in employee info
                         while($select_all_employee_result = mysqli_fetch_assoc($select_all_employee_sql)){
-                            
                             echo '<option>';
                             echo $select_all_employee_result["emp_full_name"];
                             echo '</option>';
@@ -120,6 +121,9 @@ $("#menu-toggle").click(function(e) {
     $("#wrapper").toggleClass("toggled");
 });
 
+//Datatables function
+//ID: example
+//CSS: sdom
 $(document).ready( function() {
     $('#example').dataTable( {
         language: {

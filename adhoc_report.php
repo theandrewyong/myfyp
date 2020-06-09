@@ -5,10 +5,12 @@ if(empty($_SESSION["username"])){
     header("location:index.php");
 }
 $username = $_SESSION["username"];
+//Change number month to words
 $month = (int)date("m");
+//Get current year
 $year = date("Y");
+//Declare Variables
 $view_table = FALSE;
-
 $total_adhoc_wages = 0;
 $total_adhoc_commission = 0;
 $total_adhoc_allowance = 0;
@@ -18,26 +20,26 @@ $total_adhoc_others = 0;
 $total_adhoc_unpaid_leave = 0;
 $total_adhoc_epf = 0;
 $total_adhoc_amount = 0;
-
 $format_total_epf_employee_deduction = 0;
 $format_total_adhoc_epf = 0;
 $format_total_adhoc_amount = 0;
 
 if(isset($_POST["submit"])){
-
-    $month = $_POST["month"]; //get input month
-    $year = $_POST["year"];  //get input year
-    //get data from both process adhoc and employee info table
+    //Get month input
+    $month = $_POST["month"];
+    //Get year input
+    $year = $_POST["year"];
+    //Select all from both tables below
     $select_sql = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_process_month = '$month' AND process_adhoc_process_year = '$year'"); 
+    //Get validation data from process adhoc table
     $validate = mysqli_query($conn, "SELECT * FROM process_adhoc");
 
-    //do validation for viewing table
+    //Do validation for viewing table
     while($validation = mysqli_fetch_assoc($validate)){
-
+        //If validation from table and input month and year is same
         if ($validation["process_adhoc_process_month"]==$month && $validation["process_adhoc_process_year"]==$year){
-
+        //Set view table to true
         $view_table = TRUE;
-
         }
     }
 }
@@ -108,12 +110,12 @@ if(isset($_POST["submit"])){
                         </thead>
                         <tbody>
                         <?php
-                        //if click view table true, show table
+                        //If click view table true, show table
                         if($view_table){
 
-                        //get all result from above sql data
+                        //Get all result from above sql data
                         while($select_result = mysqli_fetch_assoc($select_sql)){
-
+                        //Declare variables based on above sql results
                         $adhoc_name = $select_result["emp_full_name"];
                         $adhoc_wages = $select_result["process_adhoc_wage"];
                         $adhoc_commission = $select_result["process_adhoc_commission"];
@@ -209,7 +211,7 @@ if(isset($_POST["submit"])){
                         echo '<td>' . $adhoc_amount . '</td>';
                         echo '</tr>'; 
 
-                        //count the total from given data above
+                        //Count the total from given data above
                         $total_adhoc_wages = $total_adhoc_wages + $adhoc_wages;
 
                         $total_adhoc_commission = $total_adhoc_commission + $adhoc_commission;

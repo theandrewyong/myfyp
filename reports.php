@@ -14,26 +14,26 @@ $username = $_SESSION["username"];
 <?php include "all_css.php"; ?>
 </head>
 <body onload="myFunction();">
-        <!-- modal must put after php refresh page, if not header wont work -->        
-        <div id="guide3" class="modal modal-wide fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
+<!-- modal must put after php refresh page, if not header wont work -->        
+<div id="guide3" class="modal modal-wide fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
 
-                <h4 class="modal-title">Step 3: Reports</h4>
+            <h4 class="modal-title">Step 3: Reports</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              </div>
-              <div class="modal-body">
+            </div>
+            <div class="modal-body">
                 <p>To Print Payslip, click Print Payslip</p>
                 <p>To View Payroll Summary Report, click View Payroll Summary</p>
-              </div>
-              <div class="modal-footer">
-                  <a href="" class="btn btn-primary" id="psum" data-dismiss="modal">View Payroll Summary</a>
-                  <a href="" class="btn btn-primary" id="ppslip" data-dismiss="modal">Print Payslip</a>
-              </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal --> 
+            </div>
+            <div class="modal-footer">
+                <a href="" class="btn btn-primary" id="psum" data-dismiss="modal">View Payroll Summary</a>
+                <a href="" class="btn btn-primary" id="ppslip" data-dismiss="modal">Print Payslip</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal --> 
     
 <div class="d-flex" id="wrapper">
 <?php include "sidebar.php"; ?>
@@ -103,7 +103,7 @@ $("#menu-toggle").click(function(e) {
 e.preventDefault();
 $("#wrapper").toggleClass("toggled");
 });
-    
+//Function for modal 3    
 function myFunction() {
     if (localStorage.getItem("guidelines") !== null) {
       if (!sessionStorage.getItem('shown-modal3')){
@@ -113,16 +113,16 @@ function myFunction() {
     }
 }     
     
-    
+//Check if localstorage guidelines exists
 if (localStorage.getItem("guidelines") !== null) {
-    
- document.getElementById("guide_reports").innerHTML = '<div class="p-2 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a><b> ></b><a class="btn btn-primary" href="newpayroll.php">Step 2: New Payroll</a><b> ></b><a class="btn btn-primary" href="reports.php">Step 3: Reports</div>';
+    //Display guidelines if exists
+    document.getElementById("guide_reports").innerHTML = '<div class="p-2 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a><b> ></b><a class="btn btn-primary" href="newpayroll.php">Step 2: New Payroll</a><b> ></b><a class="btn btn-primary" href="reports.php">Step 3: Reports</div>';
 }    
-    
+//If dialog click ppslip button, direct to payslip report
 document.getElementById("ppslip").onclick = function () {
     location.href = "payslip_report.php";
 }; 
-    
+//If dialog click psum button, direct to payroll summary report
 document.getElementById("psum").onclick = function () {
     location.href = "payroll_summary_report.php";
 };    

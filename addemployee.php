@@ -6,6 +6,7 @@ if(empty($_SESSION["username"])){
 }
 $username = $_SESSION["username"];
 
+//Declare Variables
 $error = FALSE;
 $error_id ='';
 $error_name ='';
@@ -21,31 +22,34 @@ $error_socso ='';
 $message='';
 $count = 0;
 
-$show_sql = mysqli_query($conn, "SELECT * FROM employee_id_count"); //Select existing employee ID
+//Select existing employee ID
+$show_sql = mysqli_query($conn, "SELECT * FROM employee_id_count"); 
 $show_data = mysqli_fetch_assoc($show_sql);
-$show_emp_id_count = $show_data['emp_id_count'] + 1; //Add 1 to existing emplpyee id
-
+//Add 1 to existing emplpyee id
+$show_emp_id_count = $show_data['emp_id_count'] + 1; 
+//Select all data from employee info table
 $select_sql = mysqli_query($conn, "SELECT * FROM employee_info");
-
-//check for any input errors if submit
+//Check for any input errors if submit
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-    if(empty($_POST["emp_display_id"])){ //if empty, error is true
-        
-        $error_id = '<span class="text-danger"> *Invalid Employee ID</span>'; //set error message
-        $error = TRUE; //error set to true
+    //If empty, Error is true
+    if(empty($_POST["emp_display_id"])){ 
+        //Set error message
+        $error_id = '<span class="text-danger"> *Invalid Employee ID</span>'; 
+        //Setting Error to true
+        $error = TRUE; 
+        //Set Combined to empty
         $combined = '';
-        
     }else{
-        
+        //Declare display id variable with input display id
         $emp_display_id = $_POST["emp_display_id"];
-        $combined = "E" . $emp_display_id; //combine employee id with E infront
+        //Combine employee id with E infront
+        $combined = "E" . $emp_display_id; 
     } 
-    
+    //If employee info table data is true
     while($data = mysqli_fetch_assoc($select_sql)){
-        
+        //Check if combined input data and data in table exists
         if ($combined == $data["emp_display_id"]){
-            
+            //If exists, set error message and error set to true
             $message = '<label class="text-danger">Error: ID already exist.</label>';
             $count = $count+1;
             $error=TRUE;
@@ -143,7 +147,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         
         $emp_socso = $_POST["emp_socso"];
     }
-
+    //Declare variables from input
     $emp_gender = $_POST["emp_gender"];
     $emp_dob = $_POST["emp_dob"];
     $emp_telephone = $_POST["emp_telephone"];
@@ -161,10 +165,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $emp_resign_date = $_POST["emp_resign_date"];
     $data_created_date = date("Y/m/d");
 
-    //if there is no error
+    //If there is no error
     if($error == FALSE && $count==0){
         
-        //insert into employee info table
+        //Insert into employee info table
         $new_employee_sql = "INSERT INTO employee_info (emp_display_id, emp_full_name, emp_gender, emp_dob, emp_email, emp_address, emp_mobile, emp_telephone, emp_ic, emp_passport, emp_immigration, emp_title, emp_wages, emp_payment_method, emp_bank_name, emp_account, emp_health_status, emp_martial_status, emp_spouse_status, emp_epf, emp_socso, emp_socso_type, emp_eis_type, emp_join_date, emp_confirm_date, emp_resign_date, data_created_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     
         $prepared_stmt_insert = mysqli_prepare($conn, $new_employee_sql);
@@ -174,10 +178,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         mysqli_stmt_execute($prepared_stmt_insert);
         mysqli_stmt_close($prepared_stmt_insert);
 
-        //after insert, update employee id table
+        //After insert, update employee id table
         $update_sql = mysqli_query($conn, "UPDATE employee_id_count SET emp_id_count='$emp_display_id'");	
 
-        //show feedback dialog
+        //Show feedback dialog
         echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
     }
 }
@@ -188,6 +192,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Payroll Software - Add Employee</title>
+<!-- Includes all css -->
 <?php include "all_css.php"; ?>
 </head>
 <body>

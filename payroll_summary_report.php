@@ -5,7 +5,7 @@ if(empty($_SESSION["username"])){
     header("location:index.php");
 }
 $username = $_SESSION["username"];
-
+//Declare Variables
 $month = (int)date("m");
 $year = date("Y");
 $view_table = FALSE;
@@ -13,36 +13,27 @@ $view_table = FALSE;
 if(isset($_POST["submit"])){
 $year = $_POST["year"]; 
 $month = $_POST["month"];
+    //Select all from both tables
+    $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
 
+    $select_adhoc_sql = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_process_month = '$month' AND process_adhoc_process_year = '$year'");
     
-            $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
-
-            $select_adhoc_sql = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id WHERE process_adhoc_process_month = '$month' AND process_adhoc_process_year = '$year'");
-    
-	
-//validate
-$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
-while($validation = mysqli_fetch_assoc($validate)){
-	if ($validation["process_payroll_process_year"]==$year && $validation["process_payroll_process_month"]==$month){
-		$view_table = TRUE;
-	}
-}
-    
-    
-    
-    
-//for adhoc    
+    //Validate process payroll
+    $validate = mysqli_query($conn, "SELECT * FROM process_payroll");
+    while($validation = mysqli_fetch_assoc($validate)){
+        if ($validation["process_payroll_process_year"]==$year && $validation["process_payroll_process_month"]==$month){
+            $view_table = TRUE;
+        }
+    }
+    //Validate process adhoc  
     $validate2 = mysqli_query($conn, "SELECT * FROM process_adhoc");
-    
+
     while($validation2 = mysqli_fetch_assoc($validate2)){
         if ($validation2["process_adhoc_process_month"]==$month && $validation2["process_adhoc_process_year"]==$year){
             $view_table = TRUE;
         }
     }
-    
-    
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,6 +116,7 @@ while($validation = mysqli_fetch_assoc($validate)){
                                 </thead>
                                 <tbody>
                                 <?php
+                                //Declare empty variables
                                 $total_wage = 0;    
                                 $total_overtime = 0;    
                                 $total_commission = 0;    
@@ -157,21 +149,21 @@ while($validation = mysqli_fetch_assoc($validate)){
                                 $total_adhoc_amt = 0;
                                     
                                 $emp_id_array = [];
-                                    
+                                //If view table is clicked    
                                 if($view_table == TRUE){
                                     
-                                    
                                     if(mysqli_num_rows($select_sql) == 0){
-                                       // echo "x";
-                                        
+                                    //Select required data from tables    
                                         $get_info_sql = mysqli_query($conn, "SELECT process_adhoc.*, employee_info.* FROM process_adhoc INNER JOIN employee_info ON process_adhoc.emp_id = employee_info.emp_id");
                                         $each_emp_wages = 0;
                                         while($select_result = mysqli_fetch_assoc($get_info_sql)){
+                                            //Declare variables from results
                                             $emp_id = $select_result["emp_id"];
                                             $emp_wages = 1;
-                                            $emp_id_array[] = $emp_id;
+                                            $emp_id_array[] = $emp_id; // Set into array for each employee
                                             $each_emp_wages = $each_emp_wages + $emp_wages;
                                         }
+                                        //Find unique ID
                                         $emp_id_unique = array_unique($emp_id_array);
                                         
                                     foreach($emp_id_unique as $eiu){
@@ -183,7 +175,7 @@ while($validation = mysqli_fetch_assoc($validate)){
                                         $get_name_sql = mysqli_query($conn, "SELECT * FROM employee_info WHERE emp_id = '$eiu'");
                                         $namesql = mysqli_fetch_assoc($get_name_sql);
                                         $usql = mysqli_fetch_assoc($sql);    
-                                        
+                                        //Set all variables to number format
                                         $emp_name = $namesql["emp_full_name"];
                                         $sum_wage = number_format(0,2);
                                         $sum_wage = number_format(0,2);
@@ -271,22 +263,24 @@ while($validation = mysqli_fetch_assoc($validate)){
                                     }else{
                                         
                                     $adhoc_amt = 0;
-                                    //both pp and adhoc
+                                    //Both process payroll and adhoc table
                                     $get_info_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id");
                                     $each_emp_wages = 0;
+                                    //Count employee
                                     while($select_result = mysqli_fetch_assoc($get_info_sql)){
                                         $emp_id = $select_result["emp_id"];
                                         $emp_wages = $select_result["process_payroll_wage"];
                                         $emp_id_array[] = $emp_id;
                                         $each_emp_wages = $each_emp_wages + $emp_wages;
                                     }
+                                    //Get Unique ID
                                     $emp_id_unique = array_unique($emp_id_array);
+                                    //Foreach unique employee id as eiu
                                     foreach($emp_id_unique as $eiu){
-                                         $sum_gross_pay = 0;
-                                         $sum_gross_deduct = 0;
-                                        //count the total wages for each employee
+                                        $sum_gross_pay = 0;
+                                        $sum_gross_deduct = 0;
                                         
-                                        //count with adhoc
+                                        //Count with adhoc
                                         $adhoc_sql = mysqli_query($conn, "SELECT * FROM process_adhoc WHERE emp_id = '$eiu' AND process_adhoc_process_month = '$month' AND process_adhoc_process_year = '$year'");
                                         $adhoc_result = mysqli_fetch_assoc($adhoc_sql);
                                         
@@ -320,7 +314,6 @@ while($validation = mysqli_fetch_assoc($validate)){
 
                                         $total_gross_pay = $total_gross_pay + $sum_gross_pay;
 
-
                                         $sum_epf = $usql["epf_employee_deduction"];
                                         $sum_socso = $usql["socso_employee_deduction"];
                                         $sum_eis = $usql["eis_employee_deduction"];
@@ -329,30 +322,19 @@ while($validation = mysqli_fetch_assoc($validate)){
                                         $sum_unpaid_leave = $usql["process_payroll_unpaid_leave"];
                                         $sum_advance_deduct = $usql["process_payroll_advance_deduct"];              
 
-
                                         $sum_gross_deduct = $sum_gross_deduct + $sum_epf + $sum_socso + $sum_eis + $sum_deduction + $sum_loan + $sum_unpaid_leave + $sum_advance_deduct + $adhoc_employee_epf;
 
                                         $total_gross_deduct = $total_gross_deduct + $sum_gross_deduct;     
 
-
-                                        //employer
                                         $total_employer_epf = $total_employer_epf + $epf_employer_deduction + $adhoc_employer_epf;
                                         $total_employer_socso = $total_employer_socso + $socso_employer_deduction;
                                         $total_employer_eis = $total_employer_eis + $eis_employer_deduction;
 
-                                        
-
-
-
-
-                                        //total epf with adhoc
                                         $total_employee_pp_adhoc_epf = $sum_epf + $adhoc_employee_epf;
                                         $total_employer_pp_adhoc_epf = $epf_employer_deduction + $adhoc_employer_epf;
 
                                         $sum_adhoc_amt = $adhoc_amt;
                                         $sum_total_netpay =  $sum_gross_pay - $sum_gross_deduct;
-
-                                       // $gg = number_format(0.00,2);
 
                                         echo '<tr>';
                                         echo '<td>' . $emp_name . '</td>';
@@ -390,7 +372,7 @@ while($validation = mysqli_fetch_assoc($validate)){
                                         echo '<td style="color:green;">' . number_format($sum_total_netpay,2) . '</td>';
                                         echo '</tr>';
 
-                                        //count wages for all employee
+                                        //Count wages for all employee
                                         $total_wage = $total_wage + $sum_wage;
                                         $total_overtime = $total_overtime + $sum_overtime;
                                         $total_commission = $total_commission + $sum_commission;
@@ -417,41 +399,38 @@ while($validation = mysqli_fetch_assoc($validate)){
 
                                 }                                   
                                     
-                                    
-
                                 ?>
-                                <tr>
-                                    <td><b>Total (RM)</b></td>    
-                                    <td style="color:blue;"><b><?php echo number_format($total_wage,2); ?></b></td>    
-                                    <td style="color:blue;"><b><?php echo number_format($total_overtime,2); ?></b></td>      
-                                    <td style="color:blue;"><b><?php echo number_format($total_commission,2); ?></b></td>      
-                                    <td style="color:blue;"><b><?php echo number_format($total_allowance,2); ?></b></td>      
-                                    <td style="color:blue;"><b><?php echo number_format($total_claims,2); ?></b></td>      
-                                    <td style="color:blue;"><b><?php echo number_format($total_director_fees,2); ?></b></td>      
-                                    <td style="color:blue;"><b><?php echo number_format($total_advance_paid,2); ?></b></td>      
-                                    <td style="color:blue;"><b><?php echo number_format($total_bonus,2); ?></b></td>      
-                                    <td style="color:blue;"><b><?php echo number_format($total_others,2); ?></b></td>      
-                                    <td style="color:blue;"><b><?php echo number_format($total_adhoc_amt,2); ?></b></td>      
-                                    
-                                    <td style="color:green;"><b><?php echo number_format($total_gross_pay,2); ?></b></td>  
-                                    
-                                    <td style="color:red;"><b>-<?php echo number_format($total_epf,2); ?></b></td>      
-                                    <td style="color:red;"><b>-<?php echo number_format($total_socso,2); ?></b></td>      
-                                    <td style="color:red;"><b>-<?php echo number_format($total_eis,2); ?></b></td>      
-                                    <td style="color:red;"><b>-<?php echo number_format($total_deduction,2); ?></b></td>      
-                                    <td style="color:red;"><b>-<?php echo number_format($total_loan,2); ?></b></td>      
-                                    <td style="color:red;"><b>-<?php echo number_format($total_unpaid_leave,2); ?></b></td>      
-                                    <td style="color:red;"><b>-<?php echo number_format($total_advance_deduct,2); ?></b></td> 
-                                    
-                                    <td style="color:green;"><b>-<?php echo number_format($total_gross_deduct,2); ?></b></td>  
-  
-                                    <td style="color:black;"><b>-<?php echo number_format($total_employer_epf,2); ?></b></td>  
-                                    <td style="color:black;"><b>-<?php echo number_format($total_employer_socso,2); ?></b></td>  
-                                    <td style="color:black;"><b>-<?php echo number_format($total_employer_eis,2); ?></b></td>               
-                                    
-                                    
-                                    <td style="color:green;"><b><?php echo number_format($total_net_pay,2); ?></b></td>      
-                                </tr>
+                                    <tr>
+                                        <td><b>Total (RM)</b></td>    
+                                        <td style="color:blue;"><b><?php echo number_format($total_wage,2); ?></b></td>    
+                                        <td style="color:blue;"><b><?php echo number_format($total_overtime,2); ?></b></td>      
+                                        <td style="color:blue;"><b><?php echo number_format($total_commission,2); ?></b></td>      
+                                        <td style="color:blue;"><b><?php echo number_format($total_allowance,2); ?></b></td>      
+                                        <td style="color:blue;"><b><?php echo number_format($total_claims,2); ?></b></td>      
+                                        <td style="color:blue;"><b><?php echo number_format($total_director_fees,2); ?></b></td>      
+                                        <td style="color:blue;"><b><?php echo number_format($total_advance_paid,2); ?></b></td>      
+                                        <td style="color:blue;"><b><?php echo number_format($total_bonus,2); ?></b></td>      
+                                        <td style="color:blue;"><b><?php echo number_format($total_others,2); ?></b></td>      
+                                        <td style="color:blue;"><b><?php echo number_format($total_adhoc_amt,2); ?></b></td>      
+
+                                        <td style="color:green;"><b><?php echo number_format($total_gross_pay,2); ?></b></td>  
+
+                                        <td style="color:red;"><b>-<?php echo number_format($total_epf,2); ?></b></td>      
+                                        <td style="color:red;"><b>-<?php echo number_format($total_socso,2); ?></b></td>      
+                                        <td style="color:red;"><b>-<?php echo number_format($total_eis,2); ?></b></td>      
+                                        <td style="color:red;"><b>-<?php echo number_format($total_deduction,2); ?></b></td>      
+                                        <td style="color:red;"><b>-<?php echo number_format($total_loan,2); ?></b></td>      
+                                        <td style="color:red;"><b>-<?php echo number_format($total_unpaid_leave,2); ?></b></td>      
+                                        <td style="color:red;"><b>-<?php echo number_format($total_advance_deduct,2); ?></b></td> 
+
+                                        <td style="color:green;"><b>-<?php echo number_format($total_gross_deduct,2); ?></b></td>  
+
+                                        <td style="color:black;"><b>-<?php echo number_format($total_employer_epf,2); ?></b></td>  
+                                        <td style="color:black;"><b>-<?php echo number_format($total_employer_socso,2); ?></b></td>  
+                                        <td style="color:black;"><b>-<?php echo number_format($total_employer_eis,2); ?></b></td>               
+
+                                        <td style="color:green;"><b><?php echo number_format($total_net_pay,2); ?></b></td>      
+                                    </tr>
                                 </tbody>
                             </table>
                         </div> 
@@ -465,8 +444,8 @@ while($validation = mysqli_fetch_assoc($validate)){
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
 $("#menu-toggle").click(function(e) {
-e.preventDefault();
-$("#wrapper").toggleClass("toggled");
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
 });
 </script>
 </body>

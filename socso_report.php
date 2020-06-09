@@ -8,16 +8,18 @@ $username = $_SESSION["username"];
 ?>
 
 <?php
+//Get month
 $month = (int)date("m");
+//Get year
 $year = date("Y");
 $view_table = FALSE;
 if(isset($_POST["submit"])){
-    
+    //Get month and year from input
     $month = $_POST["month"];
     $year = $_POST["year"]; 
     $select_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_process_month = '$month' AND process_payroll_process_year = '$year'"); 
 	
-	//validate
+	//validate for view table
 	$validate = mysqli_query($conn, "SELECT * FROM process_payroll");
 	while($validation = mysqli_fetch_assoc($validate)){
 		if ($validation["process_payroll_process_month"]==$month && $validation["process_payroll_process_year"]==$year){
@@ -25,6 +27,10 @@ if(isset($_POST["submit"])){
 		}
 	}
 }
+//Declare variables
+$total_socso_employee_deduction = 0;
+$total_socso_employer_deduction = 0;                
+$total_socso_employer_contribution = 0;     
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,10 +89,8 @@ if(isset($_POST["submit"])){
                             </tr>
                         </thead>
                         <tbody>
-                        <?php
-                        $total_socso_employee_deduction = 0;
-                        $total_socso_employer_deduction = 0;                
-                        $total_socso_employer_contribution = 0;                
+                        <?php          
+                        //If view table is clicked, show table
                         if($view_table){
                             while($select_result = mysqli_fetch_assoc($select_sql)){
                                 $socso_employee_deduction = $select_result["socso_employee_deduction"];
@@ -98,13 +102,14 @@ if(isset($_POST["submit"])){
                                 echo '<td>' . $socso_employer_deduction . '</td>';
                                 echo '<td>' . $socso_employer_contribution . '</td>';
                                 echo '</tr>'; 
+                                
+                                //Count the total socso
                                 $total_socso_employee_deduction = $total_socso_employee_deduction + $socso_employee_deduction;
 								$format_total_socso_employee_deduction = number_format("$total_socso_employee_deduction",2);
 								
                                 $total_socso_employer_deduction = $total_socso_employer_deduction + $socso_employer_deduction; 
 								$format_total_socso_employer_deduction = number_format("$total_socso_employer_deduction",2);
-								
-								
+
                                 $total_socso_employer_contribution = $total_socso_employer_contribution + $socso_employer_contribution;
 								$format_total_socso_employer_contribution = number_format("$total_socso_employer_contribution",2);
 								

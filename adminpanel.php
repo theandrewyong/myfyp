@@ -9,7 +9,7 @@ if($_SESSION["permission"] != 1){
     header("location:index.php");
 }
 $username = $_SESSION["username"];
-
+//Declare variables
 $error = FALSE;
 $error_username = "";
 $error_password = "";
@@ -20,11 +20,14 @@ $permission = "";
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    //check if username and password is empty to validate the error
+    //Check if username and password is empty to validate the error
     if(empty($_POST["username"])){
+        //Set error username message
         $error_username = '<span class="text-danger"> *Invalid Username</span>';
+        //Set error to true
         $error = TRUE;
     }else{
+        //If no error, declare username1 variable from input
         $username1 = mysqli_escape_string($conn,  test_input($_POST["username"]));
     }
     if(empty($_POST["password"])){
@@ -34,12 +37,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $password = mysqli_escape_string($conn, test_input($_POST["password"]));
     }
     
-    //set permission
+    //Set permission
     $permission = mysqli_escape_string($conn, test_input($_POST["permission"]));
 
-    //get all data from account table
+    //Get all data from account table
     $accounts_sql = mysqli_query($conn, "SELECT * FROM account");
-    //check if username already exists
+    //Check if username already exists
     while($accounts_result = mysqli_fetch_assoc($accounts_sql)){
         if($accounts_result["username"] == $username1){
             $error_acc_exists = '<span class="text-danger"> *Username already exists</span>';
@@ -47,7 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
 
-    //if no error, insert to database
+    //If no error, insert to database
     if($error == FALSE){        
         $new_user_sql = "INSERT INTO account (username, password, permission) VALUES (?,?,?)";
         $prepared_stmt_insert = mysqli_prepare($conn, $new_user_sql);
@@ -58,7 +61,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 }
 
-//filter special character for security purposes
+//Filter special character for security purposes
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -163,7 +166,9 @@ $("#menu-toggle").click(function(e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
 });
-
+//Datatables function
+//ID: #example
+//CSS: sdom
 $(document).ready( function() {
     $('#example').dataTable( {
         language: {
