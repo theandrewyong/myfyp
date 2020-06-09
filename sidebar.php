@@ -48,8 +48,6 @@ if($curPageName == 'tools.php'){
 
     <div class="list-group list-group-flush">
 
-        <a href="dashboard.php" class="<?php if($dashboard){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Dashboard</a>         
-
         <a href="maintainemployee.php" class="<?php if($maintain_employee){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Maintain Employee</a>
 
         <a href="newpayroll.php" class="<?php if($new_payroll){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">New Payroll</a> 
@@ -61,6 +59,8 @@ if($curPageName == 'tools.php'){
         <a href="reports.php" class="<?php if($reports){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Reports</a>
 
         <a href="view.php" class="<?php if($view){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">View</a>       
+        
+        <a href="dashboard.php" class="<?php if($dashboard){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Dashboard</a>                 
 
         <a href="tools.php" class="<?php if($tools){echo "list-group-item list-group-item-action sidebar_color_active";}else{echo "list-group-item list-group-item-action sidebar_color";} ?>">Tools</a>
 
