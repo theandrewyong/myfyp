@@ -1,100 +1,100 @@
 <?php
-session_start();
-include "conn.php";
-if(empty($_SESSION["username"])){
-    header("location:index.php");
-}
-$username = $_SESSION["username"];
+	session_start();
+	include "conn.php";
+	if(empty($_SESSION["username"])){
+		header("location:index.php");
+	}
+	$username = $_SESSION["username"];
 
-$message ='';
-$error_rate ='';
-if(isset($_POST["submit"])){
-$count = 0;
-$error = FALSE;
-$allowance_display_id = $_POST["allowance_display_id"];
-$allowance_desc = $_POST["allowance_desc"];
-$allowance_rate = $_POST["allowance_rate"];	
-$select_sql = mysqli_query($conn, "SELECT * FROM allowance"); 
+	$message ='';
+	$error_rate ='';
 
-while($data = mysqli_fetch_assoc($select_sql)){
-if ($allowance_display_id == $data["allowance_display_id"])
-{
-$message = '<label class="text-danger">Error: ID already exist.</label>';
-$count = $count+1;
-$error = TRUE;
-}
-}
-	
-if (empty($allowance_rate) || $allowance_rate == 0 || $allowance_rate == 0.00) {
-	$error_rate = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
-	$error = TRUE;
-}
-	
-if ($error == FALSE && $count==0){
-$new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
-$prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
-mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
-mysqli_stmt_execute($prepared_stmt_insert);
-mysqli_stmt_close($prepared_stmt_insert);
-    echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
-}
-}
+	if(isset($_POST["submit"])){
+		$count = 0;
+		$error = FALSE;
+		$allowance_display_id = $_POST["allowance_display_id"];
+		$allowance_desc = $_POST["allowance_desc"];
+		$allowance_rate = $_POST["allowance_rate"];	
+		$select_sql = mysqli_query($conn, "SELECT * FROM allowance"); 
 
-$message2 ='';
-$error_rate2 ='';
-if(isset($_POST["submit1"])){
-$count2 = 0;
-$error2 = FALSE;
-$deduction_display_id = $_POST["deduction_display_id"];
-$deduction_desc = $_POST["deduction_desc"];
-$deduction_rate = $_POST["deduction_rate"];
-$select_sql2 = mysqli_query($conn, "SELECT * FROM deduction"); 
+		//Validate if the allowance ID existed in the current Database
+		while($data = mysqli_fetch_assoc($select_sql)){
+			if ($allowance_display_id == $data["allowance_display_id"]){
+				$message = '<label class="text-danger">Error: ID already exist.</label>';
+				$count = $count+1;
+				$error = TRUE;
+			}
+		}
 
-while($data = mysqli_fetch_assoc($select_sql2)){
-if ($deduction_display_id == $data["deduction_display_id"])
-{
-$message2 = '<label class="text-danger">Error: ID already exist.</label>';
-$count2 = $count2+1;
-$error2 = TRUE;
-}
-}
-	
-if (empty($deduction_rate) || $deduction_rate == 0 || $deduction_rate == 0.00) {
-	$error_rate2 = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
-	$error2 = TRUE;
-}
+		//Validate if the allowance rate is empty or 0 value
+		if (empty($allowance_rate) || $allowance_rate == 0 || $allowance_rate == 0.00) {
+			$error_rate = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
+			$error = TRUE;
+		}
 
-if ($error2 == FALSE && $count2==0){
-$new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
-$prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
-mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
-mysqli_stmt_execute($prepared_stmt_insert);
-mysqli_stmt_close($prepared_stmt_insert);
-    echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
-}
-}
+		//If no error insert data to allowance table
+		if ($error == FALSE && $count==0){
+			$new_allowance_sql = "INSERT INTO allowance (allowance_display_id, allowance_desc, allowance_rate) VALUES (?,?,?)";
+			$prepared_stmt_insert = mysqli_prepare($conn, $new_allowance_sql);
+			mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $allowance_display_id, $allowance_desc, $allowance_rate);
+			mysqli_stmt_execute($prepared_stmt_insert);
+			mysqli_stmt_close($prepared_stmt_insert);
+			echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
+		}
+	}
 
-$select_emp = mysqli_query($conn, "SELECT * FROM employee_info");
-$select_allowance = mysqli_query($conn, "SELECT * FROM allowance"); 
-$select_deduction = mysqli_query($conn, "SELECT * FROM deduction"); 
+	$message2 ='';
+	$error_rate2 ='';
+	if(isset($_POST["submit1"])){
+		$count2 = 0;
+		$error2 = FALSE;
+		$deduction_display_id = $_POST["deduction_display_id"];
+		$deduction_desc = $_POST["deduction_desc"];
+		$deduction_rate = $_POST["deduction_rate"];
+		$select_sql2 = mysqli_query($conn, "SELECT * FROM deduction"); 
 
+		//Validate if the deduction ID existed in the current Database
+		while($data = mysqli_fetch_assoc($select_sql2)){
+			if ($deduction_display_id == $data["deduction_display_id"]){
+				$message2 = '<label class="text-danger">Error: ID already exist.</label>';
+				$count2 = $count2+1;
+				$error2 = TRUE;
+				}
+		}
 
+		//Validate if the deduction rate is empty or 0 value
+		if (empty($deduction_rate) || $deduction_rate == 0 || $deduction_rate == 0.00) {
+			$error_rate2 = '<label class="text-danger">Error: Rate should NOT be 0.00</label>';
+			$error2 = TRUE;
+		}
+
+		//If no error insert data to deduction table
+		if ($error2 == FALSE && $count2==0){
+			$new_deduction_sql = "INSERT INTO deduction (deduction_display_id, deduction_desc, deduction_rate) VALUES (?,?,?)";
+			$prepared_stmt_insert = mysqli_prepare($conn, $new_deduction_sql);
+			mysqli_stmt_bind_param($prepared_stmt_insert, 'sss', $deduction_display_id, $deduction_desc, $deduction_rate);
+			mysqli_stmt_execute($prepared_stmt_insert);
+			mysqli_stmt_close($prepared_stmt_insert);
+			echo "<script>alert('Added Successfully!');document.location='maintainemployee.php'</script>";
+		}
+	}
+
+	$select_emp = mysqli_query($conn, "SELECT * FROM employee_info");
+	$select_allowance = mysqli_query($conn, "SELECT * FROM allowance"); 
+	$select_deduction = mysqli_query($conn, "SELECT * FROM deduction"); 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
+	
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Payroll Software - Maintain Employee</title>
 <?php include "all_css.php"; ?>
 </head>
+	
 <body>
-    
-    
-    
-
-
-
 <div id="tallModal" class="modal modal-wide fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -179,19 +179,19 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php
-                                        if($datarows = mysqli_num_rows($select_emp) > 0){
-                                            while($data = mysqli_fetch_assoc($select_emp)){
-                                                echo "<tr>";
-                                                echo "<td>" . $data["emp_display_id"] . "</td>";
-                                                echo "<td>" . $data["emp_full_name"] . "</td>";
-                                                echo "<td>" . $data["emp_title"] . "</td>";
-                                                echo "<td>" . '<a class="btn btn-primary" href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit Employee Info</a>' . "</td>";
-                                                echo "<td>" . '<a class="btn btn-danger" href="deleteEmployee.php?id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee</a>' . "</td>";
-                                                echo "</tr>";
-                                            }
-                                        }  
-                                        ?>
+											<?php
+											if($datarows = mysqli_num_rows($select_emp) > 0){
+												while($data = mysqli_fetch_assoc($select_emp)){
+													echo "<tr>";
+													echo "<td>" . $data["emp_display_id"] . "</td>";
+													echo "<td>" . $data["emp_full_name"] . "</td>";
+													echo "<td>" . $data["emp_title"] . "</td>";
+													echo "<td>" . '<a class="btn btn-primary" href="editemployee.php?emp_id=' . $data["emp_id"] . '">Edit Employee Info</a>' . "</td>";
+													echo "<td>" . '<a class="btn btn-danger" href="deleteEmployee.php?id=' . $data["emp_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Employee</a>' . "</td>";
+													echo "</tr>";
+												}
+											}  
+											?>
                                         </tbody>
                                     </table>               
                                 </div>
@@ -245,19 +245,19 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php
-                                        if($datarows = mysqli_num_rows($select_allowance) > 0){
-                                            while($data = mysqli_fetch_assoc($select_allowance)){
-                                                echo "<tr>";
-                                                echo "<td>" . $data["allowance_display_id"] . "</td>";
-                                                echo "<td>" . $data["allowance_desc"] . "</td>";
-                                                echo "<td>" . $data["allowance_rate"] . "</td>";
-                                                echo "<td>" . '<a class="btn btn-primary" href="editallowance.php?id=' . $data["allowance_id"] . '&desc=' . $data["allowance_desc"] . '&rate=' . $data["allowance_rate"] . '">Edit Allowance</a>' . "</td>";
-                                                echo "<td>" . '<a class="btn btn-danger" href="deleteGeneralAllowance.php?id=' . $data["allowance_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Allowance</a>' . "</td>";
-                                                echo "</tr>";
-                                            }
-                                        }  
-                                        ?>
+											<?php
+											if($datarows = mysqli_num_rows($select_allowance) > 0){
+												while($data = mysqli_fetch_assoc($select_allowance)){
+													echo "<tr>";
+													echo "<td>" . $data["allowance_display_id"] . "</td>";
+													echo "<td>" . $data["allowance_desc"] . "</td>";
+													echo "<td>" . $data["allowance_rate"] . "</td>";
+													echo "<td>" . '<a class="btn btn-primary" href="editallowance.php?id=' . $data["allowance_id"] . '&desc=' . $data["allowance_desc"] . '&rate=' . $data["allowance_rate"] . '">Edit Allowance</a>' . "</td>";
+													echo "<td>" . '<a class="btn btn-danger" href="deleteGeneralAllowance.php?id=' . $data["allowance_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Allowance</a>' . "</td>";
+													echo "</tr>";
+												}
+											}  
+											?>
                                         </tbody>
                                     </table>  
                                 </div>                            
@@ -311,19 +311,19 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <?php
-                                        if($datarows = mysqli_num_rows($select_deduction) > 0){
-                                            while($data = mysqli_fetch_assoc($select_deduction)){
-                                                echo "<tr>";
-                                                echo "<td>" . $data["deduction_display_id"] . "</td>";
-                                                echo "<td>" . $data["deduction_desc"] . "</td>";
-                                                echo "<td>" . $data["deduction_rate"] . "</td>";
-                                                echo "<td>" . '<a class="btn btn-primary" href="editdeduction.php?id=' . $data["deduction_id"] . '&desc=' . $data["deduction_desc"] . '&rate=' . $data["deduction_rate"] . '">Edit Deduction</a>' . "</td>";
-                                                echo "<td>" . '<a class="btn btn-danger" href="deleteGeneralDeduction.php?id=' . $data["deduction_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Deduction</a>' . "</td>";
-                                                echo "</tr>";
-                                            }
-                                        }  
-                                        ?>                          
+											<?php
+											if($datarows = mysqli_num_rows($select_deduction) > 0){
+												while($data = mysqli_fetch_assoc($select_deduction)){
+													echo "<tr>";
+													echo "<td>" . $data["deduction_display_id"] . "</td>";
+													echo "<td>" . $data["deduction_desc"] . "</td>";
+													echo "<td>" . $data["deduction_rate"] . "</td>";
+													echo "<td>" . '<a class="btn btn-primary" href="editdeduction.php?id=' . $data["deduction_id"] . '&desc=' . $data["deduction_desc"] . '&rate=' . $data["deduction_rate"] . '">Edit Deduction</a>' . "</td>";
+													echo "<td>" . '<a class="btn btn-danger" href="deleteGeneralDeduction.php?id=' . $data["deduction_id"] . '" onclick="return confirm(\'Confirm Delete?\');">Delete Deduction</a>' . "</td>";
+													echo "</tr>";
+												}
+											}  
+											?>                          
                                         </tbody>
                                     </table> 
                                 </div>       
@@ -341,62 +341,62 @@ $select_deduction = mysqli_query($conn, "SELECT * FROM deduction");
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
-$("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-});
+	$("#menu-toggle").click(function(e) {
+		e.preventDefault();
+		$("#wrapper").toggleClass("toggled");
+	});
 
-$(document).ready( function() {
-    $('#example').dataTable( {
-        language: {
-        search: "",
-        "lengthMenu": "_MENU_",
-        searchPlaceholder: "Search records"
-        },
-        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
-    } );
-} );
+	$(document).ready( function() {
+		$('#example').dataTable( {
+			language: {
+			search: "",
+			"lengthMenu": "_MENU_",
+			searchPlaceholder: "Search records"
+			},
+			"sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
+		} );
+	} );
 
-$(document).ready( function() {
-    $('#example1').dataTable( {
-        language: {
-        search: "",
-        "lengthMenu": "_MENU_",
-        searchPlaceholder: "Search records"
-        },
-        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
-    } );
-} );
+	$(document).ready( function() {
+		$('#example1').dataTable( {
+			language: {
+			search: "",
+			"lengthMenu": "_MENU_",
+			searchPlaceholder: "Search records"
+			},
+			"sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
+		} );
+	} );
 
-$(document).ready( function() {
-    $('#example2').dataTable( {
-        language: {
-        search: "",
-        "lengthMenu": "_MENU_",
-        searchPlaceholder: "Search records"
-        },
-        "sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
-    } );
-} );
+	$(document).ready( function() {
+		$('#example2').dataTable( {
+			language: {
+			search: "",
+			"lengthMenu": "_MENU_",
+			searchPlaceholder: "Search records"
+			},
+			"sDom": '<"dtb_search"f><"dtb_length"l>rt<"bottom"pi><"clear">'
+		} );
+	} );
 </script>
+	
 <script>
-if ( window.history.replaceState ) {
-    window.history.replaceState( null, null, window.location.href );
-}
-    
- 
-$(window).on('load',function(){
-  if (!sessionStorage.getItem('shown-modal')){
-    $('#tallModal').modal('show');
-    sessionStorage.setItem('shown-modal', 'true');
-  }
-});
-    
-if (localStorage.getItem("guidelines") !== null) {
-    
- document.getElementById("guide_maintain_employee").innerHTML = '<div class="p-2 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a></div>';
-}    
+	if ( window.history.replaceState ) {
+		window.history.replaceState( null, null, window.location.href );
+	}
 
+
+	$(window).on('load',function(){
+	  if (!sessionStorage.getItem('shown-modal')){
+		$('#tallModal').modal('show');
+		sessionStorage.setItem('shown-modal', 'true');
+	  }
+	});
+
+	if (localStorage.getItem("guidelines") !== null) {
+
+	 document.getElementById("guide_maintain_employee").innerHTML = '<div class="p-2 bg-white rounded shadow mb-1"><a class="btn btn-primary" href="maintainemployee.php">Step 1: Maintain Employee</a></div>';
+	}    
 </script>
 
 </body>

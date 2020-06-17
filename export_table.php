@@ -143,6 +143,4 @@ if(isset($_POST["export_eis"])){
 	header("Content-Disposition: attachment; filename=eis_table.xls");
 	echo $output;
 }
-
-
 ?>

@@ -1,130 +1,126 @@
 <?php
-session_start();
-include "conn.php";
-if(empty($_SESSION["username"])){
-    header("location:index.php");
-}
-$username = $_SESSION["username"];
-$process_id = $_GET["pid"];
+	session_start();
+	include "conn.php";
+	if(empty($_SESSION["username"])){
+		header("location:index.php");
+	}
+	$username = $_SESSION["username"];
+	$process_id = $_GET["pid"];
+	$get_month = $_GET["month"];
+	$get_year = $_GET["year"];
 
-$get_month = $_GET["month"];
-$get_year = $_GET["year"];
+	if(isset($_POST["submit"])){
+		$new_wages = $_POST["new_wages"];
+		$new_overtime = $_POST["new_overtime"];
+		$new_commission = $_POST["new_commission"];
+		$new_allowance = $_POST["new_allowance"];
+		$new_claims = $_POST["new_claims"];
+		$new_director_fees = $_POST["new_director_fees"];
+		$new_advance_paid = $_POST["new_advance_paid"];
+		$new_bonus = $_POST["new_bonus"];
+		$new_others = $_POST["new_others"];
+		$new_eis = $_POST["new_eis"];
+		$new_additional_deduction = $_POST["new_additional_deduction"];
+		$new_loan = $_POST["new_loan"];
+		$new_unpaid_leave = $_POST["new_unpaid_leave"];
+		$new_advance_deduct = $_POST["new_advance_deduct"];
+		$new_adjustment = $_POST["new_adjustment"];
 
-if(isset($_POST["submit"])){
-    //get all new value from edited history
-    $new_wages = $_POST["new_wages"];
-    $new_overtime = $_POST["new_overtime"];
-    $new_commission = $_POST["new_commission"];
-    $new_allowance = $_POST["new_allowance"];
-    $new_claims = $_POST["new_claims"];
-    $new_director_fees = $_POST["new_director_fees"];
-    $new_advance_paid = $_POST["new_advance_paid"];
-    $new_bonus = $_POST["new_bonus"];
-    $new_others = $_POST["new_others"];
-    //$new_epf = $_POST["new_epf"];
-    //$new_socso = $_POST["new_socso"];
-    $new_eis = $_POST["new_eis"];
-    $new_additional_deduction = $_POST["new_additional_deduction"];
-    $new_loan = $_POST["new_loan"];
-    $new_unpaid_leave = $_POST["new_unpaid_leave"];
-    $new_advance_deduct = $_POST["new_advance_deduct"];
-    $new_adjustment = $_POST["new_adjustment"];
-    // end get all new value from edited history
-    
-    //count epf contribution
-    $new_epf = $new_wages + $new_bonus + $new_allowance + $new_commission + $new_claims - $new_unpaid_leave + $new_others;
-    //select all data from epf view table
-    $epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula"); 
-    //while epf view table data exists
-    while($ef = mysqli_fetch_assoc($epf_formula_sql)){
-        $ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
-        $ef_end = $ef["epf_formula_wage_end"]; //get epf ending wages value
-        
-        //if epf contribution is in between start and end wages in view table
-        if(($new_epf >= $ef_start) && ($new_epf <= $ef_end)){
-            $epf_employee_deduction = $ef["epf_formula_employee_amt"]; //get employee epf deduction value
-            $epf_employer_deduction = $ef["epf_formula_employer_amt"]; //get employer epf deduction value
-        }
-    }
-    //count socso contribution
-    $new_socso = $new_wages + $new_others + $new_overtime + $new_allowance + $new_commission;
-    //select all data from socso view table
-    $socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula");
-    //while socso view table data exists
-    while($sc = mysqli_fetch_assoc($socso_formula_sql)){
-        $sc_start = $sc["socso_formula_wage_start"]; //get socso starting wages value
-        $sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
-        
-        
-        //if socso contribution is in between start and end wages in view table
-        if(($new_socso >= $sc_start) && ($new_socso <= $sc_end)){
-        $socso_employee_deduction = $sc["socso_formula_employee_amt"]; //get employee socso deduction value
-        $socso_employer_deduction = $sc["socso_formula_employer_amt"]; //get employer socso deduction value
-        $sc_employee_contribution = $sc["socso_formula_employer_contribution"]; //get socso fixed contribution value
-        }
-    }
-    //count eis contribution
-    $new_eis = $new_wages;
-   //select all data from eis view table
-    $eis_formula_sql = mysqli_query($conn, "SELECT * FROM eis_formula");
-    //while eis view table data exists
-    while($es = mysqli_fetch_assoc($eis_formula_sql)){
+		//count epf contribution
+		$new_epf = $new_wages + $new_bonus + $new_allowance + $new_commission + $new_claims - $new_unpaid_leave + $new_others;
+		//select all data from epf view table
+		$epf_formula_sql = mysqli_query($conn, "SELECT * FROM epf_formula"); 
+		//while epf view table data exists
+		while($ef = mysqli_fetch_assoc($epf_formula_sql)){
+			$ef_start = $ef["epf_formula_wage_start"]; //get epf starting wages value
+			$ef_end = $ef["epf_formula_wage_end"]; //get epf ending wages value
 
-        $es_start = $es["eis_formula_wage_start"]; //get eis starting wages value
-        $es_end = $es["eis_formula_wage_end"]; //get eis ending wages value 
-        //if eis contribution is in between start and end wages in view table
-        if(($new_eis >= $es_start) && ($new_eis <= $es_end)){
-            $eis_employee_deduction = $es["eis_formula_employee_amt"]; //get employee eis deduction value
-            $eis_employer_deduction = $es["eis_formula_employer_amt"]; //get employer eis deduction value   
-        }
-    }
-    //count gross pay
-    $new_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance + $new_claims + $new_director_fees + $new_advance_paid + $new_bonus + $new_others;
-    //count gross deduction
-    $new_gross_deduct = $epf_employee_deduction + $socso_employee_deduction + $eis_employee_deduction + $new_additional_deduction + $new_loan + $new_unpaid_leave + $new_advance_deduct; 
-    //count net pay
-    $new_netpay = $new_gross_pay - $new_gross_deduct + $new_adjustment;
+			//if epf contribution is in between start and end wages in view table
+			if(($new_epf >= $ef_start) && ($new_epf <= $ef_end)){
+				$epf_employee_deduction = $ef["epf_formula_employee_amt"]; //get employee epf deduction value
+				$epf_employer_deduction = $ef["epf_formula_employer_amt"]; //get employer epf deduction value
+			}
+		}
+		//count socso contribution
+		$new_socso = $new_wages + $new_others + $new_overtime + $new_allowance + $new_commission;
+		//select all data from socso view table
+		$socso_formula_sql = mysqli_query($conn, "SELECT * FROM socso_formula");
+		//while socso view table data exists
+		while($sc = mysqli_fetch_assoc($socso_formula_sql)){
+			$sc_start = $sc["socso_formula_wage_start"]; //get socso starting wages value
+			$sc_end = $sc["socso_formula_wage_end"]; //get socso ending wages value
 
-    
-    $update_sql = mysqli_query($conn, "UPDATE process_payroll SET process_payroll_wage = '$new_wages', process_payroll_overtime = '$new_overtime', process_payroll_commission = '$new_commission', process_payroll_allowance = '$new_allowance', process_payroll_claims = '$new_claims', process_payroll_director_fees = '$new_director_fees', process_payroll_advance_paid = '$new_advance_paid', process_payroll_bonus = '$new_bonus', process_payroll_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', socso_employee_deduction = '$socso_employee_deduction', socso_employer_deduction = '$socso_employer_deduction', eis_employee_deduction = '$eis_employee_deduction', eis_employer_deduction = '$eis_employer_deduction', process_payroll_additional_deduction = '$new_additional_deduction', process_payroll_loan = '$new_loan', process_payroll_unpaid_leave = '$new_unpaid_leave', process_payroll_advance_deduct = '$new_advance_deduct', process_payroll_adjustment = '$new_adjustment', process_payroll_net_pay = '$new_netpay' WHERE process_payroll_id = '$process_id'");
-}        
 
-$get_all_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_id = '$process_id'");
-$get_result = mysqli_fetch_assoc($get_all_sql);
-$process_date = $get_result["process_payroll_process_date"];
-$process_from = $get_result["process_payroll_from"];
-$process_to = $get_result["process_payroll_to"];
-$process_month = $get_result["process_payroll_process_month"];
-$process_year = $get_result["process_payroll_process_year"];
-$employee_name = $get_result["emp_full_name"];
-$employee_wages = $get_result["process_payroll_wage"];
-$employee_overtime = $get_result["process_payroll_overtime"];
-$employee_commission = $get_result["process_payroll_commission"];
-$employee_allowance = $get_result["process_payroll_allowance"];
-$employee_claims = $get_result["process_payroll_claims"];
-$employee_director_fees = $get_result["process_payroll_director_fees"];
-$employee_advance_paid = $get_result["process_payroll_advance_paid"];
-$employee_bonus = $get_result["process_payroll_bonus"];
-$employee_others = $get_result["process_payroll_others"];
-$employee_epf = $get_result["epf_employee_deduction"];
-$employee_socso = $get_result["socso_employee_deduction"];
-$employee_eis = $get_result["eis_employee_deduction"];
-$additional_employee_deduction = $get_result["process_payroll_additional_deduction"];
-$employee_loan = $get_result["process_payroll_loan"];
-$employee_unpaid_leave = $get_result["process_payroll_unpaid_leave"];
-$employee_advance_deduct = $get_result["process_payroll_advance_deduct"];
-$employee_adjustment = $get_result["process_payroll_adjustment"];
-$employer_epf = $get_result["epf_employer_deduction"];
-$employer_socso = $get_result["socso_employer_deduction"];
-$employer_eis = $get_result["eis_employer_deduction"];
-$adjustment = $get_result["process_payroll_adjustment"];
+			//if socso contribution is in between start and end wages in view table
+			if(($new_socso >= $sc_start) && ($new_socso <= $sc_end)){
+			$socso_employee_deduction = $sc["socso_formula_employee_amt"]; //get employee socso deduction value
+			$socso_employer_deduction = $sc["socso_formula_employer_amt"]; //get employer socso deduction value
+			$sc_employee_contribution = $sc["socso_formula_employer_contribution"]; //get socso fixed contribution value
+			}
+		}
+		//count eis contribution
+		$new_eis = $new_wages;
+	   //select all data from eis view table
+		$eis_formula_sql = mysqli_query($conn, "SELECT * FROM eis_formula");
+		//while eis view table data exists
+		while($es = mysqli_fetch_assoc($eis_formula_sql)){
 
-$total_gross_pay = $employee_wages + $employee_overtime + $employee_commission + $employee_allowance + $employee_claims + $employee_director_fees + $employee_advance_paid + $employee_bonus + $employee_others;
+			$es_start = $es["eis_formula_wage_start"]; //get eis starting wages value
+			$es_end = $es["eis_formula_wage_end"]; //get eis ending wages value 
+			//if eis contribution is in between start and end wages in view table
+			if(($new_eis >= $es_start) && ($new_eis <= $es_end)){
+				$eis_employee_deduction = $es["eis_formula_employee_amt"]; //get employee eis deduction value
+				$eis_employer_deduction = $es["eis_formula_employer_amt"]; //get employer eis deduction value   
+			}
+		}
+		//count gross pay
+		$new_gross_pay = $new_wages + $new_overtime + $new_commission + $new_allowance + $new_claims + $new_director_fees + $new_advance_paid + $new_bonus + $new_others;
+		//count gross deduction
+		$new_gross_deduct = $epf_employee_deduction + $socso_employee_deduction + $eis_employee_deduction + $new_additional_deduction + $new_loan + $new_unpaid_leave + $new_advance_deduct; 
+		//count net pay
+		$new_netpay = $new_gross_pay - $new_gross_deduct + $new_adjustment;
 
-$total_gross_deduct = $employee_epf + $employee_socso + $employee_eis + $additional_employee_deduction + $employee_loan + $employee_unpaid_leave + $employee_advance_deduct;
 
-$net_pay = $total_gross_pay - $total_gross_deduct + $employee_adjustment;
-?>    
+		$update_sql = mysqli_query($conn, "UPDATE process_payroll SET process_payroll_wage = '$new_wages', process_payroll_overtime = '$new_overtime', process_payroll_commission = '$new_commission', process_payroll_allowance = '$new_allowance', process_payroll_claims = '$new_claims', process_payroll_director_fees = '$new_director_fees', process_payroll_advance_paid = '$new_advance_paid', process_payroll_bonus = '$new_bonus', process_payroll_others = '$new_others', epf_employee_deduction = '$epf_employee_deduction', epf_employer_deduction = '$epf_employer_deduction', socso_employee_deduction = '$socso_employee_deduction', socso_employer_deduction = '$socso_employer_deduction', eis_employee_deduction = '$eis_employee_deduction', eis_employer_deduction = '$eis_employer_deduction', process_payroll_additional_deduction = '$new_additional_deduction', process_payroll_loan = '$new_loan', process_payroll_unpaid_leave = '$new_unpaid_leave', process_payroll_advance_deduct = '$new_advance_deduct', process_payroll_adjustment = '$new_adjustment', process_payroll_net_pay = '$new_netpay' WHERE process_payroll_id = '$process_id'");
+	}        
+
+	$get_all_sql = mysqli_query($conn, "SELECT process_payroll.*, employee_info.* FROM process_payroll INNER JOIN employee_info ON process_payroll.emp_id = employee_info.emp_id WHERE process_payroll_id = '$process_id'");
+	$get_result = mysqli_fetch_assoc($get_all_sql);
+	$process_date = $get_result["process_payroll_process_date"];
+	$process_from = $get_result["process_payroll_from"];
+	$process_to = $get_result["process_payroll_to"];
+	$process_month = $get_result["process_payroll_process_month"];
+	$process_year = $get_result["process_payroll_process_year"];
+	$employee_name = $get_result["emp_full_name"];
+	$employee_wages = $get_result["process_payroll_wage"];
+	$employee_overtime = $get_result["process_payroll_overtime"];
+	$employee_commission = $get_result["process_payroll_commission"];
+	$employee_allowance = $get_result["process_payroll_allowance"];
+	$employee_claims = $get_result["process_payroll_claims"];
+	$employee_director_fees = $get_result["process_payroll_director_fees"];
+	$employee_advance_paid = $get_result["process_payroll_advance_paid"];
+	$employee_bonus = $get_result["process_payroll_bonus"];
+	$employee_others = $get_result["process_payroll_others"];
+	$employee_epf = $get_result["epf_employee_deduction"];
+	$employee_socso = $get_result["socso_employee_deduction"];
+	$employee_eis = $get_result["eis_employee_deduction"];
+	$additional_employee_deduction = $get_result["process_payroll_additional_deduction"];
+	$employee_loan = $get_result["process_payroll_loan"];
+	$employee_unpaid_leave = $get_result["process_payroll_unpaid_leave"];
+	$employee_advance_deduct = $get_result["process_payroll_advance_deduct"];
+	$employee_adjustment = $get_result["process_payroll_adjustment"];
+	$employer_epf = $get_result["epf_employer_deduction"];
+	$employer_socso = $get_result["socso_employer_deduction"];
+	$employer_eis = $get_result["eis_employer_deduction"];
+	$adjustment = $get_result["process_payroll_adjustment"];
+
+	$total_gross_pay = $employee_wages + $employee_overtime + $employee_commission + $employee_allowance + $employee_claims + $employee_director_fees + $employee_advance_paid + $employee_bonus + $employee_others;
+
+	$total_gross_deduct = $employee_epf + $employee_socso + $employee_eis + $additional_employee_deduction + $employee_loan + $employee_unpaid_leave + $employee_advance_deduct;
+
+	$net_pay = $total_gross_pay - $total_gross_deduct + $employee_adjustment;
+?> 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
